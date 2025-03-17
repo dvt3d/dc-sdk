@@ -16,6 +16,7 @@ class MouseEvent extends Event {
     this._selected = undefined
     this._enableEventPropagation = options.enableEventPropagation
     this._enableMouseOver = options.enableMouseOver
+    this._enableMouseMovePick = options.enableMouseMovePick
     this._registerEvent()
     this._addDefaultEvent()
   }
@@ -393,21 +394,27 @@ class MouseEvent extends Event {
     if (!movement?.endPosition) {
       return false
     }
-    let mouseInfo = this._getMouseInfo(movement.endPosition)
-    this._viewer.canvas.style.cursor = mouseInfo.target ? 'pointer' : 'default'
-    this._raiseEvent(MouseEventType.MOUSE_MOVE, mouseInfo)
+    if (this._enableMouseMovePick) {
+      let mouseInfo = this._getMouseInfo(movement.endPosition)
+      this._viewer.canvas.style.cursor = mouseInfo.target
+        ? 'pointer'
+        : 'default'
+      this._raiseEvent(MouseEventType.MOUSE_MOVE, mouseInfo)
 
-    // add event for overlay
-    if (this._enableMouseOver) {
-      if (
-        !this._selected ||
-        this._getOverlayId(this._selected.target) !==
-          this._getOverlayId(mouseInfo.target)
-      ) {
-        this._raiseEvent(MouseEventType.MOUSE_OUT, this._selected)
-        this._raiseEvent(MouseEventType.MOUSE_OVER, mouseInfo)
-        this._selected = mouseInfo
+      // add event for overlay
+      if (this._enableMouseOver) {
+        if (
+          !this._selected ||
+          this._getOverlayId(this._selected.target) !==
+            this._getOverlayId(mouseInfo.target)
+        ) {
+          this._raiseEvent(MouseEventType.MOUSE_OUT, this._selected)
+          this._raiseEvent(MouseEventType.MOUSE_OVER, mouseInfo)
+          this._selected = mouseInfo
+        }
       }
+    } else {
+      this._raiseEvent(MouseEventType.MOUSE_MOVE, { movement })
     }
   }
 
