@@ -46,7 +46,11 @@ global.viewer = viewer // 添加到全局变量
     },
     "allowTextureFilterAnisotropic": true
   },
-  "sceneMode": 3 //1: 2.5D，2: 2D，3: 3D
+  "sceneMode": 3, //1: 2.5D，2: 2D，3: 3D
+  "enableEventPropagation":false, //是否开启鼠标事件冒泡
+  "enableMouseMovePick":false, // 是否开启鼠标移动拾取功能，开启后当覆盖物较多的情况下，帧率会下降
+  "enableMouseOver":false, //是否开启鼠标移入事件，需要开启鼠标移动拾取功能
+
 }
 ```
 
