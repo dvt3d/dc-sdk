@@ -140,10 +140,9 @@ class MouseEvent extends Event {
    *
    */
   _getMouseInfo(position) {
-    let scene = this._viewer.scene
     return {
       ...this._getMousePosition(position),
-      target: scene.pick(position),
+      target: this._viewer.scene.pick(position),
     }
   }
 
