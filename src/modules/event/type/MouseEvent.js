@@ -79,14 +79,11 @@ class MouseEvent extends Event {
 
   /**
    *
-   * Gets the mouse information for the mouse event
-   * @param position
-   * @private
-   *
+   * @param {*} position
+   * @returns
    */
-  _getMouseInfo(position) {
+  _getMousePosition(position) {
     let scene = this._viewer.scene
-    let target = scene.pick(position)
     let cartesian = undefined
     let surfaceCartesian = undefined
     let wgs84Position = undefined
@@ -126,14 +123,27 @@ class MouseEvent extends Event {
         }
       }
     }
-
     return {
-      target: target,
       windowPosition: position,
       position: cartesian,
       wgs84Position: wgs84Position,
       surfacePosition: surfaceCartesian,
       wgs84SurfacePosition: wgs84SurfacePosition,
+    }
+  }
+
+  /**
+   *
+   * Gets the mouse information for the mouse event
+   * @param position
+   * @private
+   *
+   */
+  _getMouseInfo(position) {
+    let scene = this._viewer.scene
+    return {
+      ...this._getMousePosition(position),
+      target: scene.pick(position),
     }
   }
 
@@ -400,7 +410,6 @@ class MouseEvent extends Event {
         ? 'pointer'
         : 'default'
       this._raiseEvent(MouseEventType.MOUSE_MOVE, mouseInfo)
-
       // add event for overlay
       if (this._enableMouseOver) {
         if (
@@ -414,7 +423,10 @@ class MouseEvent extends Event {
         }
       }
     } else {
-      this._raiseEvent(MouseEventType.MOUSE_MOVE, { movement })
+      this._raiseEvent(
+        MouseEventType.MOUSE_MOVE,
+        this._getMousePosition(movement.endPosition)
+      )
     }
   }
 
