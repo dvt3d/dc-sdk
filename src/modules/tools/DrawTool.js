@@ -30,14 +30,9 @@ class DrawTool {
   }
 
   _getEventPosition(e) {
-    const { overlay, layer, position, surfacePosition } = e
-    if (!this._options.clampToModel) {
-      return surfacePosition
-    }
-    if (!overlay && !layer) {
-      return surfacePosition
-    }
-    return position
+    return this._options.clampToModel && e.position
+      ? e.position
+      : e.surfacePosition
   }
 
   /**
