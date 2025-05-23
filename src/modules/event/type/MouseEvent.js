@@ -60,21 +60,10 @@ class MouseEvent extends Event {
    * @returns {Cesium.Cartesian2} - 归一化设备独立像素坐标。
    */
   _adjustPosition(position) {
-    // 获取容器的矩形信息，包括宽度和高度。
-    const containerRect = this._viewer.container.getBoundingClientRect()
-    // 计算容器的缩放因子，用于处理响应式布局或自适应大小的容器。
-    const scaleX = containerRect.width / this._viewer.container.offsetWidth
-    const scaleY = containerRect.height / this._viewer.container.offsetHeight
-
-    // 获取设备的像素比，用于处理高DPI设备的显示问题。
-    const dpiScale = window.devicePixelRatio
-
-    // 将像素坐标转换为归一化设备独立像素坐标，同时考虑了容器的缩放和设备的DPI。
-    const x = (position.x - containerRect.left) / scaleX / dpiScale
-    const y = (position.y - containerRect.top) / scaleY / dpiScale
-
-    // 返回转换后的坐标。
-    return new Cesium.Cartesian2(x, y)
+    const rect = this._viewer.canvas.getBoundingClientRect()
+    const scale_x = this._viewer.canvas.offsetWidth / rect.width
+    const scale_y = this._viewer.canvas.offsetHeight / rect.height
+    return new Cesium.Cartesian2(position.x * scale_x, position.y * scale_y)
   }
 
   /**
@@ -141,8 +130,8 @@ class MouseEvent extends Event {
    */
   _getMouseInfo(position) {
     return {
-      ...this._getMousePosition(position),
-      target: this._viewer.scene.pick(position),
+      ...this._getMousePosition(this._adjustPosition(position)),
+      target: this._viewer.scene.pick(this._adjustPosition(position)),
     }
   }
 
@@ -424,7 +413,7 @@ class MouseEvent extends Event {
     } else {
       this._raiseEvent(
         MouseEventType.MOUSE_MOVE,
-        this._getMousePosition(movement.endPosition)
+        this._getMousePosition(this._adjustPosition(movement.endPosition))
       )
     }
   }

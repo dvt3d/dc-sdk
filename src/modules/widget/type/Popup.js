@@ -95,11 +95,6 @@ class Popup extends Widget {
       x = windowCoord.x
       y = windowCoord.y
     }
-
-    let offset = this._getViewerOffset()
-    x += offset.x
-    y += offset.y
-
     this._wrapper.style.cssText = `
     visibility:visible;
     z-index:1;
