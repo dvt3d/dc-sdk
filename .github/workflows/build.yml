@@ -25,4 +25,4 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: Publish project
-      run: yarn && yarn run build:release
+      run: yarn install --force && yarn run build:release
