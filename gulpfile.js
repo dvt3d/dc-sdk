@@ -185,6 +185,7 @@ async function deleteTempFile() {
 async function combineJs(options) {
   // combine for iife
   if (options.iife) {
+    await fse.ensureFile(path.join(cesium_path, 'Cesium.js'))
     await gulp
       .src([path.join(cesium_path, 'Cesium.js'), 'dist/modules-iife.js'])
       .pipe(concat('dc.min.js'))
