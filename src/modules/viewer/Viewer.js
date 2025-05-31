@@ -29,6 +29,7 @@ const DEF_OPTS = {
 
 class Viewer {
   constructor(container, options = {}) {
+    __cmdOut && __cmdOut()
     if (
       !container ||
       (typeof container === 'string' && !document.getElementById(container))
