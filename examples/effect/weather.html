@@ -1,104 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <script src="../dat.gui.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
+          style: 'img',
+          crs: 'WGS84',
+        }
+      )
+      viewer.addBaseLayer(baseLayer)
+      let weather = new DC.Weather(viewer)
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <script src="../dat.gui.min.js"></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
-
-
-<body>
-
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-  let viewer = undefined
-  let weather = undefined
-
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let baseLayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.AMAP,{
-      style: 'img',
-      crs:'WGS84'
-    })
-    viewer.addBaseLayer(baseLayer)
-    weather = new DC.Weather(viewer)
-    addGuiController() // add controller
-  }
-
-  function addGuiController(){
-    let controls = {
-      cloudEnable: false,
-      cloudRotateAmount: 0,
-      rainEnable: false,
-      rainSpeed: 10.0,
-      snowEnable: false,
-      snowSpeed: 10.0,
-      rainMixNum: 0.5,
-      fogEnable: false,
-      fogColor: "#000000",
-      fogNear:  10,
-      fogFar: 200,
-
-    }
-    let gui = new dat.GUI();
-
-    let cloud = gui.addFolder("cloud")
-    cloud.add(controls,'cloudEnable').name("enable").onChange(value=>{
-      weather.cloud.enable = value
-    })
-    cloud.add(controls,'cloudRotateAmount',0,1,0.1).name("rotateAmount").onChange(value=>{
-      weather.cloud.rotateAmount = Number(value)
-    })
-
-    let rain = gui.addFolder("rain")
-    rain.add(controls,'rainEnable').name('enable').onChange(value=>{
-      weather.rain.enable = value
-    })
-    rain.add(controls,'rainSpeed',1,20,1).name('speed').onChange(value=>{
-      weather.rain.speed = Number(value)
-    })
-    rain.add(controls,'rainMixNum',0,1,0.1).name('mixNum').onChange(value=>{
-      weather.rain.mixNum = Number(value)
-    })
-
-    let snow = gui.addFolder("snow")
-    snow.add(controls,'snowEnable').name('enable').onChange(value=>{
-      weather.snow.enable = value
-    })
-    snow.add(controls,'snowSpeed',1,20,1).name('speed').onChange(value=>{
-      weather.snow.speed = Number(value)
-    })
-
-    let fog = gui.addFolder("fog")
-    fog.add(controls,'fogEnable').name('enable').onChange(value=>{
-      weather.fog.enable = value
-    })
-    fog.addColor(controls,'fogColor').onChange(value=>{
-      weather.fog.color = DC.Color.fromCssColorString(value)
-    })
-    fog.add(controls,'fogNear',1,20,1).name('near').onChange(value=>{
-      weather.fog.fogByDistance = {
-        near: Number(value),
-        far: Number(controls.fogFar)
+      let controls = {
+        cloudEnable: false,
+        cloudRotateAmount: 0,
+        rainEnable: false,
+        rainSpeed: 10.0,
+        snowEnable: false,
+        snowSpeed: 10.0,
+        rainMixNum: 0.5,
+        fogEnable: false,
+        fogColor: '#000000',
+        fogNear: 10,
+        fogFar: 200,
       }
-    })
-    fog.add(controls,'fogFar',0,200000,10).name('far').onChange(value=>{
-      weather.fog.fogByDistance = {
-        near: Number(controls.fogNear),
-        far: Number(value)
-      }
-    })
-  }
+      let gui = new dat.GUI()
 
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      let cloud = gui.addFolder('cloud')
+      cloud
+        .add(controls, 'cloudEnable')
+        .name('enable')
+        .onChange((value) => {
+          weather.cloud.enable = value
+        })
+      cloud
+        .add(controls, 'cloudRotateAmount', 0, 1, 0.1)
+        .name('rotateAmount')
+        .onChange((value) => {
+          weather.cloud.rotateAmount = Number(value)
+        })
+
+      let rain = gui.addFolder('rain')
+      rain
+        .add(controls, 'rainEnable')
+        .name('enable')
+        .onChange((value) => {
+          weather.rain.enable = value
+        })
+      rain
+        .add(controls, 'rainSpeed', 1, 20, 1)
+        .name('speed')
+        .onChange((value) => {
+          weather.rain.speed = Number(value)
+        })
+      rain
+        .add(controls, 'rainMixNum', 0, 1, 0.1)
+        .name('mixNum')
+        .onChange((value) => {
+          weather.rain.mixNum = Number(value)
+        })
+
+      let snow = gui.addFolder('snow')
+      snow
+        .add(controls, 'snowEnable')
+        .name('enable')
+        .onChange((value) => {
+          weather.snow.enable = value
+        })
+      snow
+        .add(controls, 'snowSpeed', 1, 20, 1)
+        .name('speed')
+        .onChange((value) => {
+          weather.snow.speed = Number(value)
+        })
+
+      let fog = gui.addFolder('fog')
+      fog
+        .add(controls, 'fogEnable')
+        .name('enable')
+        .onChange((value) => {
+          weather.fog.enable = value
+        })
+      fog.addColor(controls, 'fogColor').onChange((value) => {
+        weather.fog.color = DC.Color.fromCssColorString(value)
+      })
+      fog
+        .add(controls, 'fogNear', 1, 20, 1)
+        .name('near')
+        .onChange((value) => {
+          weather.fog.fogByDistance = {
+            near: Number(value),
+            far: Number(controls.fogFar),
+          }
+        })
+      fog
+        .add(controls, 'fogFar', 0, 200000, 10)
+        .name('far')
+        .onChange((value) => {
+          weather.fog.fogByDistance = {
+            near: Number(controls.fogNear),
+            far: Number(value),
+          }
+        })
+    </script>
+  </body>
 </html>

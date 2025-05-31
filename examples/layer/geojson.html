@@ -1,43 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
 
-<body>
+      let viewer = new DC.Viewer('viewer-container', {
+        sceneMode: DC.SceneMode.SCENE2D,
+      })
 
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-  let viewer = undefined
-
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container', {
-      sceneMode: DC.SceneMode.SCENE2D
-    })
-
-    let baseLayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.AMAP,
-      {
-        style:'img',
-      }
-    )
-    viewer.addBaseLayer( baseLayer)
-    let layer = new DC.GeoJsonLayer(
-      'layer',
-      '../assets/data/simplestyles.geojson'
-    )
-    viewer.addLayer(layer)
-    viewer.flyTo(layer)
-  }
-
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
+          style: 'img',
+        }
+      )
+      viewer.addBaseLayer(baseLayer)
+      let layer = new DC.GeoJsonLayer(
+        'layer',
+        '../assets/data/simplestyles.geojson'
+      )
+      viewer.addLayer(layer)
+      viewer.flyTo(layer)
+    </script>
+  </body>
 </html>

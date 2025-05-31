@@ -376,10 +376,6 @@ const EXAMPLE_LIST = [
         page: 'circle_pulse.html',
       },
       {
-        name: '脉冲圆',
-        page: 'circle_pulse.html',
-      },
-      {
         name: '多彩圆',
         page: 'circle_vary.html',
       },
@@ -630,10 +626,6 @@ const EXAMPLE_LIST = [
         page: 'radar_scan.html',
       },
       {
-        name: '区域切割',
-        page: 'bounds_clip.html',
-      },
-      {
         name: '泛光',
         page: 'bloom.html',
       },
@@ -652,6 +644,10 @@ const EXAMPLE_LIST = [
       {
         name: '夜光',
         page: 'night_vision.html',
+      },
+      {
+        name: '黑白',
+        page: 'black_and_white.html',
       },
       {
         name: '镜头眩光',

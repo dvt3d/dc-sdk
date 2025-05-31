@@ -2,7 +2,7 @@
  * @Author : Caven Chen
  */
 
-import { Cesium } from '../../../namespace'
+import { Cesium } from '../../../libs'
 import { area } from '../../math'
 import DrawPolygon from '../draw/DrawPolygon'
 import EditPolygon from '../edit/EditPolygon'

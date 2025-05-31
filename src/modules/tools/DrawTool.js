@@ -2,7 +2,7 @@
  * @Author : Caven Chen
  */
 
-import { Cesium } from '../../namespace'
+import { Cesium } from '../../libs'
 import { MouseEventType, PlotEventType, PlotEvent } from '../event'
 import IMG_CIRCLE_RED from '../images/circle_red.png'
 import IMG_CIRCLE_YELLOW from '../images/circle_yellow.png'

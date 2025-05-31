@@ -1,72 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
+          style: 'img',
+          crs: 'WGS84',
+        }
+      )
+      viewer.addBaseLayer(baseLayer, {
+        brightness: 0.1,
+      })
+      let layer = new DC.TilesetLayer('layer')
+      viewer.addLayer(layer)
+      let tileset = new DC.Tileset(
+        '//resource.dvgis.cn/data/3dtiles/ljz/tileset.json'
+      )
+      let style = new DC.TilesetStyle()
+      style.color = {
+        conditions: [
+          ['${Height} >= 300', 'rgba(45, 0, 75, 0.5)'],
+          ['${Height} >= 200', 'rgb(102, 71, 151)'],
+          ['${Height} >= 100', 'rgb(170, 162, 204)'],
+          ['${Height} >= 50', 'rgb(224, 226, 238)'],
+          ['${Height} >= 25', 'rgb(252, 230, 200)'],
+          ['${Height} >= 10', 'rgb(248, 176, 87)'],
+          ['${Height} >= 5', 'rgb(198, 106, 11)'],
+          ['true', 'rgb(127, 59, 8)'],
+        ],
+      }
+      tileset.setStyle(style)
 
-<body>
-
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-  let viewer = undefined
-
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let baseLayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.AMAP,{
-      style:'img',
-      crs:'WGS84'
-    })
-    viewer.addBaseLayer( baseLayer,{
-      brightness : 0.1
-    })
-    let layer = new DC.TilesetLayer('layer')
-    viewer.addLayer(layer)
-    let tileset = new DC.Tileset(
-      '//resource.dvgis.cn/data/3dtiles/ljz/tileset.json'
-    )
-    let style = new DC.TilesetStyle()
-    style.color = {
-      conditions: [
-        ['${Height} >= 300', 'rgba(45, 0, 75, 0.5)'],
-        ['${Height} >= 200', 'rgb(102, 71, 151)'],
-        ['${Height} >= 100', 'rgb(170, 162, 204)'],
-        ['${Height} >= 50', 'rgb(224, 226, 238)'],
-        ['${Height} >= 25', 'rgb(252, 230, 200)'],
-        ['${Height} >= 10', 'rgb(248, 176, 87)'],
-        ['${Height} >= 5', 'rgb(198, 106, 11)'],
-        ['true', 'rgb(127, 59, 8)']
-      ]
-    }
-    tileset.setStyle(style)
-
-    let customShader =  new DC.CustomShader({
-      fragmentShaderText:`
+      let customShader = new DC.CustomShader({
+        fragmentShaderText: `
       void fragmentMain(FragmentInput fsInput, inout czm_modelMaterial material) {
          vec4 position = czm_inverseModelView * vec4(fsInput.attributes.positionEC,1); // 位置
          float glowRange = 100.0; // 光环的移动范围(高度)
          vec4 temp = vec4(material.diffuse,material.alpha); // 颜色
-         temp *= vec4(vec3(position.z / 100.0), 1.0);  // 渐变
+         temp *= vec4(vec3(position.z / 10.0), 1.0);  // 渐变
          // 动态光环
          float time = fract(czm_frameNumber / 360.0);
          time = abs(time - 0.5) * 2.0;
          float diff = step(0.005, abs( clamp(position.z / glowRange, 0.0, 1.0) - time));
          material.diffuse = vec3(temp.rgb + temp.rgb * (1.0 - diff)) ;
        }
-      `
-    })
-    tileset.setCustomShader(customShader)
-    layer.addOverlay(tileset)
-    viewer.flyTo(tileset)
-  }
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      `,
+      })
+      tileset.setCustomShader(customShader)
+      layer.addOverlay(tileset)
+      viewer.flyTo(tileset)
+    </script>
+  </body>
 </html>

@@ -1,64 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <script src="../dat.gui.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
+          style: 'img',
+          crs: 'WGS84',
+        }
+      )
+      viewer.addBaseLayer(baseLayer)
+      let effect = new DC.Effect(viewer)
+      effect.depthOfField.enable = true
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <script src="../dat.gui.min.js"></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
-
-<body>
-
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-  let viewer = undefined
-  let effect = undefined
-
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let baseLayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.AMAP,{
-      style:'img',
-      crs:'WGS84'
-    })
-    viewer.addBaseLayer(baseLayer)
-    effect = new DC.Effect(viewer)
-    effect.depthOfField.enable= true
-    addGuiController() // add controller
-  }
-
-  function addGuiController(){
-    let controls = {
-      enable:true,
-      focalDistance: 87,
-      delta: 1,
-      sigma: 3.8,
-      stepSize: 2.5,
-    }
-    let gui = new dat.GUI()
-    gui.add(controls,'enable').onChange(value=>{
-      effect.depthOfField.enable=value
-    })
-    gui.add(controls,'focalDistance',0,1000).step(1).onChange(value=>{
-      effect.depthOfField.focalDistance=value
-    })
-    gui.add(controls,'delta',0,5).step(0.1).onChange(value=>{
-      effect.depthOfField.delta=value
-    })
-    gui.add(controls,'sigma',0,5).step(0.1).onChange(value=>{
-      effect.depthOfField.sigma=value
-    })
-    gui.add(controls,'stepSize',0,10).step(0.1).onChange(value=>{
-      effect.depthOfField.stepSize=value
-    })
-  }
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      let controls = {
+        enable: true,
+        focalDistance: 87,
+        delta: 1,
+        sigma: 3.8,
+        stepSize: 2.5,
+      }
+      let gui = new dat.GUI()
+      gui.add(controls, 'enable').onChange((value) => {
+        effect.depthOfField.enable = value
+      })
+      gui
+        .add(controls, 'focalDistance', 0, 1000)
+        .step(1)
+        .onChange((value) => {
+          effect.depthOfField.focalDistance = value
+        })
+      gui
+        .add(controls, 'delta', 0, 5)
+        .step(0.1)
+        .onChange((value) => {
+          effect.depthOfField.delta = value
+        })
+      gui
+        .add(controls, 'sigma', 0, 5)
+        .step(0.1)
+        .onChange((value) => {
+          effect.depthOfField.sigma = value
+        })
+      gui
+        .add(controls, 'stepSize', 0, 10)
+        .step(0.1)
+        .onChange((value) => {
+          effect.depthOfField.stepSize = value
+        })
+    </script>
+  </body>
 </html>

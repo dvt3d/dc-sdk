@@ -1,29 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
-
-<body>
-
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-  let viewer = undefined
-
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let baseLayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.AMAP,{
-      style:'img',
-      crs:'WGS84'
-    })
-    viewer.addBaseLayer( baseLayer)
-    let coords=`120.99033554014366,31.39560938002704;120.99041939679988,31.39445508618271;
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
+          style: 'img',
+          crs: 'WGS84',
+        }
+      )
+      viewer.addBaseLayer(baseLayer)
+      let coords = `120.99033554014366,31.39560938002704;120.99041939679988,31.39445508618271;
                 120.989050149,31.39421205200007;120.98716707200008,31.39376734600003;120.98665941500008,31.393660703000013;
                 120.98638794500009,31.393620849000094;120.986114132,31.393603230000046;120.9833415840001,31.393600375000087;
                 120.98325020700007,31.393585891000036;120.98298434100003,31.393507556000035;120.98281766900003,31.39342741400007;
@@ -33,23 +32,27 @@
                 120.98119168822384,31.39423121073085;120.98117126600005,31.394406394000058;120.98274481500006,31.39473109500001;
                 120.98356435700006,31.394724778000032;120.984440873,31.3947405320001;120.98631107600012,31.394854692000038;
                 120.98655735000007,31.394883245000102;120.98951574500008,31.395433067000013;120.99033554014366,31.39560938002704`
-    let layer = new DC.PrimitiveLayer('river')
-    viewer.addLayer(layer)
-    let water = new DC.WaterPrimitive(coords)
-    water.setStyle({
-      baseWaterColor:DC.Color.AQUA.withAlpha(0.3),
-      normalMap:'../assets/icon/waterNormalsSmall.jpg',
-      frequency: 1000.0,
-      animationSpeed:  0.01,
-      amplitude: 10,
-      specularIntensity:  10
-    })
-    layer.addOverlay(water)
-    viewer.flyToPosition(new DC.Position(120.98516078138239,31.392917623508968,729.1673469895062,0,-83.6210050749661))
-  }
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      let layer = new DC.PrimitiveLayer('river')
+      viewer.addLayer(layer)
+      let water = new DC.WaterPrimitive(coords)
+      water.setStyle({
+        baseWaterColor: DC.Color.AQUA.withAlpha(0.3),
+        normalMap: '../assets/icon/waterNormalsSmall.jpg',
+        frequency: 1000.0,
+        animationSpeed: 0.01,
+        amplitude: 10,
+        specularIntensity: 10,
+      })
+      layer.addOverlay(water)
+      viewer.flyToPosition(
+        new DC.Position(
+          120.98516078138239,
+          31.392917623508968,
+          729.1673469895062,
+          0,
+          -83.6210050749661
+        )
+      )
+    </script>
+  </body>
 </html>

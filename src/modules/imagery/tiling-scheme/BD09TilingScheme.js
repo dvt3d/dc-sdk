@@ -2,7 +2,7 @@
  * @Author : Caven Chen
  */
 
-import { Cesium } from '../../../namespace'
+import { Cesium } from '../../../libs'
 import { CoordTransform } from '../../transform'
 import BD09Projection from '../projection/BD09Projection'
 

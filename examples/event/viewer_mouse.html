@@ -1,43 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<body>
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-  let viewer = undefined
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let baseLayer_img = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.AMAP,{
-      style: 'img'
-    })
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
+          style: 'img',
+        }
+      )
+      viewer.addBaseLayer(baseLayer)
 
-    viewer.on(DC.MouseEventType.CLICK,e=>{
-       console.log(e)
-    })
+      viewer.on(DC.MouseEventType.CLICK, (e) => {
+        console.log(e)
+      })
 
-    viewer.on(DC.MouseEventType.RIGHT_CLICK,e=>{
-      console.log('do right click')
-    })
+      viewer.on(DC.MouseEventType.RIGHT_CLICK, (e) => {
+        console.log('do right click')
+      })
 
-    viewer.on(DC.MouseEventType.WHEEL,e=>{
-      console.log('do wheel')
-    })
-
-    viewer.addBaseLayer(baseLayer_img)
-
-  }
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      viewer.on(DC.MouseEventType.WHEEL, (e) => {
+        console.log('do wheel')
+      })
+    </script>
+  </body>
 </html>
-

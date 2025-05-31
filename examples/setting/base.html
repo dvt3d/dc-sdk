@@ -1,94 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <script src="../dat.gui.min.js"></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <script src="../dat.gui.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<body>
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
 
-<div id="viewer-container" class="viewer-container"></div>
-
-<script>
-  let viewer = undefined
-
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let baseLayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.AMAP,
-      {
-        style:'img',
-        crs:'WGS84'
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
+          style: 'img',
+          crs: 'WGS84',
+        }
+      )
+      viewer.addBaseLayer(baseLayer)
+      let controls = {
+        sceneMode: 3,
+        showSkyBox: true,
+        showSun: true,
+        showMoon: true,
+        showAtmosphere: true,
+        enableFxaa: true,
+        shadows: false,
       }
-    )
-    viewer.addBaseLayer(baseLayer)
-    addGuiController() // add controller
-  }
 
-  function addGuiController(){
-    let controls = {
-      sceneMode:3,
-      showSkyBox :true,
-      showSun :true,
-      showMoon:true,
-      showAtmosphere :true,
-      enableFxaa:true,
-      shadows:false,
-    }
+      let gui = new dat.GUI()
 
-    let gui = new dat.GUI();
+      gui
+        .add(controls, 'sceneMode', { '2D': 2, '2.5D': 2.5, '3D': 3 })
+        .onChange((value) => {
+          viewer.changeSceneMode(Number(value), 2)
+        })
 
-    gui.add(controls,'sceneMode',{'2D':2,'2.5D':2.5,'3D':3}).onChange(value=>{
-      viewer.changeSceneMode(Number(value),2)
-    })
-
-    gui.add(controls,'showSkyBox',).onChange(value=>{
-      viewer.setOptions({
-         skyBox:{
-           show: value
-         }
+      gui.add(controls, 'showSkyBox').onChange((value) => {
+        viewer.setOptions({
+          skyBox: {
+            show: value,
+          },
+        })
       })
-    })
 
-    gui.add(controls,'showSun',).onChange(value=>{
-      viewer.setOptions({
-        showSun:value
+      gui.add(controls, 'showSun').onChange((value) => {
+        viewer.setOptions({
+          showSun: value,
+        })
       })
-    })
 
-    gui.add(controls,'showMoon',).onChange(value=>{
-      viewer.setOptions({
-        showMoon:value
+      gui.add(controls, 'showMoon').onChange((value) => {
+        viewer.setOptions({
+          showMoon: value,
+        })
       })
-    })
 
-    gui.add(controls,'showAtmosphere',).onChange(value=>{
-      viewer.setOptions({
-        showAtmosphere:value
+      gui.add(controls, 'showAtmosphere').onChange((value) => {
+        viewer.setOptions({
+          showAtmosphere: value,
+        })
       })
-    })
 
-    gui.add(controls,'enableFxaa',).onChange(value=>{
-      viewer.setOptions({
-        enableFxaa:value
+      gui.add(controls, 'enableFxaa').onChange((value) => {
+        viewer.setOptions({
+          enableFxaa: value,
+        })
       })
-    })
 
-    gui.add(controls,'shadows',).onChange(value=>{
-      viewer.setOptions({
-        shadows:value
+      gui.add(controls, 'shadows').onChange((value) => {
+        viewer.setOptions({
+          shadows: value,
+        })
       })
-    })
-
-
-  }
-
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-
-</script>
+    </script>
+  </body>
+</html>

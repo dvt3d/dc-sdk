@@ -1,116 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <script src="../dat.gui.min.js"></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <script src="../dat.gui.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<body>
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
 
-<div id="viewer-container" class="viewer-container"></div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
 
-<script>
-  let viewer = undefined
+      let controls = {
+        show: true,
+        showGroundAtmosphere: true,
+        enableLighting: false,
+        depthTestAgainstTerrain: false,
+        tileCacheSize: 100,
+        preloadSiblings: false,
+        showSkirts: true,
+        baseColor: '#00c',
+      }
 
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    addGuiController() // add controller
-  }
+      let gui = new dat.GUI()
 
-  function addGuiController(){
-    let controls = {
-      show :true,
-      showGroundAtmosphere :true,
-      enableLighting:false,
-      depthTestAgainstTerrain :false,
-      tileCacheSize:100,
-      preloadSiblings:false,
-      showSkirts:true,
-      baseColor:'#00c',
-    }
-
-    let gui = new dat.GUI();
-
-
-    gui.add(controls,'show',).onChange(value=>{
-      viewer.setOptions({
-        globe:{
-          show: value
-        }
+      gui.add(controls, 'show').onChange((value) => {
+        viewer.setOptions({
+          globe: {
+            show: value,
+          },
+        })
       })
-    })
 
-    gui.add(controls,'showGroundAtmosphere',).onChange(value=>{
-      viewer.setOptions({
-        globe:{
-          showGroundAtmosphere: value
-        }
+      gui.add(controls, 'showGroundAtmosphere').onChange((value) => {
+        viewer.setOptions({
+          globe: {
+            showGroundAtmosphere: value,
+          },
+        })
       })
-    })
 
-    gui.add(controls,'enableLighting',).onChange(value=>{
-      viewer.setOptions({
-        globe:{
-          enableLighting: value
-        }
+      gui.add(controls, 'enableLighting').onChange((value) => {
+        viewer.setOptions({
+          globe: {
+            enableLighting: value,
+          },
+        })
       })
-    })
 
-
-    gui.add(controls,'depthTestAgainstTerrain',).onChange(value=>{
-      viewer.setOptions({
-        globe:{
-          depthTestAgainstTerrain: value
-        }
+      gui.add(controls, 'depthTestAgainstTerrain').onChange((value) => {
+        viewer.setOptions({
+          globe: {
+            depthTestAgainstTerrain: value,
+          },
+        })
       })
-    })
 
-
-    gui.add(controls,'tileCacheSize',100).onChange(value=>{
-      viewer.setOptions({
-        globe:{
-          tileCacheSize: value
-        }
+      gui.add(controls, 'tileCacheSize', 100).onChange((value) => {
+        viewer.setOptions({
+          globe: {
+            tileCacheSize: value,
+          },
+        })
       })
-    })
 
-
-    gui.add(controls,'preloadSiblings').onChange(value=>{
-      viewer.setOptions({
-        globe:{
-          preloadSiblings: value
-        }
+      gui.add(controls, 'preloadSiblings').onChange((value) => {
+        viewer.setOptions({
+          globe: {
+            preloadSiblings: value,
+          },
+        })
       })
-    })
 
-    gui.add(controls,'showSkirts').onChange(value=>{
-      viewer.setOptions({
-        globe:{
-          showSkirts: value
-        }
+      gui.add(controls, 'showSkirts').onChange((value) => {
+        viewer.setOptions({
+          globe: {
+            showSkirts: value,
+          },
+        })
       })
-    })
 
-
-    gui.addColor(controls,'baseColor').onChange(value=>{
-      viewer.setOptions({
-        globe:{
-          baseColor: DC.Color.fromCssColorString(value)
-        }
+      gui.addColor(controls, 'baseColor').onChange((value) => {
+        viewer.setOptions({
+          globe: {
+            baseColor: DC.Color.fromCssColorString(value),
+          },
+        })
       })
-    })
-
-
-
-  }
-
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-
-</script>
+    </script>
+  </body>
+</html>

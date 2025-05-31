@@ -1,80 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <script src="../dat.gui.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <script src="../dat.gui.min.js"></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
 
-<body>
+      let key = '0f7c1d161d7352116a21aacf0e9f44c1'
+      let cva = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.TDT, {
+        key,
+        style: 'cva',
+      })
 
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-  let viewer = undefined
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let key = '0f7c1d161d7352116a21aacf0e9f44c1'
-    let cva = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.TDT,{
-      key,
-      style: 'cva'
-    })
+      let vec = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.TDT, {
+        key,
+      })
 
-    let vec = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.TDT,{
-      key
-    })
+      let img = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.TDT, {
+        key,
+        style: 'img',
+      })
 
-    let img = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.TDT,{
-      key,
-      style: 'img'
-    })
+      let ter = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.TDT, {
+        key,
+        style: 'ter',
+      })
 
-    let ter = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.TDT,{
-      key,
-      style: 'ter'
-    })
+      viewer.addBaseLayer(img, {
+        name: '影像',
+        iconUrl: '../assets/icon/img.png',
+      })
 
-    viewer.addBaseLayer(img, {
-      name: '影像',
-      iconUrl: '../assets/icon/img.png'
-    })
+      viewer.addBaseLayer([img, cva], {
+        name: '影像+注记',
+        iconUrl: '../assets/icon/img.png',
+      })
 
-    viewer.addBaseLayer([img, cva], {
-      name: '影像+注记',
-      iconUrl: '../assets/icon/img.png'
-    })
+      viewer.addBaseLayer(vec, {
+        name: '电子',
+        iconUrl: '../assets/icon/elec.png',
+      })
 
-    viewer.addBaseLayer(vec, {
-      name: '电子',
-      iconUrl: '../assets/icon/elec.png'
-    })
+      viewer.addBaseLayer([vec, cva], {
+        name: '电子+注记',
+        iconUrl: '../assets/icon/elec.png',
+      })
 
-    viewer.addBaseLayer([vec, cva], {
-      name: '电子+注记',
-      iconUrl: '../assets/icon/elec.png'
-    })
+      viewer.addBaseLayer(ter, {
+        name: '地形',
+        iconUrl: '../assets/icon/ter.png',
+      })
 
-    viewer.addBaseLayer(ter, {
-      name: '地形',
-      iconUrl: '../assets/icon/ter.png'
-    })
-
-    viewer.addBaseLayer([ter, cva], {
-      name: '地形+注记',
-      iconUrl: '../assets/icon/ter.png'
-    })
-
-    viewer.zoomToPosition(
-      new DC.Position(105.565571, 31.984708, 15362816, 0, -90)
-    )
-  }
-    DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      viewer.addBaseLayer([ter, cva], {
+        name: '地形+注记',
+        iconUrl: '../assets/icon/ter.png',
+      })
+      viewer.zoomToPosition('105.565571, 31.984708, 15362816, 0, -90')
+    </script>
+  </body>
 </html>

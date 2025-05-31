@@ -1,51 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      const generatePosition = (num) => {
+        let list = []
+        for (let i = 0; i < num; i++) {
+          let lng = 120.38105869 + Math.random() * 0.05
+          let lat = 31.10115627 + Math.random() * 0.05
+          list.push({ lng, lat })
+        }
+        return list
+      }
 
-<body>
-
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-  let viewer = undefined
-
-  function generatePosition(num) {
-    let list = []
-    for (let i = 0; i < num; i++) {
-      let lng = 120.38105869 + Math.random() * 0.05
-      let lat = 31.10115627 + Math.random() * 0.05
-      list.push({lng,lat})
-    }
-    return list
-  }
-
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let baseLayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.AMAP,{
-      crs:'WGS84'
-    })
-    viewer.addBaseLayer( baseLayer,{
-      brightness : 0.1
-    })
-    viewer.flyToPosition("120.58464690,30.57441821,35840.6299288431,5.80,-27.24",()=>{
-      let layer = new DC.HeatMapLayer('layer',{})
-      layer.setPoints(generatePosition(10000))
-      viewer.addLayer(layer)
-      let layer2 = new DC.HeatMapLayer('layer2',{ height:4000 })
-      layer2.setPoints( generatePosition(10000))
-      viewer.addLayer(layer2)
-    })
-  }
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
+          crs: 'WGS84',
+        }
+      )
+      viewer.addBaseLayer(baseLayer, {
+        brightness: 0.1,
+      })
+      viewer.flyToPosition(
+        '120.58464690,30.57441821,35840.6299288431,5.80,-27.24',
+        () => {
+          let layer = new DC.HeatMapLayer('layer', {})
+          layer.setPoints(generatePosition(10000))
+          viewer.addLayer(layer)
+          let layer2 = new DC.HeatMapLayer('layer2', { height: 4000 })
+          layer2.setPoints(generatePosition(10000))
+          viewer.addLayer(layer2)
+        }
+      )
+    </script>
+  </body>
 </html>

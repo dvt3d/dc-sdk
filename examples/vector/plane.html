@@ -14,10 +14,8 @@
 
 <div id="viewer-container" class="viewer-container"></div>
 <script>
-  let viewer = undefined
-
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
+       DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
     let baseLayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.AMAP,{
       style:'img',
       crs:'WGS84'
@@ -41,9 +39,7 @@
     layer.addOverlay(redPlane).addOverlay(greenPlane).addOverlay(bluePlane)
     viewer.flyTo(layer)
   }
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
+
 </script>
 </body>
 </html>

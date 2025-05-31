@@ -1,56 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <div class="btn-box">
+      <ul>
+        <li><button onclick="play(1)">路径一</button></li>
+        <li><button onclick="play(2)">路径二</button></li>
+        <li><button onclick="stop()">结束</button></li>
+      </ul>
+    </div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createAMapImageryLayer({
+        style: 'img',
+        crs: 'WGS84',
+      })
+      viewer.addBaseLayer(baseLayer)
+      let rc = new DC.RoamingController(viewer)
+      let path_one = new DC.RoamingPath(
+        '120.38105869, 31.10115627;120.38105869,32.10115627',
+        60
+      )
+      let path_two = new DC.RoamingPath(
+        '122.38105869, 31.10115627;121.38105869, 31.10115627',
+        100
+      )
+      rc.addPaths([path_one, path_two])
 
-<body>
+      function play(num) {
+        rc.activate(num === 1 ? path_one : path_two, {
+          pitch: -30,
+        })
+      }
 
-<div id="viewer-container" class="viewer-container"></div>
-<div class="btn-box">
-  <ul>
-    <li><button onclick="play(1)">路径一</button></li>
-    <li><button onclick="play(2)">路径二</button></li>
-    <li><button onclick="stop()">结束</button></li>
-  </ul>
-</div>
-<script>
-  let viewer = undefined
-  let rc = undefined
-  let path_one = undefined
-  let path_two = undefined
-
-  function play(num){
-    rc.activate(num===1 ? path_one : path_two,{
-      pitch:-30
-    })
-  }
-
-  function stop() {
-    rc.deactivate()
-  }
-
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let  baseLayer = DC.ImageryLayerFactory.createAMapImageryLayer({
-      style:"img",
-      crs:"WGS84"
-    })
-    viewer.addBaseLayer(baseLayer)
-    rc = new DC.RoamingController(viewer)
-    path_one = new DC.RoamingPath("120.38105869, 31.10115627;120.38105869,32.10115627",60)
-    path_two = new DC.RoamingPath("122.38105869, 31.10115627;121.38105869, 31.10115627",100)
-    rc.addPaths([path_one,path_two])
-  }
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      function stop() {
+        rc.deactivate()
+      }
+    </script>
+  </body>
 </html>

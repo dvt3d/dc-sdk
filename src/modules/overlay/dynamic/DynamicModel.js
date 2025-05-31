@@ -1,7 +1,7 @@
 /**
  * @Author : Caven Chen
  */
-import { Cesium } from '../../../namespace'
+import { Cesium } from '../../../libs'
 import Overlay from '../Overlay'
 import DynamicOverlay from './DynamicOverlay'
 import Parse from '../../parse/Parse'

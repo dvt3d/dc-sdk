@@ -1,51 +1,41 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <script src="../dat.gui.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+    <style>
+      .viewer-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+    </style>
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <script src="../dat.gui.min.js"></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-  <style>
-    .viewer-container{
-      position: relative;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
-  </style>
-</head>
-
-<body>
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-  let viewer = undefined
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    viewer.addBaseLayer(DC.ImageryLayerFactory.createCoordImageryLayer({
-      tilingScheme: new DC.WebMercatorTilingScheme()
-    }))
-    addGuiController() // add controller
-  }
-
-
-  function addGuiController() {
-    let controls = {
-      sceneMode: 3,
-    }
-
-    let gui = new dat.GUI();
-
-    gui.add(controls, 'sceneMode', { '2D': 2, '2.5D': 2.5, '3D': 3 }).onChange(value => {
-      viewer.changeSceneMode(Number(value), 2)
-    })
-  }
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container').addBaseLayer(
+        DC.ImageryLayerFactory.createCoordImageryLayer({
+          tilingScheme: new DC.WebMercatorTilingScheme(),
+        })
+      )
+      let controls = {
+        sceneMode: 3,
+      }
+      let gui = new dat.GUI()
+      gui
+        .add(controls, 'sceneMode', { '2D': 2, '2.5D': 2.5, '3D': 3 })
+        .onChange((value) => {
+          viewer.changeSceneMode(Number(value), 2)
+        })
+    </script>
+  </body>
 </html>

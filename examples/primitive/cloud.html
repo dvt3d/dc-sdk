@@ -1,62 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
-
-<body>
-
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-  let viewer = undefined
-
-  function generatePosition(num) {
-    let list = []
-    for (let i = 0; i < num; i++) {
-      let lng = 120.38105869 + Math.random() * 0.0005
-      let lat = 31.10115627 + Math.random() * 0.0005
-      list.push(new DC.Position(lng, lat,1000))
-    }
-    return list
-  }
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let baseLayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.AMAP,{
-      style:'img',
-      crs:'WGS84'
-    })
-    viewer.addBaseLayer( baseLayer)
-    let layer = new DC.PrimitiveLayer('layer')
-    viewer.addLayer(layer)
-    let positions = generatePosition(20)
-    positions.forEach(item => {
-      let cloud = new DC.CloudPrimitive(item)
-      cloud.setStyle({
-        scale:{
-          x:25,
-          y:12,
-        },
-        maximumSize:{
-          x:25,
-          y:12,
-          z:15,
-        },
-        slice: 0.36,
-        brightness: 1.0,
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      const generatePosition = (num) => {
+        let list = []
+        for (let i = 0; i < num; i++) {
+          let lng = 120.38105869 + Math.random() * 0.0005
+          let lat = 31.10115627 + Math.random() * 0.0005
+          list.push(new DC.Position(lng, lat, 1000))
+        }
+        return list
+      }
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
+          style: 'img',
+          crs: 'WGS84',
+        }
+      )
+      viewer.addBaseLayer(baseLayer)
+      let layer = new DC.PrimitiveLayer('layer')
+      viewer.addLayer(layer)
+      let positions = generatePosition(20)
+      positions.forEach((item) => {
+        let cloud = new DC.CloudPrimitive(item)
+        cloud.setStyle({
+          scale: {
+            x: 25,
+            y: 12,
+          },
+          maximumSize: {
+            x: 25,
+            y: 12,
+            z: 15,
+          },
+          slice: 0.36,
+          brightness: 1.0,
+        })
+        layer.addOverlay(cloud)
       })
-      layer.addOverlay(cloud)
-    })
-   viewer.zoomToPosition('120.3813868519986,31.101849248610826,990,225,13.26')
-  }
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      viewer.zoomToPosition(
+        '120.3813868519986,31.101849248610826,990,225,13.26'
+      )
+    </script>
+  </body>
 </html>

@@ -2,7 +2,7 @@
  * @Author : Caven Chen
  */
 
-import { Cesium } from '../../../namespace'
+import { Cesium } from '../../../libs'
 import LineFlickerMaterial from '../shader/polyline/PolylineFlickerMaterial.glsl'
 import LineFlowMaterial from '../shader/polyline/PolylineFlowMaterial.glsl'
 import LineImageTrailMaterial from '../shader/polyline/PolylineImageTrailMaterial.glsl'

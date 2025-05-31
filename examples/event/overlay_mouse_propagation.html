@@ -13,9 +13,8 @@
   <body>
     <div id="viewer-container" class="viewer-container"></div>
     <script>
-      let viewer = undefined
-
-      function generatePosition(num) {
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      const generatePosition = (num) => {
         let list = []
         for (let i = 0; i < num; i++) {
           let lng = 120.38105869 + Math.random() * 0.5
@@ -25,41 +24,39 @@
         return list
       }
 
-      function initViewer() {
-        viewer = new DC.Viewer('viewer-container', {
-          eventPropagation: true,
-        })
-        let baseLayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.AMAP,{
+      let viewer = new DC.Viewer('viewer-container', {
+        enableEventPropagation: true,
+      })
+
+
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
           style: 'img',
           crs: 'WGS84',
-        })
-        viewer.addBaseLayer(baseLayer)
-        viewer.popup.config = {
-          customClass: 'custom-popup',
         }
-        let layer = new DC.VectorLayer('layer').addTo(viewer)
-        viewer.contextMenu.enable = true
-        let positions = generatePosition(20)
-        positions.forEach((item, index) => {
-          let point = new DC.Point(item)
-          point.attr = {
-            index: index + 1,
-          }
-          point.on(DC.MouseEventType.CLICK, (e) => {
-            viewer.popup.showAt(e.position, `我是第${e.overlay.attr.index}点`)
-          })
-          point.addTo(layer)
-        })
-
-        viewer.on(DC.MouseEventType.CLICK, (e) => {
-          console.log('我是场景事件')
-        })
-
-        viewer.flyTo(layer)
+      )
+      viewer.addBaseLayer(baseLayer)
+      viewer.popup.config = {
+        customClass: 'custom-popup',
       }
-      DC.ready({
-        baseUrl: '../libs/dc-sdk/resources/',
-      }).then(initViewer)
+      let layer = new DC.VectorLayer('layer').addTo(viewer)
+      let positions = generatePosition(20)
+      positions.forEach((item, index) => {
+        let point = new DC.Point(item)
+        point.attr = {
+          index: index + 1,
+        }
+        point.on(DC.MouseEventType.CLICK, (e) => {
+          viewer.popup.showAt(e.position, `我是第${e.overlay.attr.index}点`)
+        })
+        point.addTo(layer)
+      })
+
+      viewer.on(DC.MouseEventType.CLICK, (e) => {
+        console.log('我是场景事件')
+      })
+      viewer.flyTo(layer)
     </script>
   </body>
 </html>

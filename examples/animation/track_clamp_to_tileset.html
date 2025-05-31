@@ -1,71 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <div class="btn-box">
+      <ul>
+        <li><button onclick="play()">播放</button></li>
+        <li><button onclick="pause()">暂停</button></li>
+        <li><button onclick="restore()">恢复</button></li>
+      </ul>
+    </div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
+          style: 'img',
+          crs: 'WGS84',
+        }
+      )
+      viewer.addBaseLayer(baseLayer)
+      let layer = new DC.TilesetLayer('layer')
+      viewer.addLayer(layer)
+      let tileset = new DC.Tileset(
+        '//resource.dvgis.cn/data/3dtiles/dayanta/tileset.json'
+      )
+      tileset.setHeight(-430)
+      layer.addOverlay(tileset)
+      let tc = new DC.TrackController(viewer)
+      let positions =
+        '108.95672281090324,34.21936342653068;108.96190926401181,34.21960987901689'
+      let track = new DC.Track(positions, 20, () => {}, {
+        clampToTileset: true,
+      })
+      track.setModel('../assets/data/qiche.gltf', {
+        scale: 0.1,
+      })
+      tc.addTrack(track)
+      viewer.flyTo(tileset)
 
-<body>
+      function play() {
+        tc.play()
+      }
 
-<div id="viewer-container" class="viewer-container"></div>
-<div class="btn-box">
-  <ul>
-    <li><button onclick="play()">播放</button></li>
-    <li><button onclick="pause()">暂停</button></li>
-    <li><button onclick="restore()">恢复</button></li>
-  </ul>
-</div>
-<script>
-  let viewer = undefined
-  let tc = undefined
-  let track = undefined
+      function pause() {
+        tc.pause()
+      }
 
-  function play(){
-    tc.play()
-  }
-
-  function pause(){
-    tc.pause()
-  }
-
-  function restore(){
-    tc.restore()
-  }
-
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let baseLayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.AMAP,{
-      style:'img',
-      crs:'WGS84'
-    })
-    viewer.addBaseLayer( baseLayer)
-    let layer = new DC.TilesetLayer('layer')
-    viewer.addLayer(layer)
-    let tileset = new DC.Tileset(
-      '//resource.dvgis.cn/data/3dtiles/dayanta/tileset.json'
-    )
-    tileset.setHeight(-430)
-    layer.addOverlay(tileset)
-    tc = new DC.TrackController(viewer)
-    let positions = "108.95672281090324,34.21936342653068;108.96190926401181,34.21960987901689"
-    track = new DC.Track(positions,20,()=>{},{
-      clampToTileset:true
-    })
-    track.setModel('../assets/data/qiche.gltf',{
-      scale:0.1
-    })
-    tc.addTrack(track)
-    viewer.flyTo(tileset)
-  }
-
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      function restore() {
+        tc.restore()
+      }
+    </script>
+  </body>
 </html>

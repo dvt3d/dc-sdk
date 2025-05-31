@@ -1,65 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<body>
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-  let viewer = undefined
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
 
+      let baselayer_img = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.BAIDU,
+        {
+          style: 'img',
+          crs: 'WGS84',
+        }
+      )
 
-    let baselayer_img = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.BAIDU,{
-      style:'img',
-      crs:'WGS84'
-    })
+      viewer.addBaseLayer([baselayer_img], {
+        iconUrl: '../assets/icon/img.png',
+        name: '影像',
+      })
 
-    viewer.addBaseLayer([baselayer_img], {
-      iconUrl: '../assets/icon/img.png',
-      name: '影像'
-    })
+      let baselayer_vec = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.BAIDU,
+        {
+          style: 'vec',
+          crs: 'WGS84',
+        }
+      )
 
+      viewer.addBaseLayer([baselayer_img, baselayer_vec], {
+        iconUrl: '../assets/icon/img.png',
+        name: '影像+注记',
+      })
 
-    let baselayer_vec = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.BAIDU,{
-      style:'vec',
-      crs:'WGS84'
-    })
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.BAIDU,
+        {
+          crs: 'WGS84',
+        }
+      )
 
-    viewer.addBaseLayer([baselayer_img,baselayer_vec], {
-      iconUrl: '../assets/icon/img.png',
-      name: '影像+注记'
-    })
+      viewer.addBaseLayer(baseLayer, {
+        iconUrl: '../assets/icon/elec.png',
+        name: '电子',
+      })
 
-    let baseLayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.BAIDU,{
-      crs:'WGS84'
-    })
-
-    viewer.addBaseLayer(baseLayer, {
-      iconUrl: '../assets/icon/elec.png',
-      name: '电子'
-    })
-
-    let baselayer_traffic = DC.ImageryLayerFactory.createBaiduImageryLayer({
-      crs:'WGS84',
-      style:'traffic'
-    })
-    viewer.addBaseLayer([ baseLayer,baselayer_traffic], {
-      iconUrl: '../assets/icon/elec.png',
-      name: '电子+路况'
-    })
-
-  }
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      let baselayer_traffic = DC.ImageryLayerFactory.createBaiduImageryLayer({
+        crs: 'WGS84',
+        style: 'traffic',
+      })
+      viewer.addBaseLayer([baseLayer, baselayer_traffic], {
+        iconUrl: '../assets/icon/elec.png',
+        name: '电子+路况',
+      })
+    </script>
+  </body>
 </html>

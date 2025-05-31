@@ -1,47 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <script src="../dat.gui.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <script src="../dat.gui.min.js"></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
 
-<body>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createAMapImageryLayer({
+        style: 'img',
+      })
+      viewer.addBaseLayer(baseLayer)
+      viewer.loadingMask.enable = true
 
-<div id="viewer-container" class="viewer-container"></div>
-
-<script>
-  let viewer = undefined
-
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let  baseLayer = DC.ImageryLayerFactory.createAMapImageryLayer({
-      style: 'img'
-    })
-    viewer.addBaseLayer( baseLayer)
-    viewer.loadingMask.enable = true
-    addGuiController() // add controller
-  }
-
-  function addGuiController(){
-    let controls = {
-      enable :true,
-    }
-    let gui = new dat.GUI();
-    gui.add(controls,'enable',).onChange(value=>{
-      viewer.loadingMask.enable = value
-    })
-  }
-
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-
-</script>
-</body>
+      let controls = {
+        enable: true,
+      }
+      let gui = new dat.GUI()
+      gui.add(controls, 'enable').onChange((value) => {
+        viewer.loadingMask.enable = value
+      })
+    </script>
+  </body>
 </html>

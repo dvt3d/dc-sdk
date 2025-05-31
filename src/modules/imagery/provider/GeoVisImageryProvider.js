@@ -2,7 +2,7 @@
  * @Author : Caven Chen
  */
 
-import { Cesium } from '../../../namespace'
+import { Cesium } from '../../../libs'
 import ImageryType from '../ImageryType'
 
 const TILE_URL =

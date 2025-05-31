@@ -14,25 +14,24 @@
     <div id="viewer-container" class="viewer-container"></div>
 
     <script>
-      let viewer = undefined
-      function initViewer() {
-        viewer = new DC.Viewer('viewer-container')
-        let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
-          DC.ImageryType.AMAP,
-          {
-            crs: 'WGS84',
-          }
-        )
-        viewer.addBaseLayer(baseLayer, {
-          brightness: 0.1,
-        })
-        let layer = new DC.ChartLayer('layer', viewer)
-        layer.setOption(getOption())
-        viewer.addLayer(layer)
-        viewer.flyToPosition(
-          '115.79782534952115,31.47385026585756,4856091.799441838,0,-90'
-        )
-      }
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      DC.registerLib('echarts', echarts)
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
+          crs: 'WGS84',
+        }
+      )
+      viewer.addBaseLayer(baseLayer, {
+        brightness: 0.1,
+      })
+      let layer = new DC.ChartLayer('layer', viewer)
+      layer.setOption(getOption())
+      viewer.addLayer(layer)
+      viewer.flyToPosition(
+        '115.79782534952115,31.47385026585756,4856091.799441838,0,-90'
+      )
 
       function getOption(e) {
         let geoCoordMap = {
@@ -401,11 +400,6 @@
           series: n,
         }
       }
-
-      DC.ready({
-        baseUrl: '../libs/dc-sdk/resources/',
-        echarts: window.echarts,
-      }).then(initViewer)
     </script>
   </body>
 </html>

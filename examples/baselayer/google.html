@@ -1,62 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <script src="../dat.gui.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <script src="../dat.gui.min.js"></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
 
-<body>
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.GOOGLE,
+        {
+          style: 'img',
+        }
+      )
 
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-  let viewer = undefined
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
+      viewer.addBaseLayer(baseLayer, {
+        iconUrl: '../assets/icon/img.png',
+        name: '影像',
+      })
 
-    let baseLayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.GOOGLE,{
-       style:'img'
-    })
+      let baseLayer_img_cva = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.GOOGLE,
+        {
+          style: 'img_cva',
+        }
+      )
+      viewer.addBaseLayer(baseLayer_img_cva, {
+        iconUrl: '../assets/icon/img.png',
+        name: '影像 + 标注',
+      })
 
-    viewer.addBaseLayer( baseLayer, {
-      iconUrl: '../assets/icon/img.png',
-      name: '影像'
-    })
+      let baselayer_elc = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.GOOGLE
+      )
+      viewer.addBaseLayer(baselayer_elc, {
+        iconUrl: '../assets/icon/elec.png',
+        name: '电子',
+      })
 
-    let  baseLayer_img_cva = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.GOOGLE,{
-      style:'img_cva'
-    })
-    viewer.addBaseLayer( baseLayer_img_cva, {
-      iconUrl: '../assets/icon/img.png',
-      name: '影像 + 标注'
-    })
+      let baselayer_ter = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.GOOGLE,
+        {
+          style: 'ter',
+        }
+      )
+      viewer.addBaseLayer(baselayer_ter, {
+        iconUrl: '../assets/icon/ter.png',
+        name: '地形',
+      })
 
-    let baselayer_elc = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.GOOGLE)
-    viewer.addBaseLayer(baselayer_elc, {
-      iconUrl: '../assets/icon/elec.png',
-      name: '电子'
-    })
-
-    let baselayer_ter = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.GOOGLE,{
-      style: 'ter'
-    })
-    viewer.addBaseLayer(baselayer_ter, {
-      iconUrl: '../assets/icon/ter.png',
-      name: '地形'
-    })
-
-    viewer.zoomToPosition(
-      new DC.Position(105.565571, 31.984708, 15362816, 0, -90)
-    )
-  }
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      viewer.zoomToPosition('105.565571, 31.984708, 15362816, 0, -90')
+    </script>
+  </body>
 </html>

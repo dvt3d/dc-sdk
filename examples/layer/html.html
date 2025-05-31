@@ -1,56 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      const generatePosition = (num) => {
+        let list = []
+        for (let i = 0; i < num; i++) {
+          let lng = 120.38105869 + Math.random() * 0.5
+          let lat = 31.10115627 + Math.random() * 0.5
+          list.push(new DC.Position(lng, lat))
+        }
+        return list
+      }
 
-<body>
-
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-  let viewer = undefined
-
-  function generatePosition(num) {
-    let  list = []
-    for (let i = 0; i < num; i++) {
-      let lng = 120.38105869 + Math.random() * 0.5
-      let lat = 31.10115627 + Math.random() * 0.5
-      list.push(new DC.Position(lng, lat))
-    }
-    return list
-  }
-
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let baseLayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.AMAP,{
-      style: 'img'
-    })
-    viewer.addBaseLayer( baseLayer)
-    let layer = new DC.HtmlLayer('layer')
-    viewer.addLayer(layer)
-    let positions = generatePosition(5)
-    positions.forEach((item, index) => {
-      let divIcon = new DC.DivIcon(
-        item,
-        `<div style="width:200px;background:rgba(255,255,0,0.2)">我是一个div，你可以对我添加css样式和内容</div>`
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
+          style: 'img',
+        }
       )
-      layer.addOverlay(divIcon)
-    })
+      viewer.addBaseLayer(baseLayer)
+      let layer = new DC.HtmlLayer('layer')
+      viewer.addLayer(layer)
+      let positions = generatePosition(5)
+      positions.forEach((item, index) => {
+        let divIcon = new DC.DivIcon(
+          item,
+          `<div style="width:200px;background:rgba(255,255,0,0.2)">我是一个div，你可以对我添加css样式和内容</div>`
+        )
+        layer.addOverlay(divIcon)
+      })
 
-    viewer.flyToPosition(
-      new DC.Position(120.472147621, 30.61004946, 65380.21, 14.0,  -40.94)
-    )
-  }
-
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      viewer.flyToPosition(
+        '120.472147621, 30.61004946, 65380.21, 14.0,  -40.94'
+      )
+    </script>
+  </body>
 </html>

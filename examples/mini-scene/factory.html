@@ -1,9 +1,7 @@
 <div id="viewer-container" class="viewer-container"></div>
 <script>
-  let viewer = undefined
-
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
+       DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
     viewer.setOptions({
       shadows:true,
       globe:{
@@ -67,7 +65,5 @@
     layer2.addOverlay(scanCircle)
     viewer.flyToPosition('116.3904847,39.8773787,2807.38,0,-48.89')
   }
-    DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
+
 </script>

@@ -2,7 +2,7 @@
  * @Author : Caven Chen
  */
 
-import { Cesium } from '../../../namespace'
+import { Cesium } from '../../../libs'
 import AnimationType from '../AnimationType'
 import Animation from '../Animation'
 import { Util } from '../../utils'

@@ -1,68 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <div class="btn-box">
+      <ul>
+        <li><button onclick="play()">播放</button></li>
+        <li><button onclick="pause()">暂停</button></li>
+        <li><button onclick="restore()">恢复</button></li>
+      </ul>
+    </div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
+          crs: 'WGS84',
+        }
+      )
+      viewer.addBaseLayer(baseLayer)
+      let layer = new DC.VectorLayer('layer').addTo(viewer)
+      let positions =
+        '120.71450195156326,31.34008410150321;120.71575718410492, 31.32906254460538;120.71755047923497, 31.319390534202;120.71992195728619, 31.31036033288049;120.72027974558881, 31.3011861708824;120.72044382952038,31.288363396025954;120.72063046005844, 31.281477152748355;120.72044354666637,31.27731493354631'
+      let tc = new DC.TrackController(viewer)
+      let track = new DC.Track(positions, 20, (position, isLast) => {
+        !isLast &&
+          layer.addOverlay(new DC.Model(position, '../assets/data/qiche.gltf'))
+      })
+      track.setModel('../assets/data/qiche.gltf', {
+        scale: 1,
+      })
+      track.setPath(true, {
+        width: 3,
+      })
+      tc.addTrack(track)
+      viewer.flyToPosition(
+        '120.71650745697383,31.325149960836068,2817.8608257878627,0,-70'
+      )
 
-<body>
+      function play() {
+        layer.clear()
+        tc.play()
+      }
 
-<div id="viewer-container" class="viewer-container"></div>
-<div class="btn-box">
-  <ul>
-    <li><button onclick="play()">播放</button></li>
-    <li><button onclick="pause()">暂停</button></li>
-    <li><button onclick="restore()">恢复</button></li>
-  </ul>
-</div>
-<script>
-  let viewer = undefined
-  let tc = undefined
-  let track = undefined
-  let layer = undefined
+      function pause() {
+        tc.pause()
+      }
 
-  function play(){
-    layer.clear()
-    tc.play()
-  }
-
-  function pause(){
-    tc.pause()
-  }
-
-  function restore(){
-    tc.restore()
-  }
-
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let baseLayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.AMAP,{
-      crs:'WGS84'
-    })
-    viewer.addBaseLayer(baseLayer)
-     layer = new DC.VectorLayer('layer').addTo(viewer)
-    let positions = "120.71450195156326,31.34008410150321;120.71575718410492, 31.32906254460538;120.71755047923497, 31.319390534202;120.71992195728619, 31.31036033288049;120.72027974558881, 31.3011861708824;120.72044382952038,31.288363396025954;120.72063046005844, 31.281477152748355;120.72044354666637,31.27731493354631"
-    tc = new DC.TrackController(viewer)
-    track = new DC.Track(positions,20,(position,isLast)=>{
-      !isLast && layer.addOverlay(new DC.Model(position,'../assets/data/qiche.gltf'))
-    })
-    track.setModel('../assets/data/qiche.gltf',{
-      scale:1
-    })
-    track.setPath(true,{
-      width:3
-    })
-    tc.addTrack(track)
-    viewer.flyToPosition("120.71650745697383,31.325149960836068,2817.8608257878627,0,-70")
-  }
- DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      function restore() {
+        tc.restore()
+      }
+    </script>
+  </body>
 </html>

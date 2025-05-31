@@ -1,67 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <script src="../dat.gui.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
 
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <script src="../dat.gui.min.js"></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
+      let effect = new DC.Effect(viewer)
+      effect.bloom.enable = true
+      effect.bloom.brightness = 0.3
 
-<body>
+      let layer = new DC.TilesetLayer('layer')
+      viewer.addLayer(layer)
+      let build = new DC.Tileset(
+        'http://resource.dvgis.cn/data/3dtiles/ljz/tileset.json',
+        { skipLevels: true }
+      )
+      let customShader = new DC.CustomShader({
+        fragmentShaderText: `
+      void fragmentMain(FragmentInput fsInput, inout czm_modelMaterial material) {
+         vec4 position = czm_inverseModelView * vec4(fsInput.attributes.positionEC,1); // 位置
+         float glowRange = 100.0; // 光环的移动范围(高度)
+         vec4 temp = vec4(0.2,  0.5, 1.0, 1.0); // 颜色
+         temp *= vec4(vec3(position.z / 100.0), 1.0);  // 渐变
+         // 动态光环
+         float time = fract(czm_frameNumber / 360.0);
+         time = abs(time - 0.5) * 2.0;
+         float diff = step(0.005, abs( clamp(position.z / glowRange, 0.0, 1.0) - time));
+         material.diffuse = vec3(temp.rgb + temp.rgb * (1.0 - diff)) ;
+       }
+      `,
+      })
+      build.setCustomShader(customShader)
+      layer.addOverlay(build)
+      viewer.flyTo(build)
 
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-  let viewer = undefined
-  let effect = undefined
 
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let baseLayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.AMAP,{
-      crs:'WGS84'
-    })
-    viewer.addBaseLayer(baseLayer)
-    effect = new DC.Effect(viewer)
-    effect.bloom.enable= true
-    addGuiController() // add controller
-  }
 
-  function addGuiController(){
-    let controls = {
-      enable:true,
-      contrast: 128,
-      brightness: -0.3,
-      delta: 1,
-      sigma: 3.8,
-      stepSize: 5,
-    }
-    let gui = new dat.GUI()
-    gui.add(controls,'enable').onChange(value=>{
-      effect.bloom.enable=value
-    })
-    gui.add(controls,'contrast',0,255).step(1).onChange(value=>{
-      effect.bloom.contrast=value
-    })
-    gui.add(controls,'brightness',-5,5).step(0.1).onChange(value=>{
-      effect.bloom.brightness=value
-    })
-    gui.add(controls,'delta',0,5).step(0.1).onChange(value=>{
-      effect.bloom.delta=value
-    })
-    gui.add(controls,'sigma',0,5).step(0.1).onChange(value=>{
-      effect.bloom.delta=value
-    })
-    gui.add(controls,'stepSize',0,10).step(0.1).onChange(value=>{
-      effect.bloom.delta=value
-    })
-  }
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+
+      let controls = {
+        enable: true,
+        contrast: 128,
+        brightness: 0.3,
+        delta: 1,
+        sigma: 3.8,
+        stepSize: 5,
+      }
+      let gui = new dat.GUI()
+      gui.add(controls, 'enable').onChange((value) => {
+        effect.bloom.enable = value
+      })
+      gui
+        .add(controls, 'contrast', 0, 255)
+        .step(1)
+        .onChange((value) => {
+          effect.bloom.contrast = value
+        })
+      gui
+        .add(controls, 'brightness', -5, 5)
+        .step(0.1)
+        .onChange((value) => {
+          effect.bloom.brightness = value
+        })
+      gui
+        .add(controls, 'delta', 0, 5)
+        .step(0.1)
+        .onChange((value) => {
+          effect.bloom.delta = value
+        })
+      gui
+        .add(controls, 'sigma', 0, 5)
+        .step(0.1)
+        .onChange((value) => {
+          effect.bloom.delta = value
+        })
+      gui
+        .add(controls, 'stepSize', 0, 10)
+        .step(0.1)
+        .onChange((value) => {
+          effect.bloom.delta = value
+        })
+    </script>
+  </body>
 </html>

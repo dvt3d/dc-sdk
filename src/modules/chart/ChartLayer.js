@@ -3,7 +3,8 @@
  */
 import { getLib } from '../../global-api/lib-utils.js'
 import { Layer } from '../layer'
-import State from '../state/State.js'
+import State from '../state/State'
+import { registerGLMap } from './GLMap'
 
 class ChartLayer extends Layer {
   constructor(id, option) {
@@ -42,6 +43,7 @@ class ChartLayer extends Layer {
 
   _onAdd(viewer) {
     const echarts = getLib('echarts')
+    registerGLMap(echarts)
     this._viewer = viewer
     this._viewer.canvas.setAttribute('tabIndex', '0')
     this._delegate = this._createChartElement()

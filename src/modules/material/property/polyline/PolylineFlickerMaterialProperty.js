@@ -2,7 +2,7 @@
  * @Author : Caven Chen
  */
 
-import { Cesium } from '../../../../namespace'
+import { Cesium } from '../../../../libs'
 import MaterialProperty from '../../MaterialProperty'
 
 class PolylineFlickerMaterialProperty extends MaterialProperty {

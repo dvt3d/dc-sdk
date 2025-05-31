@@ -1,74 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<body>
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-  let viewer = undefined
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let key = '3eaffc2e10e097cac82fa9ce537e6e4765598a74505ccda5ac3eaa57b0a75c91'
-    let baseLayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.GEO_VIS,{
-      key
-    })
-    viewer.addBaseLayer(baseLayer, {
-      iconUrl: '../assets/icon/elec.png',
-      name: '电子'
-    })
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
 
-    let baseLayer_img = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.GEO_VIS,{
-      style: 'img',
-      format:"webp",
-      key
-    })
-    viewer.addBaseLayer(baseLayer_img, {
-      iconUrl: '../assets/icon/img.png',
-      name: '影像'
-    })
+      viewer = new DC.Viewer('viewer-container')
+      let key =
+        '3eaffc2e10e097cac82fa9ce537e6e4765598a74505ccda5ac3eaa57b0a75c91'
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.GEO_VIS,
+        {
+          key,
+        }
+      )
+      viewer.addBaseLayer(baseLayer, {
+        iconUrl: '../assets/icon/elec.png',
+        name: '电子',
+      })
 
-    let baseLayer_cva = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.GEO_VIS,{
-      style: 'cia',
-      key
-    })
-    viewer.addBaseLayer([baseLayer_img, baseLayer_cva], {
-      iconUrl: '../assets/icon/img.png',
-      name: '影像+注记'
-    })
+      let baseLayer_img = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.GEO_VIS,
+        {
+          style: 'img',
+          format: 'webp',
+          key,
+        }
+      )
+      viewer.addBaseLayer(baseLayer_img, {
+        iconUrl: '../assets/icon/img.png',
+        name: '影像',
+      })
 
-    let baseLayer_ter = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.GEO_VIS,{
-      style: 'ter',
-      key
-    })
-    viewer.addBaseLayer(baseLayer_ter, {
-      iconUrl: '../assets/icon/ter.png',
-      name: '地形'
-    })
+      let baseLayer_cva = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.GEO_VIS,
+        {
+          style: 'cia',
+          key,
+        }
+      )
+      viewer.addBaseLayer([baseLayer_img, baseLayer_cva], {
+        iconUrl: '../assets/icon/img.png',
+        name: '影像+注记',
+      })
 
-    let baseLayer_cat = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.GEO_VIS,{
-      style: 'cat',
-      key
-    })
-    viewer.addBaseLayer([baseLayer_ter, baseLayer_cat], {
-      iconUrl: '../assets/icon/ter.png',
-      name: '地形+注记'
-    })
+      let baseLayer_ter = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.GEO_VIS,
+        {
+          style: 'ter',
+          key,
+        }
+      )
+      viewer.addBaseLayer(baseLayer_ter, {
+        iconUrl: '../assets/icon/ter.png',
+        name: '地形',
+      })
 
-    viewer.zoomToPosition(
-      new DC.Position(105.565571, 31.984708, 15362816, 0, -90)
-    )
-  }
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      let baseLayer_cat = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.GEO_VIS,
+        {
+          style: 'cat',
+          key,
+        }
+      )
+      viewer.addBaseLayer([baseLayer_ter, baseLayer_cat], {
+        iconUrl: '../assets/icon/ter.png',
+        name: '地形+注记',
+      })
+
+      viewer.zoomToPosition('105.565571, 31.984708, 15362816, 0, -90')
+    </script>
+  </body>
 </html>
-

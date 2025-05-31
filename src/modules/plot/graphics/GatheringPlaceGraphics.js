@@ -2,7 +2,7 @@
  * @Author : Caven Chen
  */
 
-import { Cesium } from '../../../namespace'
+import { Cesium } from '../../../libs'
 import Parse from '../../parse/Parse'
 import { Transform } from '../../transform'
 import { PlotUtil } from '../../utils'

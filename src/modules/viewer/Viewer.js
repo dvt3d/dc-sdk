@@ -3,7 +3,7 @@
  * @Date: 2019-12-27 17:13:24
  */
 
-import { Cesium } from '../../namespace'
+import { Cesium } from '../../libs'
 import { getParam } from '../../global-api'
 import Parse from '../parse/Parse'
 import {
@@ -29,16 +29,12 @@ const DEF_OPTS = {
 
 class Viewer {
   constructor(container, options = {}) {
-    if (!getParam('isInitialized')) {
-      throw new Error('please do the ready function')
-    }
     if (
       !container ||
       (typeof container === 'string' && !document.getElementById(container))
     ) {
       throw new Error('Viewer: the container is empty')
     }
-
     if (container instanceof HTMLElement) {
       throw new Error('Viewer: not support the type container')
     }
@@ -698,6 +694,15 @@ class Viewer {
       }
     }
     return offset
+  }
+
+  /**
+   *
+   * @returns {Viewer}
+   */
+  resize() {
+    this._delegate.resize()
+    return this
   }
 }
 

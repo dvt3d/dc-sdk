@@ -1,47 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
-
-<body>
-
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-  let viewer = undefined
-
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let  baseLayer = DC.ImageryLayerFactory.createAMapImageryLayer({
-      style: 'img',
-      crs:'WGS84'
-    })
-    viewer.addBaseLayer( baseLayer,{brightness : 0.1} )
-
-    let layer = new DC.VectorLayer('layer')
-    viewer.addLayer(layer)
-
-    let wall = new DC.Wall(
-      '-107.0,43.0,100000.0;-97.0,43.0,100000.0;-97.0,40.0,100000.0;-107.0,40.0,100000.0;-107.0,43.0,100000.0'
-    )
-    wall.setStyle({
-      material: new DC.WallTrailMaterialProperty({
-        color: DC.Color.GREEN,
-        speed: 2
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createAMapImageryLayer({
+        style: 'img',
+        crs: 'WGS84',
       })
-    })
-    layer.addOverlay(wall)
-    viewer.flyTo(layer)
-  }
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      viewer.addBaseLayer(baseLayer, { brightness: 0.1 })
+
+      let layer = new DC.VectorLayer('layer')
+      viewer.addLayer(layer)
+
+      let wall = new DC.Wall(
+        '-107.0,43.0,100000.0;-97.0,43.0,100000.0;-97.0,40.0,100000.0;-107.0,40.0,100000.0;-107.0,43.0,100000.0'
+      )
+      wall.setStyle({
+        material: new DC.WallTrailMaterialProperty({
+          color: DC.Color.GREEN,
+          speed: 2,
+        }),
+      })
+      layer.addOverlay(wall)
+      viewer.flyTo(layer)
+    </script>
+  </body>
 </html>

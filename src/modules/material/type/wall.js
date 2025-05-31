@@ -2,7 +2,7 @@
  * @Author : Caven Chen
  */
 
-import { Cesium } from '../../../namespace'
+import { Cesium } from '../../../libs'
 import WallDiffuseMaterial from '../shader/wall/WallDiffuseMaterial.glsl'
 import WallImageTrailMaterial from '../shader/wall/WallImageTrailMaterial.glsl'
 import WallLineTrailMaterial from '../shader/wall/WallLineTrailMaterial.glsl'

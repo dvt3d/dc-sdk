@@ -3,7 +3,7 @@
  * @Date: 2019-12-30 09:24:37
  */
 
-import { Cesium } from '../../namespace'
+import { Cesium } from '../../libs'
 import { Util } from '../utils'
 
 class ViewerOption {
@@ -54,6 +54,10 @@ class ViewerOption {
     if (scene.msaaSupported) {
       scene.msaaSamples = +this._options.msaaSamples || 1
     }
+    scene.verticalExaggeration = this._options.verticalExaggeration || 1
+
+    scene.verticalExaggerationRelativeHeight =
+      this._options.verticalExaggerationRelativeHeight ?? 0
 
     return this
   }
@@ -105,9 +109,6 @@ class ViewerOption {
       preloadSiblings: globeOption?.preloadSiblings ?? false,
       showSkirts: globeOption?.showSkirts ?? true,
       baseColor: globeOption?.baseColor || new Cesium.Color(0, 0, 0.5, 1),
-      terrainExaggeration: globeOption?.terrainExaggeration || 1,
-      terrainExaggerationRelativeHeight:
-        globeOption?.terrainExaggerationRelativeHeight || 0,
     })
 
     Util.merge(globe.translucency, {

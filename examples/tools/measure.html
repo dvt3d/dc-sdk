@@ -1,125 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
-
-<body>
-<div id="viewer-container" class="viewer-container"></div>
-<div class="btn-box">
-  <ul>
-    <li><button onclick="gotoModel()">定位模型</button></li>
-    <li><button onclick="deactivate()">清空</button></li>
-  </ul>
-  <ul>
-    <li><button onclick="calcDistance()">空间测距</button></li>
-    <li><button onclick="calcArea()">空间面积</button></li>
-    <li><button onclick="calcAngle()">角度</button></li>
-    <li><button onclick="calcHeight()">高度</button></li>
-    <li><button onclick="calcHeading()">偏航角度</button></li>
-    <li><button onclick="calcTriangleHeight()">三角测量</button></li>
-  </ul>
-  <ul>
-    <li><button onclick="distanceSurface()">贴地测距</button></li>
-    <li><button onclick="areaSurface()">贴地面积</button></li>
-    <li><button onclick="calcModelAngle()">贴物角度</button></li>
-    <li><button onclick="calcModelHeight()">贴物高度</button></li>
-    <li><button onclick="calcModelTriangleHeight()">贴物三角</button></li>
-  </ul>
-</div>
-<script>
-  let viewer = undefined
-  let tileset = undefined
-  let measure = undefined
-
-  function calcDistance(){
-    measure.distance()
-  }
-
-  function distanceSurface(){
-    measure.distanceSurface()
-  }
-
-  function calcArea(){
-    measure.area()
-  }
-
-  function areaSurface(){
-    measure.areaSurface()
-  }
-
-  function calcAngle(){
-    measure.angle()
-  }
-
-  function calcModelAngle(){
-    measure.angle({
-      clampToModel:true
-    })
-  }
-
-  function calcHeight(){
-    measure.height()
-  }
-
-  function calcModelHeight(){
-    measure.height({
-      clampToModel:true
-    })
-  }
-
-  function calcHeading(){
-    measure.heading()
-  }
-
-  function areaHeight(){
-    measure.areaHeight()
-  }
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <div class="btn-box">
+      <ul>
+        <li><button onclick="gotoModel()">定位模型</button></li>
+        <li><button onclick="deactivate()">清空</button></li>
+      </ul>
+      <ul>
+        <li><button onclick="calcDistance()">空间测距</button></li>
+        <li><button onclick="calcArea()">空间面积</button></li>
+        <li><button onclick="calcAngle()">角度</button></li>
+        <li><button onclick="calcHeight()">高度</button></li>
+        <li><button onclick="calcHeading()">偏航角度</button></li>
+        <li><button onclick="calcTriangleHeight()">三角测量</button></li>
+      </ul>
+      <ul>
+        <li><button onclick="distanceSurface()">贴地测距</button></li>
+        <li><button onclick="areaSurface()">贴地面积</button></li>
+        <li><button onclick="calcModelAngle()">贴物角度</button></li>
+        <li><button onclick="calcModelHeight()">贴物高度</button></li>
+        <li><button onclick="calcModelTriangleHeight()">贴物三角</button></li>
+      </ul>
+    </div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baselayer = DC.ImageryLayerFactory.createAMapImageryLayer({
+        style: 'img',
+        crs: 'WGS84',
+      })
+      viewer.addBaseLayer(baselayer)
+      let measure = new DC.Measure(viewer)
+      let layer = new DC.TilesetLayer('layer').addTo(viewer)
+      let tileset = new DC.Tileset(
+        '//resource.dvgis.cn/data/3dtiles/dayanta/tileset.json'
+      )
+      tileset.setHeight(-420)
+      layer.addOverlay(tileset)
+      viewer.flyTo(tileset)
 
 
-  function calcTriangleHeight(){
-    measure.triangleHeight()
-  }
+      function calcDistance() {
+        measure.distance()
+      }
 
-  function calcModelTriangleHeight(){
-    measure.triangleHeight({
-      clampToModel:true
-    })
-  }
+      function distanceSurface() {
+        measure.distanceSurface()
+      }
 
-  function deactivate(){
-    measure.deactivate()
-  }
+      function calcArea() {
+        measure.area()
+      }
 
-  function gotoModel(){
-    viewer.flyTo(tileset)
-  }
+      function areaSurface() {
+        measure.areaSurface()
+      }
 
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let baselayer = DC.ImageryLayerFactory.createAMapImageryLayer({
-      style:'img',
-      crs:"WGS84"
-    })
-    viewer.addBaseLayer(baselayer)
-    measure = new DC.Measure(viewer)
-    let layer = new DC.TilesetLayer('layer').addTo(viewer)
-    tileset = new DC.Tileset(
-      '//resource.dvgis.cn/data/3dtiles/dayanta/tileset.json'
-    )
-    tileset.setHeight(-420)
-    layer.addOverlay(tileset)
-    viewer.flyTo(tileset)
-  }
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      function calcAngle() {
+        measure.angle()
+      }
+
+      function calcModelAngle() {
+        measure.angle({
+          clampToModel: true,
+        })
+      }
+
+      function calcHeight() {
+        measure.height()
+      }
+
+      function calcModelHeight() {
+        measure.height({
+          clampToModel: true,
+        })
+      }
+
+      function calcHeading() {
+        measure.heading()
+      }
+
+      function areaHeight() {
+        measure.areaHeight()
+      }
+
+      function calcTriangleHeight() {
+        measure.triangleHeight()
+      }
+
+      function calcModelTriangleHeight() {
+        measure.triangleHeight({
+          clampToModel: true,
+        })
+      }
+
+      function deactivate() {
+        measure.deactivate()
+      }
+
+      function gotoModel() {
+        viewer.flyTo(tileset)
+      }
+    </script>
+  </body>
 </html>

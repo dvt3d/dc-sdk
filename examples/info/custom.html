@@ -4,13 +4,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <title>dc-example</title>
-    <script src="https://cesium.com/downloads/cesiumjs/releases/1.117/Build/Cesium/Cesium.js"></script>
     <script src="/libs/dc-sdk/dc.min.js"></script>
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.125/Build/Cesium/Cesium.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
     <link
-      href="https://cesium.com/downloads/cesiumjs/releases/1.117/Build/Cesium/Widgets/widgets.css"
+      href="https://cesium.com/downloads/cesiumjs/releases/1.125/Build/Cesium/Widgets/widgets.css"
       rel="stylesheet"
     />
-    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
     <link href="../index.css" type="text/css" rel="stylesheet" />
     <style>
       .viewer-container {
@@ -25,15 +25,11 @@
   <body>
     <div id="viewer-container" class="viewer-container"></div>
     <script>
-      let viewer = undefined
-      function initViewer() {
-        let CesiumViewer = new Cesium.CesiumWidget('viewer-container', {
-          baseLayer: false,
-          shouldAnimate: true,
-        })
-        viewer = new DC.Viewer(CesiumViewer)
-      }
-      DC.ready().then(initViewer)
+      let CesiumViewer = new Cesium.CesiumWidget('viewer-container', {
+        baseLayer: false,
+        shouldAnimate: true,
+      })
+      let viewer = new DC.Viewer(CesiumViewer)
     </script>
   </body>
 </html>

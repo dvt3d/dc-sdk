@@ -2,7 +2,7 @@
  * @Author : Caven Chen
  */
 
-import { Cesium } from '../../../namespace'
+import { Cesium } from '../../../libs'
 import Edit from './Edit'
 import { PlotEventType } from '../../event'
 import { Transform } from '../../transform'
@@ -25,6 +25,10 @@ class EditCircle extends Edit {
       this._center,
       this._computeCirclePoints(this._center, this._radius)[0],
     ])
+    this._delegate.ellipse = null
+    this._delegate.polygon = {
+      ...this._overlay._style,
+    }
     this._delegate.polygon.hierarchy = new Cesium.CallbackProperty((time) => {
       if (this._positions.length > 1) {
         this._radius = Cesium.Cartesian3.distance(

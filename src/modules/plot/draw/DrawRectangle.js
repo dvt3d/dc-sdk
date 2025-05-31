@@ -2,7 +2,7 @@
  * @Author : Caven Chen
  */
 
-import { Cesium } from '../../../namespace'
+import { Cesium } from '../../../libs'
 import Draw from './Draw'
 import { PlotEventType } from '../../event'
 import { Transform } from '../../transform'

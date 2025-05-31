@@ -2,7 +2,7 @@
  * @Author : Caven Chen
  */
 import Position from '../position/Position'
-import { Cesium } from '../../namespace'
+import { Cesium } from '../../libs'
 import { Transform } from '../transform'
 
 class Parse {

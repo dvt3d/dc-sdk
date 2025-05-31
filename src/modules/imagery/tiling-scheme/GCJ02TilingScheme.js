@@ -2,7 +2,7 @@
  * @Author : Caven Chen
  */
 
-import { Cesium } from '../../../namespace'
+import { Cesium } from '../../../libs'
 import { CoordTransform } from '../../transform'
 
 class GCJ02TilingScheme extends Cesium.WebMercatorTilingScheme {

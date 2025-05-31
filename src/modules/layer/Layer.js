@@ -2,7 +2,7 @@
  * @Author : Caven Chen
  */
 
-import { Cesium } from '../../namespace'
+import { Cesium } from '../../libs'
 import { Util } from '../utils'
 import State from '../state/State'
 import { LayerEventType, OverlayEventType, LayerEvent } from '../event'

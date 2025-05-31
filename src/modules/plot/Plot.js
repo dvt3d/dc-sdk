@@ -2,7 +2,7 @@
  * @Author : Caven Chen
  */
 
-import { Cesium } from '../../namespace'
+import { Cesium } from '../../libs'
 import { OverlayType } from '../overlay'
 
 import DrawPoint from './draw/DrawPoint'

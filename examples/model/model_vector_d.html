@@ -12,9 +12,7 @@
   <body>
     <div id="viewer-container" class="viewer-container"></div>
     <script>
-      let viewer = undefined
-
-      function generatePosition(num) {
+      const generatePosition = (num) => {
         let list = []
         for (let i = 0; i < num; i++) {
           let lng = 120.38105869 + Math.random() * 0.5
@@ -24,31 +22,27 @@
         return list
       }
 
-      function initViewer() {
-        viewer = new DC.Viewer('viewer-container')
-        let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
-          DC.ImageryType.AMAP,
-          {
-            style: 'img',
-            crs: 'WGS84',
-          }
-        )
-        viewer.addBaseLayer(baseLayer, {
-          brightness: 0.1,
-        })
-        let layer = new DC.VectorLayer('layer')
-        viewer.addLayer(layer)
-        let positions = generatePosition(1)
-        positions.forEach((item) => {
-          let model = new DC.Model(item, '../assets/data/GroundVehicle.glb')
-          layer.addOverlay(model)
-        })
 
-        viewer.flyTo(layer)
-      }
-      DC.ready({
-        baseUrl: '../libs/dc-sdk/resources/',
-      }).then(initViewer)
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
+          style: 'img',
+          crs: 'WGS84',
+        }
+      )
+      viewer.addBaseLayer(baseLayer, {
+        brightness: 0.1,
+      })
+      let layer = new DC.VectorLayer('layer')
+      viewer.addLayer(layer)
+      let positions = generatePosition(1)
+      positions.forEach((item) => {
+        let model = new DC.Model(item, '../assets/data/GroundVehicle.glb')
+        layer.addOverlay(model)
+      })
+      viewer.flyTo(layer)
     </script>
   </body>
 </html>

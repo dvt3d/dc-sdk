@@ -2,7 +2,7 @@
  * @Author : Caven Chen
  */
 
-import { Cesium, Supercluster } from '../../../namespace'
+import { Cesium, Supercluster } from '../../../libs'
 import State from '../../state/State'
 import Layer from '../Layer'
 import Parse from '../../parse/Parse'

@@ -28,10 +28,8 @@
 <div id="viewer-container" class="viewer-container"></div>
 
 <script>
-  let viewer = undefined
-
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
+       DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
     let  baseLayer = DC.ImageryLayerFactory.createBaiduImageryLayer({
       style: 'midnight'
     })
@@ -62,9 +60,7 @@
     })
   }
 
-    DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
+
 </script>
 
 </body>

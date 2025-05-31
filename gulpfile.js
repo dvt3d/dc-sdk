@@ -18,13 +18,9 @@ import GlobalsPlugin from 'esbuild-plugin-globals'
 import shell from 'shelljs'
 import chalk from 'chalk'
 
-const dc_common_path = './node_modules/@dvgis/dc-common'
+const cesium_path = './node_modules/cesium/build/Cesium'
 
 const packageJson = fse.readJsonSync('./package.json')
-
-const c_packageJson = fse.readJsonSync(
-  path.join(dc_common_path, 'package.json')
-)
 
 const buildConfig = {
   entryPoints: ['src/DC.js'],
@@ -44,7 +40,7 @@ const buildConfig = {
     glsl(),
     sassPlugin(),
   ],
-  external: ['@dvgis/dc-common'],
+  external: ['cesium'],
 }
 
 function getTime() {
@@ -56,6 +52,11 @@ function getTime() {
   return `${now.getFullYear()}-${m}-${d}`
 }
 
+/**
+ *
+ * @param options
+ * @returns {Promise<void>}
+ */
 async function buildCSS(options) {
   await esbuild.build({
     ...buildConfig,
@@ -65,6 +66,11 @@ async function buildCSS(options) {
   })
 }
 
+/**
+ *
+ * @param options
+ * @returns {Promise<void>}
+ */
 async function buildModules(options) {
   const dcPath = path.join('src', 'DC.js')
 
@@ -80,13 +86,13 @@ async function buildModules(options) {
   )
 
   const cmdOutFunction = `
-        function __cmdOut() {
+       globalThis.__cmdOut = () => {
           ${cmdOut_content
             .replace('{{__VERSION__}}', packageJson.version)
             .replace('{{__TIME__}}', getTime())
             .replace(
-              '{{__ENGINE_VERSION__}}',
-              c_packageJson.dependencies['@cesium/engine'].replace('^', '')
+              '{{__CESIUM_VERSION__}}',
+              packageJson.dependencies['cesium'].replace('^', '')
             )
             .replace('{{__AUTHOR__}}', packageJson.author)
             .replace('{{__HOME_PAGE__}}', packageJson.homepage)
@@ -96,9 +102,10 @@ async function buildModules(options) {
   await fse.outputFile(
     dcPath,
     `
-              ${content}
               ${cmdOutFunction}
+              ${content}
               ${exportVersion}
+
             `,
     {
       encoding: 'utf8',
@@ -113,7 +120,7 @@ async function buildModules(options) {
       plugins: [
         ...buildConfig.plugins,
         GlobalsPlugin({
-          '@dvgis/dc-common': 'DC_Common',
+          cesium: 'globalThis.Cesium || Cesium',
         }),
       ],
       minify: options.minify,
@@ -139,40 +146,11 @@ async function buildModules(options) {
   await fse.remove(dcPath)
 }
 
-async function combineJs(options) {
-  // combine for iife
-  if (options.iife) {
-    await gulp
-      .src([
-        path.join(dc_common_path, 'dist', 'dc.common.min.js'),
-        'dist/modules-iife.js',
-      ])
-      .pipe(concat('dc.min.js'))
-      .pipe(gulp.dest('dist'))
-      .on('end', () => {
-        addCopyright(options)
-        deleteTempFile()
-      })
-  }
-
-  // combine for node
-  if (options.node) {
-    await gulp
-      .src('dist/index.js')
-      .pipe(gulp.dest('dist'))
-      .on('end', () => {
-        addCopyright(options)
-      })
-  }
-}
-
-async function copyAssets() {
-  await fse.emptyDir('dist/resources')
-  await gulp
-    .src(dc_common_path + '/dist/resources/**', { nodir: true })
-    .pipe(gulp.dest('dist/resources'))
-}
-
+/**
+ *
+ * @param options
+ * @returns {Promise<void>}
+ */
 async function addCopyright(options) {
   let header = await fse.readFile(
     path.join('src', 'copyright', 'header.js'),
@@ -196,8 +174,45 @@ async function addCopyright(options) {
   }
 }
 
+/**
+ *
+ * @returns {Promise<void>}
+ */
 async function deleteTempFile() {
   await gulp.src(['dist/modules-iife.js'], { read: false }).pipe(clean())
+}
+
+async function combineJs(options) {
+  // combine for iife
+  if (options.iife) {
+    await gulp
+      .src([path.join(cesium_path, 'Cesium.js'), 'dist/modules-iife.js'])
+      .pipe(concat('dc.min.js'))
+      .pipe(gulp.dest('dist'))
+      .on('end', () => {
+        addCopyright(options)
+        deleteTempFile()
+      })
+  }
+
+  // combine for node
+  if (options.node) {
+    await gulp
+      .src('dist/index.js')
+      .pipe(gulp.dest('dist'))
+      .on('end', () => {
+        addCopyright(options)
+      })
+  }
+}
+
+async function copyAssets() {
+  await fse.emptyDir('dist/resources')
+  for (const dir of ['Assets', 'ThirdParty', 'Workers']) {
+    await gulp
+      .src(path.join(cesium_path, dir, '**'), { nodir: true })
+      .pipe(gulp.dest(path.join('dist/resources', dir)))
+  }
 }
 
 async function regenerate(option) {
@@ -242,7 +257,7 @@ export const dev = gulp.series(
 )
 
 export const buildIIFE = gulp.series(
-  () => buildModules({ iife: true }),
+  () => buildModules({ iife: true, minify: true }),
   () => combineJs({ iife: true }),
   () => buildCSS({ minify: true }),
   copyAssets

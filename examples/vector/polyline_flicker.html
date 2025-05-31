@@ -1,75 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
+          style: 'img',
+          crs: 'WGS84',
+        }
+      )
+      viewer.addBaseLayer(baseLayer, {
+        brightness: 0.1,
+      })
+      let layer = new DC.VectorLayer('layer')
+      viewer.addLayer(layer)
 
-<body>
+      let polyline = new DC.Polyline('-75, 35; -80, 35').setStyle({
+        width: 5,
+        material: new DC.PolylineFlickerMaterialProperty({
+          color: DC.Color.RED,
+          speed: 4,
+        }),
+        clampToGround: true,
+      })
 
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-  let viewer = undefined
+      let polyline1 = new DC.Polyline(' -75, 30;-75, 35').setStyle({
+        width: 5,
+        material: new DC.PolylineFlickerMaterialProperty({
+          color: DC.Color.ORANGE,
+          speed: 6,
+        }),
+        clampToGround: true,
+      })
 
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let baseLayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.AMAP,{
-      style:'img',
-      crs:'WGS84',
-    })
-    viewer.addBaseLayer( baseLayer,{
-      brightness : 0.1
-    })
-    let layer = new DC.VectorLayer('layer')
-    viewer.addLayer(layer)
+      let polyline2 = new DC.Polyline('-80, 35; -80, 30').setStyle({
+        width: 5,
+        material: new DC.PolylineFlickerMaterialProperty({
+          color: DC.Color.YELLOW,
+          speed: 8,
+        }),
+        clampToGround: true,
+      })
 
-    let polyline = new DC.Polyline('-75, 35; -80, 35').setStyle({
-      width: 5,
-      material: new DC.PolylineFlickerMaterialProperty({
-        color: DC.Color.RED,
-        speed: 4
-      }),
-      clampToGround: true
-    })
+      let polyline3 = new DC.Polyline('-80, 30; -75, 30').setStyle({
+        width: 5,
+        material: new DC.PolylineFlickerMaterialProperty({
+          color: DC.Color.GREEN,
+          speed: 10,
+        }),
+        clampToGround: true,
+      })
 
-    let polyline1 = new DC.Polyline(' -75, 30;-75, 35').setStyle({
-      width: 5,
-      material: new DC.PolylineFlickerMaterialProperty({
-        color: DC.Color.ORANGE,
-        speed: 6
-      }),
-      clampToGround: true
-    })
-
-    let polyline2 = new DC.Polyline('-80, 35; -80, 30').setStyle({
-      width: 5,
-      material: new DC.PolylineFlickerMaterialProperty({
-        color: DC.Color.YELLOW,
-        speed: 8
-      }),
-      clampToGround: true
-    })
-
-    let polyline3 = new DC.Polyline('-80, 30; -75, 30').setStyle({
-      width: 5,
-      material: new DC.PolylineFlickerMaterialProperty({
-        color: DC.Color.GREEN,
-        speed: 10
-      }),
-      clampToGround: true
-    })
-
-    layer.addOverlay(polyline).addOverlay(polyline1).addOverlay(polyline2).addOverlay(polyline3)
-    viewer.flyTo(layer)
-  }
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      layer
+        .addOverlay(polyline)
+        .addOverlay(polyline1)
+        .addOverlay(polyline2)
+        .addOverlay(polyline3)
+      viewer.flyTo(layer)
+    </script>
+  </body>
 </html>

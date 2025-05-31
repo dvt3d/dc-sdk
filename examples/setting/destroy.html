@@ -1,40 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <div class="btn-box">
+      <ul>
+        <li><button onclick="destroy()">销毁</button></li>
+        <li><button onclick="create()">创建</button></li>
+      </ul>
+    </div>
+    <script>
 
-<body>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
 
-<div id="viewer-container" class="viewer-container"></div>
-<div class="btn-box">
-  <ul>
-    <li><button onclick="destroy()">销毁</button></li>
-    <li><button onclick="create()">创建</button></li>
-  </ul>
-</div>
-<script>
-
-  let viewer = undefined
-
-  function create(){
-    viewer = new DC.Viewer('viewer-container')
-    let  baseLayer = DC.ImageryLayerFactory.createAMapImageryLayer({
-      style: 'img',
-      crs:'WGS84'
-    })
-    viewer.addBaseLayer( baseLayer)
-  }
-
-  function destroy(){
-    viewer.destroy()
-  }
-
-  DC.ready(create)
-</script>
+      function create() {
+        viewer = new DC.Viewer('viewer-container')
+        let baseLayer = DC.ImageryLayerFactory.createAMapImageryLayer({
+          style: 'img',
+          crs: 'WGS84',
+        })
+        viewer.addBaseLayer(baseLayer)
+      }
+      function destroy() {
+        viewer.destroy()
+      }
+    </script>
+  </body>
+</html>

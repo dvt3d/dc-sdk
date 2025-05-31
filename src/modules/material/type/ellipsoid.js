@@ -2,7 +2,7 @@
  * @Author : Caven Chen
  */
 
-import { Cesium } from '../../../namespace'
+import { Cesium } from '../../../libs'
 import EllipsoidElectricMaterial from '../shader/ellipsoid/EllipsoidElectricMaterial.glsl'
 import EllipsoidTrailMaterial from '../shader/ellipsoid/EllipsoidTrailMaterial.glsl'
 

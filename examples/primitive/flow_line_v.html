@@ -1,81 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
-
-<body>
-
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-  let viewer = undefined
-
-  function generatePosition(num,isAdd) {
-    let list = []
-    for (let i = 0; i < num; i++) {
-      let lng = 121.49536592256028 + Math.random() * 0.04 * (isAdd ? 1 :-1)
-      let lat = 31.241616722278213 + Math.random() * 0.04 * (isAdd ? 1 :-1)
-      list.push({lng,lat})
-    }
-    return list
-  }
-
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    viewer.setOptions({
-      globe:{
-        baseColor:DC.Color.BLACK
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      function generatePosition(num, isAdd) {
+        let list = []
+        for (let i = 0; i < num; i++) {
+          let lng = 121.49536592256028 + Math.random() * 0.04 * (isAdd ? 1 : -1)
+          let lat = 31.241616722278213 + Math.random() * 0.04 * (isAdd ? 1 : -1)
+          list.push({ lng, lat })
+        }
+        return list
       }
-    })
-    let layer_build = new DC.TilesetLayer('layer_build').addTo(viewer)
-    let build = new DC.Tileset(
-      '//resource.dvgis.cn/data/3dtiles/ljz/tileset.json',
-      {skipLevels:true}
-    )
-    let customShader =  new DC.CustomShader({
-      fragmentShaderText:`
+
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      viewer.setOptions({
+        globe: {
+          baseColor: DC.Color.BLACK,
+        },
+      })
+      let layer_build = new DC.TilesetLayer('layer_build').addTo(viewer)
+      let build = new DC.Tileset(
+        '//resource.dvgis.cn/data/3dtiles/ljz/tileset.json',
+        { skipLevels: true }
+      )
+      let customShader = new DC.CustomShader({
+        fragmentShaderText: `
       void fragmentMain(FragmentInput fsInput, inout czm_modelMaterial material) {
          vec4 position = czm_inverseModelView * vec4(fsInput.attributes.positionEC,1); // 位置
          float glowRange = 100.0; // 光环的移动范围(高度)
          vec4 temp = vec4(0.2,  0.5, 1.0, 1.0); // 颜色
-         temp *= vec4(vec3(position.z / 100.0), 1.0);  // 渐变
+         temp *= vec4(vec3(position.z / 10.0), 1.0);  // 渐变
          // 动态光环
          float time = fract(czm_frameNumber / 360.0);
          time = abs(time - 0.5) * 2.0;
          float diff = step(0.005, abs( clamp(position.z / glowRange, 0.0, 1.0) - time));
          material.diffuse = vec3(temp.rgb + temp.rgb * (1.0 - diff)) ;
        }
-      `
-    })
-    build.setCustomShader(customShader)
-    layer_build.addOverlay(build)
-    let layer = new DC.PrimitiveLayer('layer').addTo(viewer)
-    let positions = generatePosition(50,true)
-    positions = positions.concat(generatePosition(50,))
-    positions.forEach(item=>{
-      let position = DC.Position.fromObject(item)
-      let end = position.copy()
-      end.alt = 5000 * Math.random()
-      let line = new DC.FlowLinePrimitive([position,end],0.5)
-      line.setStyle({
-        speed: 6 * Math.random(),
-        color: DC.Color.fromCssColorString("rgb(141,172,172)"),
-        percent:0.1,
-        gradient:0.01
+      `,
       })
-      layer.addOverlay(line)
-    })
-    viewer.flyToPosition("121.4941629,31.2091462,1859.56,0,-28.71")
-  }
-    DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      build.setCustomShader(customShader)
+      layer_build.addOverlay(build)
+      let layer = new DC.PrimitiveLayer('layer').addTo(viewer)
+      let positions = generatePosition(50, true)
+      positions = positions.concat(generatePosition(50))
+      positions.forEach((item) => {
+        let position = DC.Position.fromObject(item)
+        let end = position.copy()
+        end.alt = 5000 * Math.random()
+        let line = new DC.FlowLinePrimitive([position, end], 0.5)
+        line.setStyle({
+          speed: 6 * Math.random(),
+          color: DC.Color.fromCssColorString('rgb(141,172,172)'),
+          percent: 0.1,
+          gradient: 0.01,
+        })
+        layer.addOverlay(line)
+      })
+      viewer.flyToPosition('121.4941629,31.2091462,1859.56,0,-28.71')
+    </script>
+  </body>
 </html>

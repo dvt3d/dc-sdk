@@ -1,53 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <script src="../dat.gui.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
+          style: 'img',
+          crs: 'WGS84',
+        }
+      )
+      viewer.addBaseLayer(baseLayer)
+      let effect = new DC.Effect(viewer)
+      effect.brightness.enable = true
+      effect.brightness.intensity = 1.5
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <script src="../dat.gui.min.js"></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
-
-<body>
-
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-  let viewer = undefined
-  let effect = undefined
-
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let baseLayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.AMAP,{
-      style:'img',
-      crs:'WGS84'
-    })
-    viewer.addBaseLayer(baseLayer)
-    effect = new DC.Effect(viewer)
-    effect.brightness.enable= true
-    effect.brightness.intensity = 1.5
-    addGuiController() // add controller
-  }
-
-  function addGuiController(){
-    let controls = {
-      enable:true,
-      intensity: 1.5,
-    }
-    let gui = new dat.GUI()
-    gui.add(controls,'enable').onChange(value=>{
-      effect.brightness.enable=value
-    })
-    gui.add(controls,'intensity',0,5).step(0.1).onChange(value=>{
-      effect.brightness.intensity=value
-    })
-  }
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      let controls = {
+        enable: true,
+        intensity: 1.5,
+      }
+      let gui = new dat.GUI()
+      gui.add(controls, 'enable').onChange((value) => {
+        effect.brightness.enable = value
+      })
+      gui
+        .add(controls, 'intensity', 0, 5)
+        .step(0.1)
+        .onChange((value) => {
+          effect.brightness.intensity = value
+        })
+    </script>
+  </body>
 </html>

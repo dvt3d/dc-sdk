@@ -2,7 +2,7 @@
  * @Author: Caven Chen
  */
 
-import { Cesium } from '../../namespace'
+import { Cesium } from '../../libs'
 
 export const Cartesian2 = Cesium.Cartesian2
 export const Cartesian3 = Cesium.Cartesian3

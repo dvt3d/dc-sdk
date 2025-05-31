@@ -27,7 +27,7 @@ czm_material czm_getMaterial(czm_materialInput materialInput)
       float perDis = 0.5 / count;
       float disNum;
       float bl = 0.0;
-      for(int i = 0; i <= 999; i++){
+      for(int i = 0; i <= 10; i++){
         if(float(i) <= count){
           disNum = perDis * float(i) - dis + per / count;
           if(disNum > 0.0){

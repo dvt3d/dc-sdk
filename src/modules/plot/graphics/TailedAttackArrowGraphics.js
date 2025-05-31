@@ -2,7 +2,7 @@
  * @Author : Caven Chen
  */
 
-import { Cesium } from '../../../namespace'
+import { Cesium } from '../../../libs'
 import AttackArrowGraphics from './AttackArrowGraphics'
 import Parse from '../../parse/Parse'
 import { Transform } from '../../transform'

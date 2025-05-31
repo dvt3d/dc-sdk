@@ -12,47 +12,40 @@
   <body>
     <div id="viewer-container" class="viewer-container"></div>
     <script>
-      let viewer = undefined
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
 
-      function initViewer() {
-        viewer = new DC.Viewer('viewer-container')
-        let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
-          DC.ImageryType.AMAP
-        )
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP
+      )
 
-        viewer.addBaseLayer(baseLayer, {
-          iconUrl: '../assets/icon/elec.png',
-          name: '电子',
+      viewer.addBaseLayer(baseLayer, {
+        iconUrl: '../assets/icon/elec.png',
+        name: '电子',
+      })
+
+      let baseLayer_img = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        { style: 'img' }
+      )
+
+      viewer.addBaseLayer(baseLayer_img, {
+        iconUrl: '../assets/icon/img.png',
+        name: '影像',
+      })
+
+      let layer = new DC.RasterTileLayer(
+        'layer',
+        DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.WMS, {
+          url: 'https://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi?',
+          layers: 'nexrad-n0r',
+          parameters: {
+            transparent: 'true',
+            format: 'image/png',
+          },
         })
-
-        let baseLayer_img = DC.ImageryLayerFactory.createImageryLayer(
-          DC.ImageryType.AMAP,
-          { style: 'img' }
-        )
-
-        viewer.addBaseLayer(baseLayer_img, {
-          iconUrl: '../assets/icon/img.png',
-          name: '影像',
-        })
-
-        let layer = new DC.RasterTileLayer(
-          'layer',
-          DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.WMS, {
-            url: 'https://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi?',
-            layers: 'nexrad-n0r',
-            parameters: {
-              transparent: 'true',
-              format: 'image/png',
-            },
-          })
-        )
-
-        viewer.addLayer(layer)
-      }
-
-      DC.ready({
-        baseUrl: '../libs/dc-sdk/resources/',
-      }).then(initViewer)
+      )
+      viewer.addLayer(layer)
     </script>
   </body>
 </html>

@@ -1,124 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <script src="../dat.gui.min.js"></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <script src="../dat.gui.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<body>
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
 
-<div id="viewer-container" class="viewer-container"></div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
+          style: 'img',
+          crs: 'WGS84',
+        }
+      )
+      viewer.addBaseLayer(baseLayer)
 
-<script>
-  let viewer = undefined
-
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let baseLayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.AMAP,
-      {
-        style:'img',
-        crs:'WGS84'
+      let controls = {
+        mouseMode: DC.MouseMode.LEFT_MIDDLE,
+        enableInputs: true,
+        enableRotate: true,
+        enableTilt: true,
+        enableTranslate: true,
+        enableZoom: true,
+        enableCollisionDetection: true,
+        minimumZoomDistance: 1.0,
+        maximumZoomDistance: 40489014.0,
       }
-    )
-    viewer.addBaseLayer(baseLayer)
-    addGuiController() // add controller
-  }
 
-  function addGuiController(){
-    let controls = {
-      mouseMode:DC.MouseMode.LEFT_MIDDLE,
-      enableInputs :true,
-      enableRotate :true,
-      enableTilt:true,
-      enableTranslate :true,
-      enableZoom:true,
-      enableCollisionDetection:true,
-      minimumZoomDistance:1.0,
-      maximumZoomDistance:40489014.0,
-    }
+      let gui = new dat.GUI()
 
-    let gui = new dat.GUI();
+      gui
+        .add(controls, 'mouseMode', {
+          'left+middle': DC.MouseMode.LEFT_MIDDLE,
+          'left+right': DC.MouseMode.LEFT_RIGHT,
+        })
+        .onChange((value) => {
+          viewer.changeMouseMode(Number(value))
+        })
 
-    gui.add(controls,'mouseMode',{'left+middle':DC.MouseMode.LEFT_MIDDLE,'left+right':DC.MouseMode.LEFT_RIGHT}).onChange(value=>{
-      viewer.changeMouseMode(Number(value))
-    })
-
-    gui.add(controls,'enableInputs',).onChange(value=>{
-      viewer.setOptions({
-        cameraController:{
-          enableInputs: value
-        }
+      gui.add(controls, 'enableInputs').onChange((value) => {
+        viewer.setOptions({
+          cameraController: {
+            enableInputs: value,
+          },
+        })
       })
-    })
 
-    gui.add(controls,'enableRotate',).onChange(value=>{
-      viewer.setOptions({
-        cameraController:{
-          enableRotate: value
-        }
+      gui.add(controls, 'enableRotate').onChange((value) => {
+        viewer.setOptions({
+          cameraController: {
+            enableRotate: value,
+          },
+        })
       })
-    })
 
-    gui.add(controls,'enableTilt',).onChange(value=>{
-      viewer.setOptions({
-        cameraController:{
-          enableTilt: value
-        }
+      gui.add(controls, 'enableTilt').onChange((value) => {
+        viewer.setOptions({
+          cameraController: {
+            enableTilt: value,
+          },
+        })
       })
-    })
 
-    gui.add(controls,'enableTranslate',).onChange(value=>{
-      viewer.setOptions({
-        cameraController:{
-          enableTranslate: value
-        }
+      gui.add(controls, 'enableTranslate').onChange((value) => {
+        viewer.setOptions({
+          cameraController: {
+            enableTranslate: value,
+          },
+        })
       })
-    })
 
-
-    gui.add(controls,'enableZoom',).onChange(value=>{
-      viewer.setOptions({
-        cameraController:{
-          enableZoom: value
-        }
+      gui.add(controls, 'enableZoom').onChange((value) => {
+        viewer.setOptions({
+          cameraController: {
+            enableZoom: value,
+          },
+        })
       })
-    })
 
-
-    gui.add(controls,'enableCollisionDetection',).onChange(value=>{
-      viewer.setOptions({
-        cameraController:{
-          enableCollisionDetection: value
-        }
+      gui.add(controls, 'enableCollisionDetection').onChange((value) => {
+        viewer.setOptions({
+          cameraController: {
+            enableCollisionDetection: value,
+          },
+        })
       })
-    })
 
+      gui
+        .add(controls, 'minimumZoomDistance', 1.0, 40489014.0, 1000)
+        .onChange((value) => {
+          viewer.setOptions({
+            cameraController: {
+              minimumZoomDistance: value,
+            },
+          })
+        })
 
-    gui.add(controls,'minimumZoomDistance',1.0,40489014.0,1000).onChange(value=>{
-      viewer.setOptions({
-        cameraController:{
-          minimumZoomDistance: value
-        }
-      })
-    })
-
-    gui.add(controls,'maximumZoomDistance',1.0,40489014.0,1000).onChange(value=>{
-      viewer.setOptions({
-        cameraController:{
-          maximumZoomDistance: value
-        }
-      })
-    })
-
-  }
-
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-
-</script>
+      gui
+        .add(controls, 'maximumZoomDistance', 1.0, 40489014.0, 1000)
+        .onChange((value) => {
+          viewer.setOptions({
+            cameraController: {
+              maximumZoomDistance: value,
+            },
+          })
+        })
+    </script>
+  </body>
+</html>

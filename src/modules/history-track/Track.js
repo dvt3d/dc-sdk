@@ -2,7 +2,7 @@
  * @Author : Caven Chen
  */
 
-import { Cesium } from '../../namespace'
+import { Cesium } from '../../libs'
 import { TrackEvent, TrackEventType } from '../event'
 import State from '../state/State'
 import Parse from '../parse/Parse'

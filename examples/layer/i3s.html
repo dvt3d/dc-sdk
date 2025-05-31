@@ -12,39 +12,32 @@
   <body>
     <div id="viewer-container" class="viewer-container"></div>
     <script>
-      let viewer = undefined
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
+          style: 'img',
+          crs: 'WGS84',
+        }
+      )
+      viewer.addBaseLayer(baseLayer)
+      let layer = new DC.I3SLayer('layer')
+      viewer.addLayer(layer)
+      let i3s = new DC.I3S(
+        'https://tiles.arcgis.com/tiles/z2tnIkrLQ2BRzr6P/arcgis/rest/services/Frankfurt2017_vi3s_18/SceneServer/layers/0',
+        {
+          cesium3dTilesetOptions: {
+            skipLevelOfDetail: true,
+            maximumScreenSpaceError: 128,
+          },
+        }
+      )
+      layer.addOverlay(i3s)
 
-      function initViewer() {
-        viewer = new DC.Viewer('viewer-container')
-        let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
-          DC.ImageryType.AMAP,
-          {
-            style: 'img',
-            crs: 'WGS84',
-          }
-        )
-        viewer.addBaseLayer(baseLayer)
-        let layer = new DC.I3SLayer('layer')
-        viewer.addLayer(layer)
-
-        let i3s = new DC.I3S(
-          'https://tiles.arcgis.com/tiles/z2tnIkrLQ2BRzr6P/arcgis/rest/services/Frankfurt2017_vi3s_18/SceneServer/layers/0',
-          {
-            cesium3dTilesetOptions: {
-              skipLevelOfDetail: true,
-              maximumScreenSpaceError: 128,
-            },
-          }
-        )
-        layer.addOverlay(i3s)
-
-        viewer.flyToPosition(
-          '8.667785654590075,50.10358812638023,806.0017044941886,17.973378573231702,-37.940813171994996'
-        )
-      }
-      DC.ready({
-        baseUrl: '../libs/dc-sdk/resources/',
-      }).then(initViewer)
+      viewer.flyToPosition(
+        '8.667785654590075,50.10358812638023,806.0017044941886,17.973378573231702,-37.940813171994996'
+      )
     </script>
   </body>
 </html>

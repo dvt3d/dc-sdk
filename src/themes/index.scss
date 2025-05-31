@@ -2,15 +2,15 @@
  * @Author : Caven Chen
  */
 
-@import './viewer.scss';
-@import './hawkeyemap.scss';
-@import './contextmenu.scss';
-@import './popup.scss';
-@import './compass.scss';
-@import './distancelegend.scss';
-@import './loading-mask.scss';
-@import './locationbar.scss';
-@import './map-switch.scss';
-@import './tooltip.scss';
-@import './zoom-controller.scss';
-@import './slider.scss';
+@use './viewer.scss';
+@use './hawkeyemap.scss';
+@use './contextmenu.scss';
+@use './popup.scss';
+@use './compass.scss';
+@use './distancelegend.scss';
+@use './loading-mask.scss';
+@use './locationbar.scss';
+@use './map-switch.scss';
+@use './tooltip.scss';
+@use './zoom-controller.scss';
+@use './slider.scss';

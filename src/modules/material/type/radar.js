@@ -2,7 +2,7 @@
  * @Author : Caven Chen
  */
 
-import { Cesium } from '../../../namespace'
+import { Cesium } from '../../../libs'
 import RadarLineMaterial from '../shader/radar/RadarLineMaterial.glsl'
 import RadarSweepMaterial from '../shader/radar/RadarSweepMaterial.glsl'
 import RadarWaveMaterial from '../shader/radar/RadarWaveMaterial.glsl'

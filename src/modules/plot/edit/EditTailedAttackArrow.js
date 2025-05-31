@@ -2,7 +2,7 @@
  * @Author : Caven Chen
  */
 
-import { Cesium } from '../../../namespace'
+import { Cesium } from '../../../libs'
 import Edit from './Edit'
 import TailedAttackArrowGraphics from '../graphics/TailedAttackArrowGraphics'
 

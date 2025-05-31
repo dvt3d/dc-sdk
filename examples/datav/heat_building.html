@@ -1,55 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      const generatePosition = (num) => {
+        let list = []
+        for (let i = 0; i < num; i++) {
+          let lng = 121.48339987478337 + Math.random() * 0.05
+          let lat = 31.220954026657488 + Math.random() * 0.05
+          list.push({ lng, lat })
+        }
+        return list
+      }
 
-<body>
-
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-  let viewer = undefined
-
-  function generatePosition(num) {
-    let list = []
-    for (let i = 0; i < num; i++) {
-      let lng = 121.48339987478337 + Math.random() * 0.05
-      let lat = 31.220954026657488 + Math.random() * 0.05
-      list.push({lng,lat})
-    }
-    return list
-  }
-
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let baseLayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.AMAP,{
-      crs:'WGS84'
-    })
-    viewer.addBaseLayer( baseLayer,{
-      brightness : 0.1
-    })
-    let buildingLayer = new DC.TilesetLayer('building-layer').addTo(viewer)
-    let tileset = new DC.Tileset(
-      '//resource.dvgis.cn/data/3dtiles/ljz/tileset.json'
-    )
-    buildingLayer.addOverlay(tileset)
-    viewer.flyToPosition("121.45765915248303,31.202070402003816,2301.94,44.95,-23.06",()=>{
-      let layer = new DC.HeatMapLayer('layer',{
-        useGround: true
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
+          crs: 'WGS84',
+        }
+      )
+      viewer.addBaseLayer(baseLayer, {
+        brightness: 0.1,
       })
-      layer.setPoints(generatePosition(10000))
-      viewer.addLayer(layer)
-    })
-  }
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      let buildingLayer = new DC.TilesetLayer('building-layer').addTo(viewer)
+      let tileset = new DC.Tileset(
+        '//resource.dvgis.cn/data/3dtiles/ljz/tileset.json'
+      )
+      buildingLayer.addOverlay(tileset)
+      viewer.flyToPosition(
+        '121.45765915248303,31.202070402003816,2301.94,44.95,-23.06',
+        () => {
+          let layer = new DC.HeatMapLayer('layer', {
+            useGround: true,
+          })
+          layer.setPoints(generatePosition(10000))
+          viewer.addLayer(layer)
+        }
+      )
+    </script>
+  </body>
 </html>

@@ -1,65 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <script src="../dat.gui.min.js"></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
-<body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <script src="../dat.gui.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baselayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
+          style: 'img',
+        }
+      )
+      viewer.addBaseLayer(baselayer)
+      let effect = new DC.Effect(viewer)
 
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-  let viewer = undefined
-  let effect = undefined
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let baselayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.AMAP,{
-      style: 'img'
-    })
-    viewer.addBaseLayer(baselayer)
-    effect =  new DC.Effect(viewer)
+      let layer = new DC.TilesetLayer('layer')
+      viewer.addLayer(layer)
+      let tileset = new DC.Tileset(
+        '//resource.dvgis.cn/data/3dtiles/dayanta/tileset.json'
+      )
+      tileset.setHeight(-420)
+      layer.addOverlay(tileset)
+      viewer.flyTo(tileset)
+      effect.skyLine.enable = true
 
-    let layer = new DC.TilesetLayer('layer')
-    viewer.addLayer(layer)
-    let  tileset = new DC.Tileset(
-      '//resource.dvgis.cn/data/3dtiles/dayanta/tileset.json'
-    )
-    tileset.setHeight(-420)
-    layer.addOverlay(tileset)
-    viewer.flyTo(tileset)
-   effect.skyLine.enable= true
-   addGuiController() // add controller
-  }
+      let controls = {
+        enable: true,
+        depthThreshold: 0.00001,
+        color: '#ff0000',
+      }
+      let gui = new dat.GUI()
 
-  function addGuiController(){
-    let controls = {
-      enable:true,
-      depthThreshold: 0.00001,
-      color:'#ff0000'
-    }
-    let gui = new dat.GUI()
+      gui.add(controls, 'enable').onChange((value) => {
+        effect.skyLine.enable = value
+      })
 
+      gui
+        .add(controls, 'depthThreshold', 0.00001, 0.1)
+        .step(0.001)
+        .onChange((value) => {
+          effect.skyLine.depthThreshold = value
+        })
 
-    gui.add(controls,'enable').onChange(value=>{
-      effect.skyLine.enable=value
-    })
-
-    gui.add(controls,'depthThreshold',0.00001,0.1).step(0.001).onChange(value=>{
-      effect.skyLine.depthThreshold=value
-    })
-
-    gui.addColor(controls,'color').onChange(value=>{
-      effect.skyLine.color = DC.Color.fromCssColorString(value)
-    })
-  }
-
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      gui.addColor(controls, 'color').onChange((value) => {
+        effect.skyLine.color = DC.Color.fromCssColorString(value)
+      })
+    </script>
+  </body>
 </html>

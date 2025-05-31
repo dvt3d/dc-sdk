@@ -3,7 +3,7 @@
  * @Date: 2024-04-06 20:40:25
  */
 
-import { Cesium } from '../../../namespace'
+import { Cesium } from '../../../libs'
 
 class CustomGeographicTilingScheme extends Cesium.GeographicTilingScheme {
   constructor(options = {}) {

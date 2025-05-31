@@ -1,65 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <script src="../dat.gui.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
+          style: 'img',
+          crs: 'WGS84',
+        }
+      )
+      viewer.addBaseLayer(baseLayer)
+      let effect = new DC.Effect(viewer)
+      effect.lensFlare.enable = true
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <script src="../dat.gui.min.js"></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
+      let controls = {
+        enable: true,
+        intensity: 2,
+        distortion: 10,
+        dirtAmount: 0.4,
+        haloWidth: 0.4,
+      }
+      let gui = new dat.GUI()
+      gui.add(controls, 'enable').onChange((value) => {
+        effect.lensFlare.enable = value
+      })
 
-<body>
-
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-  let viewer = undefined
-  let effect = undefined
-
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let baseLayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.AMAP,{
-      style:'img',
-      crs:'WGS84'
-    })
-    viewer.addBaseLayer(baseLayer)
-    effect = new DC.Effect(viewer)
-    effect.lensFlare.enable= true
-    addGuiController() // add controller
-  }
-
-  function addGuiController(){
-    let controls = {
-      enable: true,
-      intensity: 2,
-      distortion: 10,
-      dirtAmount: 0.4,
-      haloWidth: 0.4,
-    }
-    let gui = new dat.GUI()
-    gui.add(controls,'enable').onChange(value=>{
-      effect.lensFlare.enable=value
-    })
-
-    gui.add(controls,'intensity',0,10).step(0.1).onChange(value=>{
-      effect.lensFlare.intensity=value
-    })
-    gui.add(controls,'distortion',0,100).step(1).onChange(value=>{
-      effect.lensFlare.delta=value
-    })
-    gui.add(controls,'dirtAmount',0,10).step(0.01).onChange(value=>{
-      effect.lensFlare.dirtAmount=value
-    })
-    gui.add(controls,'haloWidth',0,10).step(0.01).onChange(value=>{
-      effect.lensFlare.haloWidth=value
-    })
-  }
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      gui
+        .add(controls, 'intensity', 0, 10)
+        .step(0.1)
+        .onChange((value) => {
+          effect.lensFlare.intensity = value
+        })
+      gui
+        .add(controls, 'distortion', 0, 100)
+        .step(1)
+        .onChange((value) => {
+          effect.lensFlare.delta = value
+        })
+      gui
+        .add(controls, 'dirtAmount', 0, 10)
+        .step(0.01)
+        .onChange((value) => {
+          effect.lensFlare.dirtAmount = value
+        })
+      gui
+        .add(controls, 'haloWidth', 0, 10)
+        .step(0.01)
+        .onChange((value) => {
+          effect.lensFlare.haloWidth = value
+        })
+    </script>
+  </body>
 </html>

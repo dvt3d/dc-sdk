@@ -1,82 +1,60 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <script src="../dat.gui.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+    <style>
+      .viewer-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+    </style>
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <script src="../dat.gui.min.js"></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-  <style>
-    .viewer-container{
-      position: relative;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
-  </style>
-</head>
-
-<body>
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-
-  let viewer = undefined
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    viewer.addBaseLayer(DC.ImageryLayerFactory.createCoordImageryLayer({
-      tilingScheme: new DC.CustomMercatorTilingScheme(
-        {
-          origin: [-5781523.99792, 4883853.592505],
-          resolutions: [
-            132291.9312505292,
-            66145.9656252646,
-            26458.386250105836,
-            19843.789687579378,
-            13229.193125052918,
-            6614.596562526459,
-            2645.8386250105837,
-            1322.9193125052918,
-            661.4596562526459,
-            264.5838625010584,
-            132.2919312505292,
-            66.1459656252646,
-            26.458386250105836,
-            19.843789687579378,
-            13.229193125052918,
-            6.614596562526459,
-            2.6458386250105836,
-            1.3229193125052918,
-            0.6614596562526459
-          ],
-        }
-      ),
-    }))
-    viewer.flyToPosition('120,31,10000,0,-90,0')
-    viewer.on(DC.SceneEventType.MORPH_COMPLETE,e=>{
-      setTimeout(()=>{
-        viewer.flyToPosition('120,31,10000,0,-90,0')
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      viewer.addBaseLayer(
+        DC.ImageryLayerFactory.createCoordImageryLayer({
+          tilingScheme: new DC.CustomMercatorTilingScheme({
+            origin: [-5781523.99792, 4883853.592505],
+            resolutions: [
+              132291.9312505292, 66145.9656252646, 26458.386250105836,
+              19843.789687579378, 13229.193125052918, 6614.596562526459,
+              2645.8386250105837, 1322.9193125052918, 661.4596562526459,
+              264.5838625010584, 132.2919312505292, 66.1459656252646,
+              26.458386250105836, 19.843789687579378, 13.229193125052918,
+              6.614596562526459, 2.6458386250105836, 1.3229193125052918,
+              0.6614596562526459,
+            ],
+          }),
+        })
+      )
+      viewer.flyToPosition('120,31,10000,0,-90,0')
+      viewer.on(DC.SceneEventType.MORPH_COMPLETE, (e) => {
+        setTimeout(() => {
+          viewer.flyToPosition('120,31,10000,0,-90,0')
+        })
       })
 
-    })
-    addGuiController() // add controller
-  }
-
-  function addGuiController() {
-    let controls = {
-      sceneMode: 3,
-    }
-    let gui = new dat.GUI();
-    gui.add(controls, 'sceneMode', { '2D': 2, '2.5D': 2.5, '3D': 3 }).onChange(value => {
-      viewer.changeSceneMode(Number(value), 2)
-    })
-  }
-
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      let controls = {
+        sceneMode: 3,
+      }
+      let gui = new dat.GUI()
+      gui
+        .add(controls, 'sceneMode', { '2D': 2, '2.5D': 2.5, '3D': 3 })
+        .onChange((value) => {
+          viewer.changeSceneMode(Number(value), 2)
+        })
+    </script>
+  </body>
 </html>

@@ -1,61 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <script src="../dat.gui.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <script src="../dat.gui.min.js"></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
 
-<body>
-
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-  let viewer = undefined
-
-  function generatePosition(num) {
-    let list = []
-    for (let i = 0; i < num; i++) {
-      let lng = 120.38105869 + Math.random() * 0.5
-      let lat = 31.10115627 + Math.random() * 0.5
-      list.push([lng, lat, 0])
-    }
-    return list
-  }
-
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let  baseLayer = DC.ImageryLayerFactory.createAMapImageryLayer({
-      style: 'img',
-      crs:'WGS84'
-    })
-    viewer.addBaseLayer( baseLayer)
-    viewer.popup.config = {
-      customClass: 'custom-popup'
-    }
-    let layer = new DC.VectorLayer('layer').addTo(viewer)
-    viewer.contextMenu.enable = true
-    let positions = generatePosition(20)
-    positions.forEach((item,index) => {
-      let point = new DC.Point(item)
-      point.attr={
-        index:index + 1
+      const generatePosition = (num) => {
+        let list = []
+        for (let i = 0; i < num; i++) {
+          let lng = 120.38105869 + Math.random() * 0.5
+          let lat = 31.10115627 + Math.random() * 0.5
+          list.push([lng, lat, 0])
+        }
+        return list
       }
-      point.on(DC.MouseEventType.CLICK,e=>{
-        viewer.popup.showAt(e.position,`我是第${e.overlay.attr.index}点`)
-      })
-      point.addTo(layer)
-    })
-    viewer.flyTo(layer)
 
-  }
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createAMapImageryLayer({
+        style: 'img',
+        crs: 'WGS84',
+      })
+      viewer.addBaseLayer(baseLayer)
+      viewer.popup.config = {
+        customClass: 'custom-popup',
+      }
+      let layer = new DC.VectorLayer('layer').addTo(viewer)
+      viewer.contextMenu.enable = true
+      let positions = generatePosition(20)
+      positions.forEach((item, index) => {
+        let point = new DC.Point(item)
+        point.attr = {
+          index: index + 1,
+        }
+        point.on(DC.MouseEventType.CLICK, (e) => {
+          viewer.popup.showAt(e.position, `我是第${e.overlay.attr.index}点`)
+        })
+        point.addTo(layer)
+      })
+      viewer.flyTo(layer)
+    </script>
+  </body>
 </html>

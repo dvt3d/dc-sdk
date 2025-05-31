@@ -16,7 +16,7 @@
 <script>
   let viewer = undefined
 
-  function generatePosition(num) {
+  const  generatePosition = (num) => {
     let list = []
     for (let i = 0; i < num; i++) {
       let lng = 120.65276089+ Math.random() * 0.5
@@ -26,8 +26,8 @@
     return list
   }
 
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
     let  baseLayer = DC.ImageryLayerFactory.createAMapImageryLayer({
       crs:"WGS84"
     })
@@ -51,9 +51,7 @@
 
     viewer.flyTo(layer)
   }
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
+
 </script>
 </body>
 </html>

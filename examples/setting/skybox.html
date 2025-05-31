@@ -1,70 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <script src="../dat.gui.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <script src="../dat.gui.min.js"></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <div class="btn-box">
+      <ul>
+        <li><button onclick="changeType(0)">效果一</button></li>
+        <li><button onclick="changeType(1)">效果二</button></li>
+        <li><button onclick="changeType(2)">效果三</button></li>
+        <li><button onclick="changeType(3)">效果四</button></li>
+        <li><button onclick="changeType(4)">效果五</button></li>
+      </ul>
+    </div>
+    <script>
+      let skyBoxes = []
 
-<body>
-
-<div id="viewer-container" class="viewer-container"></div>
-<div class="btn-box">
-  <ul>
-    <li><button onclick="changeType(0)">效果一</button></li>
-    <li><button onclick="changeType(1)">效果二</button></li>
-    <li><button onclick="changeType(2)">效果三</button></li>
-    <li><button onclick="changeType(3)">效果四</button></li>
-    <li><button onclick="changeType(4)">效果五</button></li>
-  </ul>
-</div>
-<script>
-  let viewer = undefined
-
-  let skyBoxes=[]
-
-  function changeType(type){
-    viewer.setOptions({
-      skyBox:skyBoxes[type]
-    })
-  }
-
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let baseLayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.AMAP,
-      {
-        style:'img',
-        crs:'WGS84'
+      for (let i = 0; i < 5; i++) {
+        skyBoxes.push(
+          new DC.SkyBox({
+            sources: {
+              positiveX: `../assets/images/sky-box/${i}/right.png`,
+              negativeX: `../assets/images/sky-box/${i}/left.png`,
+              positiveY: `../assets/images/sky-box/${i}/down.png`,
+              negativeY: `../assets/images/sky-box/${i}/up.png`,
+              positiveZ: `../assets/images/sky-box/${i}/back.png`,
+              negativeZ: `../assets/images/sky-box/${i}/front.png`,
+            },
+          })
+        )
       }
-    )
-    viewer.addBaseLayer(baseLayer)
-    for(let i = 0;i < 5;i++){
-      skyBoxes.push(new DC.SkyBox({
-          sources:{
-            positiveX: `../assets/images/sky-box/${i}/right.png`,
-            negativeX: `../assets/images/sky-box/${i}/left.png`,
-            positiveY: `../assets/images/sky-box/${i}/down.png`,
-            negativeY: `../assets/images/sky-box/${i}/up.png`,
-            positiveZ: `../assets/images/sky-box/${i}/back.png`,
-            negativeZ: `../assets/images/sky-box/${i}/front.png`
-          }
-        })
+
+      viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
+          style: 'img',
+          crs: 'WGS84',
+        }
       )
-    }
-    viewer.setOptions({
-      skyBox:skyBoxes[3]
-    })
+      viewer.addBaseLayer(baseLayer)
+      viewer.setOptions({
+        skyBox: skyBoxes[3],
+      })
 
-  }
-
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      function changeType(type) {
+        viewer.setOptions({
+          skyBox: skyBoxes[type],
+        })
+      }
+    </script>
+  </body>
 </html>

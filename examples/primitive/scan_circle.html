@@ -1,35 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
-
-<body>
-
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-  let viewer = undefined
-
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    viewer.setOptions({
-      globe:{
-        baseColor:DC.Color.BLACK
-      }
-    })
-    let layer_build = new DC.TilesetLayer('layer_build').addTo(viewer)
-    let build = new DC.Tileset(
-      '//resource.dvgis.cn/data/3dtiles/ljz/tileset.json',
-      {skipLevels:true}
-    )
-    let customShader =  new DC.CustomShader({
-      fragmentShaderText:`
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      viewer.setOptions({
+        globe: {
+          baseColor: DC.Color.BLACK,
+        },
+      })
+      let layer_build = new DC.TilesetLayer('layer_build').addTo(viewer)
+      let build = new DC.Tileset(
+        '//resource.dvgis.cn/data/3dtiles/ljz/tileset.json',
+        { skipLevels: true }
+      )
+      let customShader = new DC.CustomShader({
+        fragmentShaderText: `
       void fragmentMain(FragmentInput fsInput, inout czm_modelMaterial material) {
          vec4 position = czm_inverseModelView * vec4(fsInput.attributes.positionEC,1); // 位置
          float glowRange = 100.0; // 光环的移动范围(高度)
@@ -41,23 +37,22 @@
          float diff = step(0.005, abs( clamp(position.z / glowRange, 0.0, 1.0) - time));
          material.diffuse = vec3(temp.rgb + temp.rgb * (1.0 - diff)) ;
        }
-      `
-    })
-    build.setCustomShader(customShader)
-    layer_build.addOverlay(build)
-    let layer = new DC.PrimitiveLayer('layer').addTo(viewer)
-    let center = DC.Position.fromObject({lng: 121.49536592256028, lat: 31.241616722278213})
-    let scanCircle= new DC.ScanCirclePrimitive(center,3000)
-    scanCircle.setStyle({
-      color:DC.Color.YELLOW
-    })
-    layer.addOverlay(scanCircle)
+      `,
+      })
+      build.setCustomShader(customShader)
+      layer_build.addOverlay(build)
+      let layer = new DC.PrimitiveLayer('layer').addTo(viewer)
+      let center = DC.Position.fromObject({
+        lng: 121.49536592256028,
+        lat: 31.241616722278213,
+      })
+      let scanCircle = new DC.ScanCirclePrimitive(center, 3000)
+      scanCircle.setStyle({
+        color: DC.Color.YELLOW,
+      })
+      layer.addOverlay(scanCircle)
 
-    viewer.flyToPosition("121.4941629,31.2091462,1859.56,0,-28.71")
-  }
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      viewer.flyToPosition('121.4941629,31.2091462,1859.56,0,-28.71')
+    </script>
+  </body>
 </html>

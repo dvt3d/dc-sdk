@@ -2,7 +2,7 @@
  * @Author : Caven Chen
  */
 
-import { Cesium } from '../../../namespace'
+import { Cesium } from '../../../libs'
 import { heading } from '../../math'
 import DrawPolyline from '../draw/DrawPolyline'
 import EditPolyline from '../edit/EditPolyline'

@@ -2,7 +2,7 @@
  * @Author : Caven Chen
  */
 
-import { Cesium } from '../../../namespace'
+import { Cesium } from '../../../libs'
 import ImageryType from '../ImageryType'
 import GCJ02TilingScheme from '../tiling-scheme/GCJ02TilingScheme.js'
 

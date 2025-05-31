@@ -2,7 +2,7 @@
  * @Author : Caven Chen
  */
 
-import { Cesium } from '../../namespace'
+import { Cesium } from '../../libs'
 const { ImageryLayer } = Cesium
 
 class BaseLayerPicker {

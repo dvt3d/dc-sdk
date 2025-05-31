@@ -1,69 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <div class="btn-box">
+      <ul>
+        <li><button onclick="play()">播放</button></li>
+        <li><button onclick="pause()">暂停</button></li>
+        <li><button onclick="restore()">恢复</button></li>
+      </ul>
+    </div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let terrain = DC.TerrainFactory.createUrlTerrain({
+        url: 'http://data.marsgis.cn/terrain',
+      })
+      viewer.setTerrain(terrain)
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
+          style: 'img',
+          crs: 'WGS84',
+        }
+      )
+      viewer.addBaseLayer(baseLayer)
+      let tc = new DC.TrackController(viewer)
+      let positions =
+        '119.6690974094955,30.619898051672074;119.80669126724348,30.820857646248754'
+      let track = new DC.Track(positions, 50, () => {}, {
+        clampToGround: true,
+      })
+      track.setModel('../assets/data/qiche.gltf', {
+        scale: 2,
+      })
+      track.setPath(true)
+      tc.addTrack(track)
+      viewer.flyToPosition(
+        '119.71042378562902,30.603208131877633,1596.161323135813,318.3023263470015,-20.968'
+      )
 
-<body>
+      function play() {
+        tc.play()
+      }
 
-<div id="viewer-container" class="viewer-container"></div>
-<div class="btn-box">
-  <ul>
-    <li><button onclick="play()">播放</button></li>
-    <li><button onclick="pause()">暂停</button></li>
-    <li><button onclick="restore()">恢复</button></li>
-  </ul>
-</div>
-<script>
-  let viewer = undefined
-  let tc = undefined
-  let track = undefined
+      function pause() {
+        tc.pause()
+      }
 
-  function play(){
-    tc.play()
-  }
-
-  function pause(){
-    tc.pause()
-  }
-
-  function restore(){
-    tc.restore()
-  }
-
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let terrain = DC.TerrainFactory.createUrlTerrain({
-      url: 'http://data.marsgis.cn/terrain'
-    })
-    viewer.setTerrain(terrain)
-    let baseLayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.AMAP,{
-      style:'img',
-      crs:'WGS84'
-    })
-    viewer.addBaseLayer( baseLayer)
-    tc = new DC.TrackController(viewer)
-    let positions = "119.6690974094955,30.619898051672074;119.80669126724348,30.820857646248754"
-    track = new DC.Track(positions,50,()=>{},{
-      clampToGround:true
-    })
-    track.setModel('../assets/data/qiche.gltf',{
-      scale:2
-    })
-    track.setPath(true)
-    tc.addTrack(track)
-    viewer.flyToPosition("119.71042378562902,30.603208131877633,1596.161323135813,318.3023263470015,-20.968")
-  }
-
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      function restore() {
+        tc.restore()
+      }
+    </script>
+  </body>
 </html>

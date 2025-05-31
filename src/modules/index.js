@@ -55,7 +55,10 @@ export {
 } from './layer'
 
 export { default as HeatMapLayer } from './heat-map/HeatMapLayer'
+
 export { default as WindLayer } from './wind/WindLayer'
+
+export { default as ChartLayer } from './chart/ChartLayer'
 
 export {
   Overlay,

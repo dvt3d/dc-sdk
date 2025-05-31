@@ -1,6 +1,6 @@
 {
   "name": "@dvgis/dc-sdk",
-  "version": "4.3.0",
+  "version": "5.0.0",
   "license": "MIT",
   "description": "The SDK is based on Cesium for secondary development of 2, 3D all-in-one WebGis application framework, the framework optimizes the use of Cesium and add some additional features, designed for developers to quickly build WebGis applications.",
   "repository": "https://github.com/dvgis/dc-sdk.git",
@@ -57,7 +57,6 @@
     "rimraf": "^5.0.0",
     "sass": "^1.62.1",
     "shelljs": "^0.8.5",
-    "supercluster": "^8.0.1",
     "vinyl-sourcemaps-apply": "^0.2.1",
     "vitepress": "^1.4.1"
   },
@@ -65,6 +64,7 @@
     "dist"
   ],
   "dependencies": {
-    "@dvgis/dc-common": "^4.3.0"
+    "cesium": "^1.129.0",
+    "supercluster": "^8.0.1"
   }
 }

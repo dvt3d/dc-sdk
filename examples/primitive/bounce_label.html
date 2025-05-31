@@ -1,56 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
-
-<body>
-
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-  let viewer = undefined
-
-  function generatePosition(num) {
-    let list = []
-    for (let i = 0; i < num; i++) {
-      let lng = 120.38105869 + Math.random() * 0.5
-      let lat = 31.10115627 + Math.random() * 0.5
-      list.push(new DC.Position(lng, lat))
-    }
-    return list
-  }
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let baseLayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.AMAP,{
-      style:'img',
-      crs:'WGS84'
-    })
-    viewer.addBaseLayer( baseLayer)
-    let layer = new DC.PrimitiveLayer('layer')
-    viewer.addLayer(layer)
-    let positions = generatePosition(20)
-    positions.forEach(item => {
-      let label = new DC.BounceLabelPrimitive(item, '数字视觉')
-      label.setStyle({
-        offsetAmount: Math.random()
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      const generatePosition = (num) => {
+        let list = []
+        for (let i = 0; i < num; i++) {
+          let lng = 120.38105869 + Math.random() * 0.5
+          let lat = 31.10115627 + Math.random() * 0.5
+          list.push(new DC.Position(lng, lat))
+        }
+        return list
+      }
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
+          style: 'img',
+          crs: 'WGS84',
+        }
+      )
+      viewer.addBaseLayer(baseLayer,{
+        brightness:0.1
       })
-      label.setStyle({
-        fillColor: DC.Color.YELLOW,
-        font: '12px'
+      let layer = new DC.PrimitiveLayer('layer')
+      viewer.addLayer(layer)
+      let positions = generatePosition(20)
+      positions.forEach((item) => {
+        let label = new DC.BounceLabelPrimitive(item, '数字视界')
+        label.setStyle({
+          offsetAmount: Math.random(),
+        })
+        label.setStyle({
+          fillColor: DC.Color.ORANGE,
+          font: '12px',
+        })
+        layer.addOverlay(label)
       })
-      layer.addOverlay(label)
-    })
-    viewer.flyToPosition("120.8226729498609,31.268693185250438,114716.63624611919,0,-90")
-  }
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      viewer.flyToPosition(
+        '120.8226729498609,31.268693185250438,114716.63624611919,0,-90'
+      )
+    </script>
+  </body>
 </html>

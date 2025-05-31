@@ -16,3 +16,4 @@ docs/.vitepress/cache
 package-lock.json
 .DS_Store
 .history
+test

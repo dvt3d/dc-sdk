@@ -1,111 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <script src="../dat.gui.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <script src="../dat.gui.min.js"></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
-
-<body>
-
-<div id="viewer-container" class="viewer-container"></div>
-<div class="btn-box">
-  <ul>
-    <li><button onclick="changeType(0)">白天</button></li>
-    <li><button onclick="changeType(1)">黄昏</button></li>
-    <li><button onclick="changeType(2)">夜晚</button></li>
-    <li><button onclick="changeType(3)">默认</button></li>
-  </ul>
-</div>
-<script>
-  let viewer = undefined
-
-  let skyBoxes=[]
-
-  let defaultSkyBox = undefined
-
-  let selectedType =0
-
-  let distance = 40000 // 距离阈值
-
-  function changeType(type){
-    selectedType = type
-  }
-
-  function initSkyBox(){
-    // 添加 skyBox
-    skyBoxes.push(new DC.GroundSkyBox({
-        sources:{
-          positiveX: `../assets/images/sky-box/2/right.png`,
-          negativeX: `../assets/images/sky-box/2/left.png`,
-          positiveY: `../assets/images/sky-box/2/down.png`,
-          negativeY: `../assets/images/sky-box/2/up.png`,
-          positiveZ: `../assets/images/sky-box/2/back.png`,
-          negativeZ: `../assets/images/sky-box/2/front.png`
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <div class="btn-box">
+      <ul>
+        <li><button onclick="changeType(0)">白天</button></li>
+        <li><button onclick="changeType(1)">黄昏</button></li>
+        <li><button onclick="changeType(2)">夜晚</button></li>
+        <li><button onclick="changeType(3)">默认</button></li>
+      </ul>
+    </div>
+    <script>
+      let selectedType = 0
+      let distance = 40000 // 距离阈值
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let defaultSkyBox = viewer.scene.skyBox
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
+          style: 'img',
+          crs: 'WGS84',
         }
-      }),
-      new DC.GroundSkyBox({
-        sources:{
-          positiveX: `../assets/images/sky-box/5/right.png`,
-          negativeX: `../assets/images/sky-box/5/left.png`,
-          positiveY: `../assets/images/sky-box/5/down.png`,
-          negativeY: `../assets/images/sky-box/5/up.png`,
-          positiveZ: `../assets/images/sky-box/5/back.png`,
-          negativeZ: `../assets/images/sky-box/5/front.png`
-        }
-      }),
-      new DC.GroundSkyBox({
-        sources:{
-          positiveX: `../assets/images/sky-box/6/right.jpg`,
-          negativeX: `../assets/images/sky-box/6/left.jpg`,
-          positiveY: `../assets/images/sky-box/6/down.jpg`,
-          negativeY: `../assets/images/sky-box/6/up.jpg`,
-          positiveZ: `../assets/images/sky-box/6/back.jpg`,
-          negativeZ: `../assets/images/sky-box/6/front.jpg`
-        }
-      }),
-      defaultSkyBox
-    )
-  }
+      )
+      viewer.addBaseLayer(baseLayer)
+      // 添加 skyBox
+      let skyBoxes = [
+        new DC.GroundSkyBox({
+          sources: {
+            positiveX: `../assets/images/sky-box/2/right.png`,
+            negativeX: `../assets/images/sky-box/2/left.png`,
+            positiveY: `../assets/images/sky-box/2/down.png`,
+            negativeY: `../assets/images/sky-box/2/up.png`,
+            positiveZ: `../assets/images/sky-box/2/back.png`,
+            negativeZ: `../assets/images/sky-box/2/front.png`,
+          },
+        }),
+        new DC.GroundSkyBox({
+          sources: {
+            positiveX: `../assets/images/sky-box/5/right.png`,
+            negativeX: `../assets/images/sky-box/5/left.png`,
+            positiveY: `../assets/images/sky-box/5/down.png`,
+            negativeY: `../assets/images/sky-box/5/up.png`,
+            positiveZ: `../assets/images/sky-box/5/back.png`,
+            negativeZ: `../assets/images/sky-box/5/front.png`,
+          },
+        }),
+        new DC.GroundSkyBox({
+          sources: {
+            positiveX: `../assets/images/sky-box/6/right.jpg`,
+            negativeX: `../assets/images/sky-box/6/left.jpg`,
+            positiveY: `../assets/images/sky-box/6/down.jpg`,
+            negativeY: `../assets/images/sky-box/6/up.jpg`,
+            positiveZ: `../assets/images/sky-box/6/back.jpg`,
+            negativeZ: `../assets/images/sky-box/6/front.jpg`,
+          },
+        }),
+        defaultSkyBox,
+      ]
 
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    defaultSkyBox = viewer.scene.skyBox
+      viewer.on(DC.SceneEventType.POST_RENDER, () => {
+        if (viewer.cameraPosition.alt < distance) {
+          viewer.setOptions({
+            showSun:false,
+            showAtmosphere: false,
+            skyBox: skyBoxes[selectedType],
+          })
+        } else {
+          viewer.setOptions({
+            showSun:true,
+            showAtmosphere: true,
+            skyBox: defaultSkyBox,
+          })
+        }
+      })
 
-    let baseLayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.AMAP,
-      {
-        style:'img',
-        crs:'WGS84'
+      function changeType(type) {
+        selectedType = type
       }
-    )
-    viewer.addBaseLayer(baseLayer)
-
-    initSkyBox()
-
-
-    viewer.on(DC.SceneEventType.POST_RENDER,()=>{
-      if(viewer.cameraPosition.alt < distance){
-        viewer.setOptions({
-          showAtmosphere:false,
-          skyBox:skyBoxes[selectedType]
-        })
-      }else {
-        viewer.setOptions({
-          showAtmosphere:true,
-          skyBox:defaultSkyBox
-        })
-      }
-    })
-  }
-
-    DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+    </script>
+  </body>
 </html>

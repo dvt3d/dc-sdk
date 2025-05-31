@@ -2,7 +2,7 @@
  * @Author : Caven Chen
  */
 
-import { Cesium } from '../../namespace'
+import { Cesium } from '../../libs'
 import Angle from './type/Angle'
 import Area from './type/Area'
 import AreaHeight from './type/AreaHeight'

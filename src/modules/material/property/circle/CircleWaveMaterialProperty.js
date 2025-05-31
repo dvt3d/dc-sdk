@@ -2,7 +2,7 @@
  * @Author : Caven Chen
  */
 
-import { Cesium } from '../../../../namespace'
+import { Cesium } from '../../../../libs'
 import MaterialProperty from '../../MaterialProperty'
 
 class CircleWaveMaterialProperty extends MaterialProperty {
@@ -30,8 +30,8 @@ class CircleWaveMaterialProperty extends MaterialProperty {
     }
     result.color = Cesium.Property.getValueOrUndefined(this._color, time)
     result.speed = Cesium.Property.getValueOrUndefined(this._speed, time)
-    result.count =  this.count
-    result.gradient = this.gradient
+    result.count = Cesium.Property.getValueOrUndefined(this._count, time)
+    result.gradient = Cesium.Property.getValueOrUndefined(this._gradient, time)
     return result
   }
 
@@ -40,7 +40,9 @@ class CircleWaveMaterialProperty extends MaterialProperty {
       this === other ||
       (other instanceof CircleWaveMaterialProperty &&
         Cesium.Property.equals(this._color, other._color) &&
-        Cesium.Property.equals(this._speed, other._speed))
+        Cesium.Property.equals(this._speed, other._speed) &&
+        Cesium.Property.equals(this._count, other._count) &&
+        Cesium.Property.equals(this._gradient, other._gradient))
     )
   }
 }
@@ -48,6 +50,8 @@ class CircleWaveMaterialProperty extends MaterialProperty {
 Object.defineProperties(CircleWaveMaterialProperty.prototype, {
   color: Cesium.createPropertyDescriptor('color'),
   speed: Cesium.createPropertyDescriptor('speed'),
+  count: Cesium.createPropertyDescriptor('count'),
+  gradient: Cesium.createPropertyDescriptor('gradient'),
 })
 
 export default CircleWaveMaterialProperty

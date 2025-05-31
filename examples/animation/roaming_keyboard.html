@@ -1,66 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <script src="../dat.gui.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <script src="../dat.gui.min.js"></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <div class="info-box">
+      <ul>
+        <li>键盘按键说明</li>
+        <li>W(↑)：前进</li>
+        <li>A(←)：左移</li>
+        <li>S(↓)：后退</li>
+        <li>D(→)：右移</li>
+        <li>SHIFT + W(↑)：抬高</li>
+        <li>SHIFT + S(↓)：降低</li>
+        <li>Q：向左旋转</li>
+        <li>E：向右旋转</li>
+      </ul>
+    </div>
+    <script>
 
-<body>
-<div id="viewer-container" class="viewer-container"></div>
-<div class="info-box">
-  <ul>
-    <li>键盘按键说明</li>
-    <li>W(↑)：前进</li>
-    <li>A(←)：左移</li>
-    <li>S(↓)：后退</li>
-    <li>D(→)：右移</li>
-    <li>SHIFT + W(↑)：抬高</li>
-    <li>SHIFT + S(↓)：降低</li>
-    <li>Q：向左旋转</li>
-    <li>E：向右旋转</li>
-  </ul>
-</div>
-<script>
-  let viewer = undefined
-  let keyboardRoaming = undefined
-
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let  baseLayer = DC.ImageryLayerFactory.createAMapImageryLayer({
-      style:"img",
-      crs:"WGS84"
-    })
-    viewer.addBaseLayer( baseLayer)
-    let layer = new DC.TilesetLayer('layer')
-    viewer.addLayer(layer)
-    let tileset = new DC.Tileset(
-      '//resource.dvgis.cn/data/3dtiles/dayanta/tileset.json'
-    )
-    tileset.setHeight(-420)
-    layer.addOverlay(tileset)
-    viewer.flyTo(tileset)
-    keyboardRoaming = new DC.KeyboardRoaming(viewer)
-    addGuiController() // add controller
-  }
-
-  function addGuiController(){
-    let controls = {
-      enable: false,
-    }
-    let gui = new dat.GUI();
-    gui.add(controls,'enable').onChange(value=>{
-      keyboardRoaming.enable = value
-    })
-  }
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createAMapImageryLayer({
+        style: 'img',
+        crs: 'WGS84',
+      })
+      viewer.addBaseLayer(baseLayer)
+      let layer = new DC.TilesetLayer('layer')
+      viewer.addLayer(layer)
+      let tileset = new DC.Tileset(
+        '//resource.dvgis.cn/data/3dtiles/dayanta/tileset.json'
+      )
+      tileset.setHeight(-420)
+      layer.addOverlay(tileset)
+      viewer.flyTo(tileset)
+      let keyboardRoaming = new DC.KeyboardRoaming(viewer)
+      let controls = {
+        enable: false,
+      }
+      let gui = new dat.GUI()
+      gui.add(controls, 'enable').onChange((value) => {
+        keyboardRoaming.enable = value
+      })
+    </script>
+  </body>
 </html>

@@ -1,7 +1,7 @@
 /**
  * @Author : Caven Chen
  */
-import { Cesium } from '../../namespace'
+import { Cesium } from '../../libs'
 import MouseMode from './MouseMode'
 
 class CameraOption {

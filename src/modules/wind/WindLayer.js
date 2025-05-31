@@ -2,7 +2,7 @@
  * @Author : Caven Chen
  */
 
-import { Cesium } from '../../namespace'
+import { Cesium } from '../../libs'
 import { Layer } from '../layer'
 import State from '../state/State'
 import Field from './Field'

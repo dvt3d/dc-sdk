@@ -1,4 +1,4 @@
-import { Cesium } from '../../namespace'
+import { Cesium } from '../../libs'
 import { Layer } from '../layer'
 import State from '../state/State'
 import { createWebGLHeatmap } from './webgl-heatmap'

@@ -13,34 +13,24 @@
   <body>
     <div id="viewer-container" class="viewer-container"></div>
     <script>
-      let viewer = undefined
-
-      function initViewer() {
-        viewer = new DC.Viewer('viewer-container')
-        let baseLayer = DC.ImageryLayerFactory.createAMapImageryLayer({
-          style: 'img',
-          crs: 'WGS84',
-        })
-        viewer.addBaseLayer(baseLayer)
-        viewer.tooltip.enable = true
-        viewer.on(DC.MouseEventType.MOUSE_MOVE, (e) => {
-          viewer.tooltip.showAt(e.windowPosition, '我是鼠标提示')
-        })
-        addGuiController() // add controller
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createAMapImageryLayer({
+        style: 'img',
+        crs: 'WGS84',
+      })
+      viewer.addBaseLayer(baseLayer)
+      viewer.tooltip.enable = true
+      viewer.on(DC.MouseEventType.MOUSE_MOVE, (e) => {
+        viewer.tooltip.showAt(e.windowPosition, '我是鼠标提示')
+      })
+      let controls = {
+        enable: true,
       }
-
-      function addGuiController() {
-        let controls = {
-          enable: true,
-        }
-        let gui = new dat.GUI()
-        gui.add(controls, 'enable').onChange((value) => {
-          viewer.tooltip.enable = value
-        })
-      }
-      DC.ready({
-        baseUrl: '../libs/dc-sdk/resources/',
-      }).then(initViewer)
+      let gui = new dat.GUI()
+      gui.add(controls, 'enable').onChange((value) => {
+        viewer.tooltip.enable = value
+      })
     </script>
   </body>
 </html>

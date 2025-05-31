@@ -2,7 +2,7 @@
  * @Author : Caven Chen
  */
 
-import { Cesium } from '../../../namespace'
+import { Cesium } from '../../../libs'
 import State from '../../state/State'
 import { Util } from '../../utils'
 import RainShader from '../../material/shader/weather/RainShader.glsl'

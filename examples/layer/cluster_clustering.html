@@ -1,49 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      const generatePosition = (num) => {
+        let list = []
+        for (let i = 0; i < num; i++) {
+          let lng = 120.38105869 + Math.random() * 0.5
+          let lat = 31.10115627 + Math.random() * 0.5
+          list.push({
+            lng,
+            lat,
+            attr: {
+              id: DC.Util.uuid(),
+            },
+          })
+        }
+        return list
+      }
 
-<body>
-
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-  let viewer = undefined
-
-  function generatePosition(num) {
-    let list = []
-    for (let i = 0; i < num; i++) {
-      let lng = 120.38105869 + Math.random() * 0.5
-      let lat = 31.10115627 + Math.random() * 0.5
-      list.push({lng,lat,attr:{
-         id:DC.Util.uuid()
-      }})
-    }
-    return list
-  }
-
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
-    let baseLayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.AMAP)
-    viewer.addBaseLayer( baseLayer)
-    let layer = new DC.ClusterLayer('layer',{
-      image:'../assets/icon/camera.png',
-      style:'cluster'
-    })
-    layer.setPoints(generatePosition(10000))
-    viewer.addLayer(layer)
-    layer.on(DC.MouseEventType.CLICK,e=>{console.log(e.overlay.attr)})
-    viewer.flyToPosition("120.62244801448453,31.358576663788927,92653.79773798586,0,-90,0")
-  }
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP
+      )
+      viewer.addBaseLayer(baseLayer)
+      let layer = new DC.ClusterLayer('layer', {
+        image: '../assets/icon/camera.png',
+        style: 'cluster',
+      })
+      layer.setPoints(generatePosition(10000))
+      viewer.addLayer(layer)
+      layer.on(DC.MouseEventType.CLICK, (e) => {
+        console.log(e.overlay.attr)
+      })
+      viewer.flyToPosition(
+        '120.62244801448453,31.358576663788927,92653.79773798586,0,-90,0'
+      )
+    </script>
+  </body>
 </html>

@@ -12,9 +12,7 @@
   <body>
     <div id="viewer-container" class="viewer-container"></div>
     <script>
-      let viewer = undefined
-
-      function generatePosition(num) {
+      const generatePosition = (num) => {
         let list = []
         for (let i = 0; i < num; i++) {
           let lng = 120.38105869 + Math.random() * 0.5
@@ -31,47 +29,40 @@
         return list
       }
 
-      function initViewer() {
-        viewer = new DC.Viewer('viewer-container')
-        let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
-          DC.ImageryType.AMAP,
-          {
-            style: 'img',
-            crs: 'WGS84',
-          }
-        )
-        viewer.addBaseLayer(baseLayer, {
-          brightness: 0.1,
-        })
-        let layer = new DC.PrimitiveLayer('layer').addTo(viewer)
-        let positions = generatePosition(1000)
-        positions.forEach((item) => {
-          let model = new DC.ModelPrimitive(
-            item,
-            '../assets/data/Cesium_Air.glb'
-          )
-          model.on(DC.ModelEventType.READY, (model) => {
-            model.activeAnimations.add({
-              index: 0,
-              loop: 1,
-              multiplier: 1,
-            })
-            model.activeAnimations.add({
-              index: 1,
-              loop: 1,
-              multiplier: 1,
-            })
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
+          style: 'img',
+          crs: 'WGS84',
+        }
+      )
+      viewer.addBaseLayer(baseLayer, {
+        brightness: 0.1,
+      })
+      let layer = new DC.PrimitiveLayer('layer').addTo(viewer)
+      let positions = generatePosition(100)
+      positions.forEach((item) => {
+        let model = new DC.ModelPrimitive(item, '../assets/data/Cesium_Air.glb')
+        model.on(DC.ModelEventType.READY, (model) => {
+          model.activeAnimations.add({
+            index: 0,
+            loop: 1,
+            multiplier: 1,
           })
-          model.setStyle({ scale: 50 })
-          layer.addOverlay(model)
+          model.activeAnimations.add({
+            index: 1,
+            loop: 1,
+            multiplier: 1,
+          })
         })
-        viewer.flyToPosition(
-          '120.82005120445152,30.903795335982288,60975.10826917929,341.02,-50.29'
-        )
-      }
-      DC.ready({
-        baseUrl: '../libs/dc-sdk/resources/',
-      }).then(initViewer)
+        model.setStyle({ scale: 50 })
+        layer.addOverlay(model)
+      })
+      viewer.flyToPosition(
+        '120.82005120445152,30.903795335982288,60975.10826917929,341.02,-50.29'
+      )
     </script>
   </body>
 </html>

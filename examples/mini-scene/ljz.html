@@ -110,8 +110,8 @@
    })
   }
 
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container')
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
     let  baseLayer = DC.ImageryLayerFactory.createAMapImageryLayer({
       style: 'img',
       crs:'WGS84'
@@ -138,7 +138,5 @@
     globeRotate.start()
   }
 
-    DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
+
 </script>

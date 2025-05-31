@@ -1,76 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
-
-<body>
-
-<div id="viewer-container" class="viewer-container"></div>
-<div class="btn-box">
-  <ul>
-    <li><button onclick="start()">开始</button></li>
-    <li><button onclick="stop()">结束</button></li>
-  </ul>
-</div>
-<script>
-  let viewer = undefined
-  let radarScan = undefined
-
-  function start(){
-    radarScan.start()
-  }
-
-  function stop(){
-    radarScan.stop()
-  }
-
-
-  function initViewer() {
-    viewer = new DC.Viewer('viewer-container').setOptions({
-      globe: {
-        depthTestAgainstTerrain: true
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <div class="btn-box">
+      <ul>
+        <li><button onclick="start()">开始</button></li>
+        <li><button onclick="stop()">结束</button></li>
+      </ul>
+    </div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container').setOptions({
+        globe: {
+          depthTestAgainstTerrain: true,
+        },
+      })
+      let baseLayer = DC.ImageryLayerFactory.createAMapImageryLayer({
+        crs: 'WGS84',
+      })
+      viewer.addBaseLayer(baseLayer, {
+        brightness: 0.1,
+      })
+      let layer = new DC.TilesetLayer('layer')
+      viewer.addLayer(layer)
+      let style = new DC.TilesetStyle()
+      style.color = {
+        conditions: [
+          ['${Height} >= 300', 'rgba(45, 0, 75, 0.5)'],
+          ['${Height} >= 200', 'rgb(102, 71, 151)'],
+          ['${Height} >= 100', 'rgb(170, 162, 204)'],
+          ['${Height} >= 50', 'rgb(224, 226, 238)'],
+          ['${Height} >= 25', 'rgb(252, 230, 200)'],
+          ['${Height} >= 10', 'rgb(248, 176, 87)'],
+          ['${Height} >= 5', 'rgb(198, 106, 11)'],
+          ['true', 'rgb(127, 59, 8)'],
+        ],
       }
-    })
-    let  baseLayer = DC.ImageryLayerFactory.createAMapImageryLayer({
-      crs: 'WGS84'
-    })
-    viewer.addBaseLayer( baseLayer,{
-      brightness:0.1
-    })
-    let layer = new DC.TilesetLayer('layer')
-    viewer.addLayer(layer)
-    let style = new DC.TilesetStyle()
-    style.color = {
-      conditions: [
-        ['${Height} >= 300', 'rgba(45, 0, 75, 0.5)'],
-        ['${Height} >= 200', 'rgb(102, 71, 151)'],
-        ['${Height} >= 100', 'rgb(170, 162, 204)'],
-        ['${Height} >= 50', 'rgb(224, 226, 238)'],
-        ['${Height} >= 25', 'rgb(252, 230, 200)'],
-        ['${Height} >= 10', 'rgb(248, 176, 87)'],
-        ['${Height} >= 5', 'rgb(198, 106, 11)'],
-        ['true', 'rgb(127, 59, 8)']
-      ]
-    }
-    let tileset = new DC.Tileset(
-      'http://resource.dvgis.cn/data/3dtiles/ljz/tileset.json'
-    ).setStyle(style)
-    layer.addOverlay(tileset)
-    radarScan =new DC.RadarScan( viewer,'121.489206,31.241320',1000,{
-      speed: 3
-    })
-    viewer.flyToPosition(new DC.Position(121.491415, 31.208443, 1954.04, 0, -28))
-  }
-  DC.ready({
-    baseUrl:'../libs/dc-sdk/resources/'
-  }).then(initViewer)
-</script>
-</body>
+      let tileset = new DC.Tileset(
+        'http://resource.dvgis.cn/data/3dtiles/ljz/tileset.json'
+      ).setStyle(style)
+      layer.addOverlay(tileset)
+      let radarScan = new DC.RadarScan(viewer, '121.489206,31.241320', 1000, {
+        speed: 3,
+      })
+      viewer.flyToPosition(
+        new DC.Position(121.491415, 31.208443, 1954.04, 0, -28)
+      )
+      function start() {
+        radarScan.start()
+      }
+
+      function stop() {
+        radarScan.stop()
+      }
+    </script>
+  </body>
 </html>
