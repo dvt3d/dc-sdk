@@ -18,7 +18,7 @@ import GlobalsPlugin from 'esbuild-plugin-globals'
 import shell from 'shelljs'
 import chalk from 'chalk'
 
-const cesium_path = './node_modules/cesium/build/Cesium'
+const cesium_path = path.resolve('./node_modules/cesium/build/Cesium')
 
 const packageJson = fse.readJsonSync('./package.json')
 
@@ -179,7 +179,9 @@ async function addCopyright(options) {
  * @returns {Promise<void>}
  */
 async function deleteTempFile() {
-  await gulp.src(['dist/modules-iife.js'], { read: false }).pipe(clean())
+  await gulp
+    .src([path.join('dist', 'modules-iife.js')], { read: false })
+    .pipe(clean())
 }
 
 async function combineJs(options) {
@@ -187,7 +189,10 @@ async function combineJs(options) {
   if (options.iife) {
     await fse.ensureFile(path.join(cesium_path, 'Cesium.js'))
     await gulp
-      .src([path.join(cesium_path, 'Cesium.js'), 'dist/modules-iife.js'])
+      .src([
+        path.join(cesium_path, 'Cesium.js'),
+        path.join('dist', 'modules-iife.js'),
+      ])
       .pipe(concat('dc.min.js'))
       .pipe(gulp.dest('dist'))
       .on('end', () => {
@@ -199,7 +204,7 @@ async function combineJs(options) {
   // combine for node
   if (options.node) {
     await gulp
-      .src('dist/index.js')
+      .src(path.join('dist', 'index.js'))
       .pipe(gulp.dest('dist'))
       .on('end', () => {
         addCopyright(options)
@@ -208,17 +213,17 @@ async function combineJs(options) {
 }
 
 async function copyAssets() {
-  await fse.emptyDir('dist/resources')
+  await fse.emptyDir(path.join('dist', 'resources'))
   for (const dir of ['Assets', 'ThirdParty', 'Workers']) {
     await gulp
       .src(path.join(cesium_path, dir, '**'), { nodir: true })
-      .pipe(gulp.dest(path.join('dist/resources', dir)))
+      .pipe(gulp.dest(path.join('dist', 'resources', dir)))
   }
 }
 
 async function regenerate(option) {
-  await fse.remove('dist/dc.min.js')
-  await fse.remove('dist/dc.min.css')
+  await fse.remove(path.join('dist', 'dc.min.js'))
+  await fse.remove(path.join('dist', 'dc.min.css'))
   await buildModules(option)
   await combineJs(option)
   await buildCSS(option)
