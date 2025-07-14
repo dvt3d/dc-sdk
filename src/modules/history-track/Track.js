@@ -325,17 +325,15 @@ class Track {
       this._positionIndex = 0
     } else if (params?.stopTime && params?.duration) {
       this._duration += params.duration
-      this._timeLine = this._timeLine.map((item) => {
-        if (Cesium.JulianDate.greaterThan(item, params.stopTime)) {
-          item = Cesium.JulianDate.addSeconds(
-            item,
-            params.duration,
-            new Cesium.JulianDate()
-          )
-        }
-        return item
-      })
+      this._timeLine = this._timeLine.map((item) =>
+        Cesium.JulianDate.addSeconds(
+          item,
+          params.duration,
+          new Cesium.JulianDate()
+        )
+      )
     }
+
     this._sampledPosition = new Cesium.SampledPositionProperty()
     this._sampledPosition.addSamples(
       this._timeLine,
@@ -360,9 +358,11 @@ class Track {
         interpolationAlgorithm: Cesium.LagrangePolynomialApproximation,
       })
     }
+
     this._velocityOrientation = new Cesium.VelocityOrientationProperty(
       this._sampledPosition
     )
+
     this._endTime = Cesium.JulianDate.addSeconds(
       this._timeLine[this._timeLine.length - 1],
       this._options.endDelayTime,

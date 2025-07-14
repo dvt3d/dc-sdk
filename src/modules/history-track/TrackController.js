@@ -147,6 +147,7 @@ class TrackController {
 
   /**
    *
+   * @returns {TrackController}
    */
   restore() {
     if (this._state !== State.PAUSE) {
