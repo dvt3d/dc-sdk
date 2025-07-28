@@ -18,7 +18,7 @@ import GlobalsPlugin from 'esbuild-plugin-globals'
 import shell from 'shelljs'
 import chalk from 'chalk'
 
-const cesium_path = path.resolve('./node_modules/cesium/build/Cesium')
+const cesium_path = path.resolve('./node_modules/cesium/Build/Cesium')
 
 const packageJson = fse.readJsonSync('./package.json')
 
