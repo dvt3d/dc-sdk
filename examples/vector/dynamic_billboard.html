@@ -1,57 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
-
-<body>
-
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-  let viewer = undefined
-
-  const  generatePosition = (num) => {
-    let list = []
-    for (let i = 0; i < num; i++) {
-      let lng = 120.65276089+ Math.random() * 0.5
-      let lat = 31.310530293 + Math.random() * 0.5
-      list.push({lng,lat})
-    }
-    return list
-  }
-
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
       DC.config.baseUrl = '../libs/dc-sdk/resources/'
       let viewer = new DC.Viewer('viewer-container')
-    let  baseLayer = DC.ImageryLayerFactory.createAMapImageryLayer({
-      crs:"WGS84"
-    })
-    viewer.addBaseLayer( baseLayer,{
-      brightness:0.1
-    })
-    let layer = new DC.DynamicLayer('layer').addTo(viewer)
-    for(let i = 0; i<50; i++){
-      let billboard = new DC.DynamicBillboard(generatePosition(1)[0],'../assets/icon/poi.png')
-      billboard.size=[79,263]
-      billboard.setStyle({
-        scale:0.5,
+      let baseLayer = DC.ImageryLayerFactory.createAMapImageryLayer({
+        crs: 'WGS84',
       })
-      layer.addOverlay(billboard)
-    }
-    setInterval(()=>{
-      layer.getOverlays().forEach(item=>{
-        item.addPosition(generatePosition(1)[0],10)
+      viewer.addBaseLayer(baseLayer, {
+        brightness: 0.1,
       })
-    },10000)
 
-    viewer.flyTo(layer)
-  }
+      const generatePosition = (num) => {
+        let list = []
+        for (let i = 0; i < num; i++) {
+          let lng = 120.65276089 + Math.random() * 0.5
+          let lat = 31.310530293 + Math.random() * 0.5
+          list.push({ lng, lat })
+        }
+        return list
+      }
+      let layer = new DC.DynamicLayer('layer').addTo(viewer)
+      for (let i = 0; i < 50; i++) {
+        let billboard = new DC.DynamicBillboard(
+          generatePosition(1)[0],
+          '../assets/icon/poi.png'
+        )
+        billboard.size = [79, 263]
+        billboard.setStyle({
+          scale: 0.5,
+        })
+        layer.addOverlay(billboard)
+      }
 
-</script>
-</body>
+      setInterval(() => {
+        layer.getOverlays().forEach((item) => {
+          item.addPosition(generatePosition(1)[0], 10)
+        })
+      }, 10000)
+
+      viewer.flyTo(layer)
+    </script>
+  </body>
 </html>

@@ -64,7 +64,7 @@
     "dist"
   ],
   "dependencies": {
-    "cesium": "^1.131.0",
+    "cesium": "^1.132.0",
     "supercluster": "^8.0.1"
   }
 }

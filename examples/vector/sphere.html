@@ -1,66 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>dc-example</title>
-  <script src='/libs/dc-sdk/dc.min.js'></script>
-  <link href='/libs/dc-sdk/dc.min.css' type='text/css' rel='stylesheet'>
-  <link href='../index.css' type='text/css' rel='stylesheet'>
-</head>
-
-<body>
-
-<div id="viewer-container" class="viewer-container"></div>
-<script>
-       DC.config.baseUrl = '../libs/dc-sdk/resources/'
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
       let viewer = new DC.Viewer('viewer-container')
-    let key = '0f7c1d161d7352116a21aacf0e9f44c1'
-    let baseLayer = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.AMAP,{
-      style:'img',
-      crs:'WGS84'
-    })
-    viewer.addBaseLayer( baseLayer,)
+      let key = '0f7c1d161d7352116a21aacf0e9f44c1'
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
+          style: 'img',
+          crs: 'WGS84',
+        }
+      )
+      viewer.addBaseLayer(baseLayer)
 
-    let layer = new DC.VectorLayer('layer')
-    viewer.addLayer(layer)
+      let layer = new DC.VectorLayer('layer')
+      viewer.addLayer(layer)
 
-    let saturn= new DC.Sphere('-95.0,45.0,300000.0',{x:200000.0, y:200000.0, z:200000.0}).setStyle({
-      material: new DC.Color(0.95, 0.82, 0.49)
-    }).addTo(layer)
+      let saturn = new DC.Sphere('-95.0,45.0,300000.0', {
+        x: 200000.0,
+        y: 200000.0,
+        z: 200000.0,
+      })
+        .setStyle({
+          material: new DC.Color(0.95, 0.82, 0.49),
+        })
+        .addTo(layer)
 
-    let innerRing = new DC.Sphere('-95.0,45.0,300000.0,30,30',{x:400000.0, y:400000.0, z:400000.0}).setStyle({
-      innerRadii:{x:300000.0, y:300000.0, z:300000.0},
-      minimumCone:DC.Math.toRadians(89.8),
-      maximumCone: DC.Math.toRadians(90.2),
-      material: new DC.Color(0.95, 0.82, 0.49,0.5)
-    }).addTo(layer)
+      let innerRing = new DC.Sphere('-95.0,45.0,300000.0,30,30', {
+        x: 400000.0,
+        y: 400000.0,
+        z: 400000.0,
+      })
+        .setStyle({
+          innerRadii: { x: 300000.0, y: 300000.0, z: 300000.0 },
+          minimumCone: DC.Math.toRadians(89.8),
+          maximumCone: DC.Math.toRadians(90.2),
+          material: new DC.Color(0.95, 0.82, 0.49, 0.5),
+        })
+        .addTo(layer)
 
-    let outRing = new DC.Sphere('-95.0,45.0,300000.0,30,30',{x:460000.0, y:460000.0, z:460000.0}).setStyle({
-      innerRadii:{x:415000.0, y:415000.0, z:415000.0},
-      minimumCone:DC.Math.toRadians(89.8),
-      maximumCone: DC.Math.toRadians(90.2),
-      material: new DC.Color(0.95, 0.82, 0.49,0.5)
-    }).addTo(layer)
+      let outRing = new DC.Sphere('-95.0,45.0,300000.0,30,30', {
+        x: 460000.0,
+        y: 460000.0,
+        z: 460000.0,
+      })
+        .setStyle({
+          innerRadii: { x: 415000.0, y: 415000.0, z: 415000.0 },
+          minimumCone: DC.Math.toRadians(89.8),
+          maximumCone: DC.Math.toRadians(90.2),
+          material: new DC.Color(0.95, 0.82, 0.49, 0.5),
+        })
+        .addTo(layer)
 
-    let blueEllipsoid = new DC.Sphere('-120.0, 40.0,',{x:200000.0, y:200000.0, z:200000.0}).setStyle({
-      maximumCone: DC.Math.PI_OVER_TWO,
-      material: DC.Color.BLUE.withAlpha(0.3),
-      outline: true,
-    }).addTo(layer)
+      let blueEllipsoid = new DC.Sphere('-120.0, 40.0,', {
+        x: 200000.0,
+        y: 200000.0,
+        z: 200000.0,
+      })
+        .setStyle({
+          maximumCone: DC.Math.PI_OVER_TWO,
+          material: DC.Color.BLUE.withAlpha(0.3),
+          outline: true,
+        })
+        .addTo(layer)
 
+      let redEllipsoid = new DC.Sphere('-108.0, 40.0', {
+        x: 250000.0,
+        y: 200000.0,
+        z: 150000.0,
+      })
+        .setStyle({
+          innerRadii: { x: 100000.0, y: 80000.0, z: 60000.0 },
+          maximumCone: DC.Math.PI_OVER_TWO,
+          material: DC.Color.RED.withAlpha(0.3),
+          outline: true,
+        })
+        .addTo(layer)
 
-    let redEllipsoid = new DC.Sphere('-108.0, 40.0',{x:250000.0, y:200000.0, z:150000.0}).setStyle({
-      innerRadii:{x:100000.0, y:80000.0, z:60000.0},
-      maximumCone: DC.Math.PI_OVER_TWO,
-      material: DC.Color.RED.withAlpha(0.3),
-      outline: true,
-    }).addTo(layer)
-
-    viewer.flyTo(layer)
-  }
-
-</script>
-</body>
+      viewer.flyTo(layer)
+    </script>
+  </body>
 </html>

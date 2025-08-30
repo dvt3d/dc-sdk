@@ -84,7 +84,7 @@ class Plane extends Overlay {
   }
 
   set distance(distance) {
-    const plane = this.entityGraphic.plane.getValue()
+    const plane = this._delegate.plane
     this._distance = distance
     plane.distance = distance
   }
