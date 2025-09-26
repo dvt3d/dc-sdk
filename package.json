@@ -58,7 +58,7 @@
     "sass": "^1.62.1",
     "shelljs": "^0.8.5",
     "vinyl-sourcemaps-apply": "^0.2.1",
-    "vitepress": "^1.4.1"
+    "vitepress": "^1.6.4"
   },
   "files": [
     "dist"

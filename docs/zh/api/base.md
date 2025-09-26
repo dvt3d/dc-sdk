@@ -32,13 +32,12 @@ global.viewer = viewer // 添加到全局变量
     - `{Object} options`：属性
   - 返回值 `viewer`
 
-```json
+```js
 //属性参数（可选）
-{
+const config = {
   "contextOptions": {
     "webgl": {
-      "alpha": false,
-      //背景
+      "alpha": false, //背景
       "depth": true,
       "stencil": false,
       "antialias": true,
@@ -103,90 +102,48 @@ global.viewer = viewer // 添加到全局变量
     - `{Object} options`：属性对象
       - 返回值 `this`
 
-```json
+```js
 // 属性参数(可选)
-{
-  "shadows": false,
-  // 是否开启阴影
-  "resolutionScale": 1,
-  // 设置渲染分辨率的缩放比例
-  "showAtmosphere": true,
-  //是否显示大气层
-  "showSun": true,
-  //是否显示太阳
-  "showMoon": true,
-  //是否显示月亮
-  "enableFxaa": true,
-  //是否开启抗锯齿
-  "msaaSamples": 1,
-  //msaa抗拒出取样度
-  "cameraController": {
-    // 相机控制
-    "enableRotate": true,
-    // 是否可以旋转
-    "enableTilt": true,
-    // 是否可以翻转
-    "enableTranslate": true,
-    // 是否可以平移
-    "enableZoom": true,
-    // 是否可以缩放
-    "enableCollisionDetection": true,
-    // 是否支持碰撞检测
-    "minimumZoomDistance": 1.0,
-    // 最小缩放距离
-    "maximumZoomDistance": 40489014.0
-    // 最大缩放距离
+const config = {
+  "shadows": false,// 是否开启阴影
+  "resolutionScale": 1,// 设置渲染分辨率的缩放比例
+  "showAtmosphere": true,//是否显示大气层
+  "showSun": true,//是否显示太阳
+  "showMoon": true, //是否显示月亮
+  "enableFxaa": true,//是否开启抗锯齿
+  "msaaSamples": 1,//msaa抗拒出取样度
+  "cameraController": { // 相机控制
+    "enableRotate": true,// 是否可以旋转
+    "enableTilt": true,// 是否可以翻转
+    "enableTranslate": true,// 是否可以平移
+    "enableZoom": true,// 是否可以缩放
+    "enableCollisionDetection": true,// 是否支持碰撞检测
+    "minimumZoomDistance": 1.0,// 最小缩放距离
+    "maximumZoomDistance": 40489014.0// 最大缩放距离
   },
   "globe": {
-    "show": true,
-    // 是否显示地球
-    "showGroundAtmosphere": true,
-    // 显示地面大气
-    "enableLighting": false,
-    //是否开启灯光，开启后地球会根据当前时间启用灯光
-    "depthTestAgainstTerrain": false,
-    //是否开启深度检测
-    "tileCacheSize": 100,
-    // 默认瓦片缓存大小
-    "preloadSiblings": false,
-    //是否应预加载渲染同级图块
-    "terrainExaggeration": 1,
-    //地形夸张系数
-    "terrainExaggerationRelativeHeight": 1,
-    //地形相对高度夸张系数
-    "baseColor": new
-    DC.Color(0,
-    0,
-    0.5,
-    1),
-    //地球默认底色
-    "filterColor": new
-    DC.Color(0,
-    0,
-    0,
-    0),
-    //瓦片过滤色,设置后不可逆
-    "translucency": {
-      //地表透明
-      "enabled": false,
-      // 是否开启地表透明
-      "backFaceAlpha": 1,
-      // 地球背面透明度
-      "backFaceAlphaByDistance": null,
-      //根据距离设置地球背面透明度: {near:400,nearValue:0.2,far:800,farValue:1}
-      "frontFaceAlpha": 1,
-      // 地球正面透明度
-      "frontFaceAlphaByDistance": null
-      //根据距离设置地球正面透明度: {near:400,nearValue:0.2,far:800,farValue:1}
+    "show": true,// 是否显示地球
+    "showGroundAtmosphere": true,// 显示地面大气
+    "enableLighting": false,//是否开启灯光，开启后地球会根据当前时间启用灯光
+    "depthTestAgainstTerrain": false, //是否开启深度测试
+    "tileCacheSize": 100, // 默认瓦片缓存大小
+    "preloadSiblings": false,//是否应预加载渲染同级图块
+    "terrainExaggeration": 1,//地形夸张系数
+    "terrainExaggerationRelativeHeight": 1,//地形相对高度夸张系数
+    "baseColor": new DC.Color(0, 0, 0.5, 1), //地球默认底色
+    "filterColor": newDC.Color(0, 0, 0, 0),//瓦片过滤色,设置后不可逆
+    "translucency": { //地表透明
+      "enabled": false, // 是否开启地表透明
+      "backFaceAlpha": 1,  // 地球背面透明度
+      "backFaceAlphaByDistance": null, //根据距离设置地球背面透明度: {near:400,nearValue:0.2,far:800,farValue:1}
+      "frontFaceAlpha": 1,  // 地球正面透明度
+      "frontFaceAlphaByDistance": null //根据距离设置地球正面透明度: {near:400,nearValue:0.2,far:800,farValue:1}
     }
   },
   "skyBox": {
-    "sources": {},
-    // 六个面的贴图
-    "show": true,
-    //是否显示
-    "offsetAngle": 0
-    //旋转角度
+    "sources": {}, // 六个面的贴图
+    "show": true, //是否显示
+    "offsetAngle": 0 //旋转角度
   }
 }
 ```
@@ -226,13 +183,11 @@ global.viewer = viewer // 添加到全局变量
     - `{Object} options`：属性
   - 返回值 `this`
 
-```json
+```js
 //属性参数 (可选)
-{
-  "name": "电子地图",
-  //名称
-  "iconUrl": "../preview.png"
-  //缩略图
+const options = {
+  "name": "电子地图",//名称
+  "iconUrl": "../preview.png",//缩略图
   "alpha": 1.0,
   "nightAlpha": 1.0,
   "dayAlpha": 1.0,
@@ -452,14 +407,11 @@ popup.setContent('<div></div>')
 - `{String} state`：状态 **_`readonly`_**
 - `{Object} config`：配置 **_`writeOnly`_**
 
-```json
-// 配置（可选）
-// 配置后会影响全局的popup的显示样式，请慎重。
-{
-  "position": "center",
-  // popup的位于鼠标的点击位置的方向,有：center，left ，right
-  "customClass": "custom"
-  // 添加自定义的Css 类名到popup中，多个用空格隔开
+```js
+// 配置（可选),配置后会影响全局的popup的显示样式，请慎重。
+const config = {
+  "position": "center",// popup的位于鼠标的点击位置的方向,有：center，left ，right
+  "customClass": "custom"// 添加自定义的Css 类名到popup中，多个用空格隔开
 }
 ```
 
@@ -753,13 +705,11 @@ scene.skyBox = new DC.SkyBox({
     - `{Object} options`：配置
   - 返回值 `skyBox`
 
-```json
+```js
 //options(可选)
-{
-  "sources": {},
-  // 六个面的贴图
-  "show": true
-  //显示
+const options = {
+  "sources": {},// 六个面的贴图
+  "show": true//显示
 }
 ```
 

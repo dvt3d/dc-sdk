@@ -22,6 +22,7 @@ import '@dvgis/dc-sdk/dist/dc.min.css'
 [下载链接](https://github.com/dvgis/dc-sdk/releases)
 
 ```html
+
 <script src="https://cdn.jsdelivr.net/npm/@dvgis/dc-sdk/dist/dc.min.js"></script>
 <link
   href="https://cdn.jsdelivr.net/npm/@dvgis/dc-sdk/dist/dc.min.css"
@@ -37,6 +38,7 @@ import '@dvgis/dc-sdk/dist/dc.min.css'
 `构建三维容器`
 
 ```html
+
 <div class="viewer-container" id="viewer-container"></div>
 <!-- id属性必须赋值，否则无法创建三维场景 -->
 ```
@@ -44,9 +46,7 @@ import '@dvgis/dc-sdk/dist/dc.min.css'
 `构建三维场景`
 
 ```js
-DC.ready().then(() => {
-  let viewer = new DC.Viewer('viewer-container')
-})
+let viewer = new DC.Viewer('viewer-container')
 ```
 
 `运行效果` [更多示例](http://dc.dvgis.cn/#/examples)
@@ -56,7 +56,9 @@ DC.ready().then(() => {
 
 ## 应用配置
 
-由于 DC 框架将 Cesium 静态资源默认路径设置为 `./libs/dc-sdk/resources/`，这样需将 `Cesium` 相关的静态资源文件: `Assets`、`Workers` 、`ThirdParty` 复制到工程的 `libs/dc-sdk/resources` 目录下以保证三维场景能够正常呈现,也可通过全局函数进行 `Cesium` 相关的静态资源路基设置
+由于 DC 框架将 Cesium 静态资源默认路径设置为 `./libs/dc-sdk/resources/`，这样需将 `Cesium` 相关的静态资源文件: `Assets`、
+`Workers` 、`ThirdParty` 复制到工程的 `libs/dc-sdk/resources` 目录下以保证三维场景能够正常呈现,也可通过全局函数进行
+`Cesium` 相关的静态资源路基设置
 
 > `npm / yarn / pnpm`
 
@@ -143,6 +145,7 @@ npm install @dvgis/vite-plugin-dc
 // vite.config.js
 import { defineConfig } from 'vite'
 import DC from '@dvgis/vite-plugin-dc'
+
 export default defineConfig({
   plugins: [DC()],
 })

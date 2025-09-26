@@ -51,7 +51,7 @@ export default {
             { text: '快速上手', link: '/zh/guide/get-start' },
             { text: '运行环境', link: '/zh/guide/run-env' },
             { text: '架构图', link: '/zh/guide/framework-chart' },
-            { text: '从 2.x 迁移', link: '/zh/guide/from-v2' },
+            { text: '从旧版本迁移', link: '/zh/guide/from-old-version' },
             { text: '技术扩展', link: '/zh/guide/tec-ext' },
           ],
         },
