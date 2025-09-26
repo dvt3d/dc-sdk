@@ -45,9 +45,9 @@ aroundPoint.start()
     - `{Object} options`：options
   - 返回值 `aroundPoint`
 
-```json
-//options（optional）
-{
+```js
+//options（可选）
+const config = {
   "heading": 0, //偏移角度
   "pitch": 0, //翻转角度
   "range": 0, //距离
@@ -79,15 +79,15 @@ aroundView.start()
     - `{Object} options`：options
   - 返回值 `aroundView`
 
-```json
-//options（optional）
-{
-  "heading": 0, //偏移角度
-  "pitch": 0, //俯仰角度
-  "roll": 0, //翻转角度
-  "duration": 0, //间隔，单位：秒，当此值大于0时，callback才会生效
-  "callback": null, //完成回调函数
-  "context": null //回调函数执行上下文
+```js
+//options（可选）
+const options = {
+  "heading": 0,//偏移角度
+  "pitch": 0,//俯仰角度
+  "roll": 0,//翻转角度
+  "duration": 0,//间隔，单位：秒，当此值大于0时，callback才会生效
+  "callback": null,//完成回调函数
+  "context": null//回调函数执行上下文
 }
 ```
 
@@ -114,12 +114,12 @@ flying.start()
     - `{Object} options`：options
   - 返回值 `flying`
 
-```json
-// 属性参数（optional）
-{
-  "loop": false, //是否循环,
-  "dwellTime": 3, //驻留时间
-  "callback": null //回调函数
+```js
+// 属性参数（可选）
+const options = {
+  "loop": false,//是否循环,
+  "dwellTime": 3,//驻留时间
+  "callback": null//回调函数
 }
 ```
 
@@ -158,7 +158,8 @@ flying.start()
 let globeRotate = new DC.GlobeRotate(viewer, {
   duration: 5,
   speed: 1000,
-  callback: () => {},
+  callback: () => {
+  },
 })
 globeRotate.start()
 ```
@@ -177,10 +178,16 @@ globeRotate.start()
 ```json
 //options（optional）
 {
-  "speed": 12 * 1000, //速度
-  "duration": 0, //持续时间,当此值大于0时，callback才会生效
-  "callback": null, //执行完成的回调函数
-  "context": null //回调函数执行上下文
+  "speed": 12
+  *
+  1000,
+  //速度
+  "duration": 0,
+  //持续时间,当此值大于0时，callback才会生效
+  "callback": null,
+  //执行完成的回调函数
+  "context": null
+  //回调函数执行上下文
 }
 ```
 
@@ -256,8 +263,10 @@ let rc = new DC.RoamingController(viewer)
 ```json
 // 漫游参数（可选）
 {
-  "pitch": 0, // 俯仰角
-  "range": 1000 // 距离
+  "pitch": 0,
+  // 俯仰角
+  "range": 1000
+  // 距离
 }
 ```
 
@@ -422,9 +431,12 @@ let tc = new DC.TrackController(viewer)
 ```json
 // 属性参数（可选）
 {
-  "mode": null, // 视角模式：DC.TrackViewMode
-  "pitch": 0, // 俯仰角，第一视角有效
-  "range": 1000 // 距离
+  "mode": null,
+  // 视角模式：DC.TrackViewMode
+  "pitch": 0,
+  // 俯仰角，第一视角有效
+  "range": 1000
+  // 距离
 }
 ```
 
@@ -470,12 +482,18 @@ tc.addTrack(track)
 ```json
 //配置参数（可选）
 {
-  "clampToGround": false, // 是否贴地
-  "clampToTileset": false, // 是否贴物
-  "interpolationType": "Linear", // 插值类型：Linear、Hermite、Lagrange
-  "interpolationDegree": 2, // 插值度数
-  "endDelayTime": 0.5, // 结束时间延长时间，单位:秒，
-  "headingOffset": 0 //旋转偏移
+  "clampToGround": false,
+  // 是否贴地
+  "clampToTileset": false,
+  // 是否贴物
+  "interpolationType": "Linear",
+  // 插值类型：Linear、Hermite、Lagrange
+  "interpolationDegree": 2,
+  // 插值度数
+  "endDelayTime": 0.5,
+  // 结束时间延长时间，单位:秒，
+  "headingOffset": 0
+  //旋转偏移
 }
 ```
 

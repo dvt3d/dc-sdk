@@ -5,16 +5,16 @@
 > 框架全局配置,用于配置资源文件以及AccessToken
 
 ```js
- DC.config.
+ DC.config.baseUrl = "../***/***/"
 ```
 
 - 参数
   - `{Object} config`：配置参数
 - 返回值 `Promise`
 
-```json
+```js
 //属性参数（可选）
-{
+const config = {
   "baseUrl": "<Cesium 静态资源路径，默认值为：“./libs/dc-sdk/resources/” >"
 }
 ```

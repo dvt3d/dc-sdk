@@ -747,15 +747,12 @@ scene.skyBox = new DC.GroundSkyBox({
     - `{Object} options`：配置
   - 返回值 `skyBox`
 
-```json
+```js
 //options(可选)
-{
-  "sources": {},
-  // 六个面的贴图
-  "show": true,
-  //显示
-  "offsetAngle": 0
-  //旋转角度
+const options = {
+  "sources": {},// 六个面的贴图
+  "show": true,//显示
+  "offsetAngle": 0//旋转角度
 }
 ```
 
