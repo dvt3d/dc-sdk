@@ -7,6 +7,7 @@
 ### example
 
 ```html
+
 <div id="viewer-container"></div>
 ```
 
@@ -16,7 +17,8 @@ global.viewer = viewer // 添加到全局变量
 ```
 
 :::warning
-如果开发使用的是 Vue 这样的 MVVM 框架，不要将 viewer、layer、overlay 添加到数据模型中。由于 3D 场景中会不停的刷新每一帧，如果将数据添加到数据模型中，长时间的话会导致浏览器的压力增大而奔溃。
+如果开发使用的是 Vue 这样的 MVVM 框架，不要将 viewer、layer、overlay 添加到数据模型中。由于 3D
+场景中会不停的刷新每一帧，如果将数据添加到数据模型中，长时间的话会导致浏览器的压力增大而奔溃。
 :::
 
 ### creation
@@ -35,7 +37,8 @@ global.viewer = viewer // 添加到全局变量
 {
   "contextOptions": {
     "webgl": {
-      "alpha": false, //背景
+      "alpha": false,
+      //背景
       "depth": true,
       "stencil": false,
       "antialias": true,
@@ -46,11 +49,14 @@ global.viewer = viewer // 添加到全局变量
     },
     "allowTextureFilterAnisotropic": true
   },
-  "sceneMode": 3, //1: 2.5D，2: 2D，3: 3D
-  "enableEventPropagation":false, //是否开启鼠标事件冒泡
-  "enableMouseMovePick":false, // 是否开启鼠标移动拾取功能，开启后当覆盖物较多的情况下，帧率会下降
-  "enableMouseOver":false, //是否开启鼠标移入事件，需要开启鼠标移动拾取功能
-
+  "sceneMode": 3,
+  //1: 2.5D，2: 2D，3: 3D
+  "enableEventPropagation": false,
+  //是否开启鼠标事件冒泡
+  "enableMouseMovePick": false,
+  // 是否开启鼠标移动拾取功能，开启后当覆盖物较多的情况下，帧率会下降
+  "enableMouseOver": false
+  //是否开启鼠标移入事件，需要开启鼠标移动拾取功能
 }
 ```
 
@@ -63,8 +69,10 @@ global.viewer = viewer // 添加到全局变量
 - `{Object} camera`：相机 **_`readonly`_**，详情参考：[Camera](http://resource.dvgis.cn/cesium-docs/Scene.html)
 - `{Element} canvas`：canvas 节点 **_`readonly`_**
 - `{Object} clock`：时钟，详情参考：[Clock](http://resource.dvgis.cn/cesium-docs/Clock.html)
-- `{Object} dataSources`：数据资源集合，详情参考：[DataSourceCollection](http://resource.dvgis.cn/cesium-docs/DataSourceCollection.html)
-- `{Object} imageryLayers`：瓦片集合，详情参考：[ImageryLayerCollection](http://resource.dvgis.cn/cesium-docs/ImageryLayerCollection.html)
+- `{Object} dataSources`
+  ：数据资源集合，详情参考：[DataSourceCollection](http://resource.dvgis.cn/cesium-docs/DataSourceCollection.html)
+- `{Object} imageryLayers`
+  ：瓦片集合，详情参考：[ImageryLayerCollection](http://resource.dvgis.cn/cesium-docs/ImageryLayerCollection.html)
 - `{Object} entities`：实体集合，详情参考：[EntityCollection](http://resource.dvgis.cn/cesium-docs/EntityCollection.html)
 - [`{Popup} popup`](#popup)：气泡窗口 **_`readonly`_**
 - [`{ContextMenu} contextMenu`](#contextmenu)：右击弹框 **_`readonly`_**
@@ -81,6 +89,9 @@ global.viewer = viewer // 添加到全局变量
 - `{Number} resolution`：分辨率 **_`readonly`_**
 - `{Number} zoom`: 当前层级 **_`readonly`_**
 - `{Rect} viewBounds`：视野范围 **_`readonly`_**
+- `{Boolean} enableEventPropagation`: 是否开启鼠标事件冒泡
+- `{Boolean} enableMouseMovePick`: 是否开启鼠标移动拾取功能，开启后当覆盖物较多的情况下，帧率会下降
+- `{Boolean} enableMouseOver`: 是否开启鼠标移入事件，需要开启鼠标移动拾取功能
 
 ### methods
 
@@ -95,47 +106,87 @@ global.viewer = viewer // 添加到全局变量
 ```json
 // 属性参数(可选)
 {
-  "shadows": false, // 是否开启阴影
-  "resolutionScale": 1, // 设置渲染分辨率的缩放比例
-  "showAtmosphere": true, //是否显示大气层
-  "showSun": true, //是否显示太阳
-  "showMoon": true, //是否显示月亮
-  "enableFxaa": true, //是否开启抗锯齿
-  "msaaSamples": 1, //msaa抗拒出取样度
+  "shadows": false,
+  // 是否开启阴影
+  "resolutionScale": 1,
+  // 设置渲染分辨率的缩放比例
+  "showAtmosphere": true,
+  //是否显示大气层
+  "showSun": true,
+  //是否显示太阳
+  "showMoon": true,
+  //是否显示月亮
+  "enableFxaa": true,
+  //是否开启抗锯齿
+  "msaaSamples": 1,
+  //msaa抗拒出取样度
   "cameraController": {
     // 相机控制
-    "enableRotate": true, // 是否可以旋转
-    "enableTilt": true, // 是否可以翻转
-    "enableTranslate": true, // 是否可以平移
-    "enableZoom": true, // 是否可以缩放
-    "enableCollisionDetection": true, // 是否支持碰撞检测
-    "minimumZoomDistance": 1.0, // 最小缩放距离
-    "maximumZoomDistance": 40489014.0 // 最大缩放距离
+    "enableRotate": true,
+    // 是否可以旋转
+    "enableTilt": true,
+    // 是否可以翻转
+    "enableTranslate": true,
+    // 是否可以平移
+    "enableZoom": true,
+    // 是否可以缩放
+    "enableCollisionDetection": true,
+    // 是否支持碰撞检测
+    "minimumZoomDistance": 1.0,
+    // 最小缩放距离
+    "maximumZoomDistance": 40489014.0
+    // 最大缩放距离
   },
   "globe": {
-    "show": true, // 是否显示地球
-    "showGroundAtmosphere": true, // 显示地面大气
-    "enableLighting": false, //是否开启灯光，开启后地球会根据当前时间启用灯光
-    "depthTestAgainstTerrain": false, //是否开启深度检测
-    "tileCacheSize": 100, // 默认瓦片缓存大小
-    "preloadSiblings": false, //是否应预加载渲染同级图块
-    "terrainExaggeration": 1, //地形夸张系数
-    "terrainExaggerationRelativeHeight": 1, //地形相对高度夸张系数
-    "baseColor": new DC.Color(0, 0, 0.5, 1), //地球默认底色
-    "filterColor": new DC.Color(0, 0, 0, 0), //瓦片过滤色,设置后不可逆
+    "show": true,
+    // 是否显示地球
+    "showGroundAtmosphere": true,
+    // 显示地面大气
+    "enableLighting": false,
+    //是否开启灯光，开启后地球会根据当前时间启用灯光
+    "depthTestAgainstTerrain": false,
+    //是否开启深度检测
+    "tileCacheSize": 100,
+    // 默认瓦片缓存大小
+    "preloadSiblings": false,
+    //是否应预加载渲染同级图块
+    "terrainExaggeration": 1,
+    //地形夸张系数
+    "terrainExaggerationRelativeHeight": 1,
+    //地形相对高度夸张系数
+    "baseColor": new
+    DC.Color(0,
+    0,
+    0.5,
+    1),
+    //地球默认底色
+    "filterColor": new
+    DC.Color(0,
+    0,
+    0,
+    0),
+    //瓦片过滤色,设置后不可逆
     "translucency": {
       //地表透明
-      "enabled": false, // 是否开启地表透明
-      "backFaceAlpha": 1, // 地球背面透明度
-      "backFaceAlphaByDistance": null, //根据距离设置地球背面透明度: {near:400,nearValue:0.2,far:800,farValue:1}
-      "frontFaceAlpha": 1, // 地球正面透明度
-      "frontFaceAlphaByDistance": null //根据距离设置地球正面透明度: {near:400,nearValue:0.2,far:800,farValue:1}
+      "enabled": false,
+      // 是否开启地表透明
+      "backFaceAlpha": 1,
+      // 地球背面透明度
+      "backFaceAlphaByDistance": null,
+      //根据距离设置地球背面透明度: {near:400,nearValue:0.2,far:800,farValue:1}
+      "frontFaceAlpha": 1,
+      // 地球正面透明度
+      "frontFaceAlphaByDistance": null
+      //根据距离设置地球正面透明度: {near:400,nearValue:0.2,far:800,farValue:1}
     }
   },
   "skyBox": {
-    "sources": {}, // 六个面的贴图
-    "show": true, //是否显示
-    "offsetAngle": 0 //旋转角度
+    "sources": {},
+    // 六个面的贴图
+    "show": true,
+    //是否显示
+    "offsetAngle": 0
+    //旋转角度
   }
 }
 ```
@@ -178,16 +229,18 @@ global.viewer = viewer // 添加到全局变量
 ```json
 //属性参数 (可选)
 {
-  "name": "电子地图", //名称
-  "iconUrl": "../preview.png" //缩略图
-  "alpha" : 1.0,
-  "nightAlpha" : 1.0,
-  "dayAlpha" : 1.0,
-  "brightness" : 1.0,
-  "contrast" : 1.0,
-  "hue" : 1.0,
-  "saturation" : 1.0,
-  "gamma" : 1.0,
+  "name": "电子地图",
+  //名称
+  "iconUrl": "../preview.png"
+  //缩略图
+  "alpha": 1.0,
+  "nightAlpha": 1.0,
+  "dayAlpha": 1.0,
+  "brightness": 1.0,
+  "contrast": 1.0,
+  "hue": 1.0,
+  "saturation": 1.0,
+  "gamma": 1.0
 }
 ```
 
@@ -403,8 +456,10 @@ popup.setContent('<div></div>')
 // 配置（可选）
 // 配置后会影响全局的popup的显示样式，请慎重。
 {
-  "position": "center", // popup的位于鼠标的点击位置的方向,有：center，left ，right
-  "customClass": "custom" // 添加自定义的Css 类名到popup中，多个用空格隔开
+  "position": "center",
+  // popup的位于鼠标的点击位置的方向,有：center，left ，right
+  "customClass": "custom"
+  // 添加自定义的Css 类名到popup中，多个用空格隔开
 }
 ```
 
@@ -461,7 +516,8 @@ contextMenu.enable = true
 contextMenu.DEFAULT_MENU = [
   {
     label: '测试',
-    callback: (e) => {}, // e是一个对象主要包括 windowPosition,position,surfacePosition,overlay
+    callback: (e) => {
+    }, // e是一个对象主要包括 windowPosition,position,surfacePosition,overlay
     context: this,
   },
 ] // 设置默认的右击菜单，会影响全局右击菜单(慎用)。
@@ -700,8 +756,10 @@ scene.skyBox = new DC.SkyBox({
 ```json
 //options(可选)
 {
-  "sources": {}, // 六个面的贴图
-  "show": true //显示
+  "sources": {},
+  // 六个面的贴图
+  "show": true
+  //显示
 }
 ```
 
@@ -742,9 +800,12 @@ scene.skyBox = new DC.GroundSkyBox({
 ```json
 //options(可选)
 {
-  "sources": {}, // 六个面的贴图
-  "show": true, //显示
-  "offsetAngle": 0 //旋转角度
+  "sources": {},
+  // 六个面的贴图
+  "show": true,
+  //显示
+  "offsetAngle": 0
+  //旋转角度
 }
 ```
 
