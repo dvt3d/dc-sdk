@@ -172,12 +172,10 @@ class ViewerOption {
     if (Object.keys(options).length === 0) {
       return this
     }
-
     this._options = {
       ...this._options,
       ...options,
     }
-
     this._setViewerOption()
       ._setCanvasOption()
       ._setSceneOption()

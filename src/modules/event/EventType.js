@@ -9,7 +9,7 @@ const BaseEventType = {
   REMOVE: 'remove',
 }
 
-const MouseEventType = {
+const BaseMouseEventType = {
   LEFT_DOWN: Cesium.ScreenSpaceEventType.LEFT_DOWN,
   LEFT_UP: Cesium.ScreenSpaceEventType.LEFT_UP,
   CLICK: Cesium.ScreenSpaceEventType.LEFT_CLICK,
@@ -17,6 +17,10 @@ const MouseEventType = {
   RIGHT_UP: Cesium.ScreenSpaceEventType.RIGHT_UP,
   RIGHT_CLICK: Cesium.ScreenSpaceEventType.RIGHT_CLICK,
   DB_CLICK: Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK,
+}
+
+const MouseEventType = {
+  ...BaseMouseEventType,
   MOUSE_MOVE: Cesium.ScreenSpaceEventType.MOUSE_MOVE,
   WHEEL: Cesium.ScreenSpaceEventType.WHEEL,
   MOUSE_OVER: 'mouseover',
@@ -24,19 +28,13 @@ const MouseEventType = {
 }
 
 const ViewerEventType = {
+  ...BaseMouseEventType,
+  MOUSE_MOVE: Cesium.ScreenSpaceEventType.MOUSE_MOVE,
+  WHEEL: Cesium.ScreenSpaceEventType.WHEEL,
   ADD_LAYER: 'addLayer',
   REMOVE_LAYER: 'removeLayer',
   ADD_EFFECT: 'addEffect',
   REMOVE_EFFECT: 'removeEffect',
-  LEFT_DOWN: Cesium.ScreenSpaceEventType.LEFT_DOWN,
-  LEFT_UP: Cesium.ScreenSpaceEventType.LEFT_UP,
-  CLICK: Cesium.ScreenSpaceEventType.LEFT_CLICK,
-  RIGHT_DOWN: Cesium.ScreenSpaceEventType.RIGHT_DOWN,
-  RIGHT_UP: Cesium.ScreenSpaceEventType.RIGHT_UP,
-  RIGHT_CLICK: Cesium.ScreenSpaceEventType.RIGHT_CLICK,
-  DB_CLICK: Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK,
-  MOUSE_MOVE: Cesium.ScreenSpaceEventType.MOUSE_MOVE,
-  WHEEL: Cesium.ScreenSpaceEventType.WHEEL,
 }
 
 const SceneEventType = {
@@ -53,14 +51,7 @@ const SceneEventType = {
 
 const OverlayEventType = {
   ...BaseEventType,
-  LEFT_DOWN: Cesium.ScreenSpaceEventType.LEFT_DOWN,
-  LEFT_UP: Cesium.ScreenSpaceEventType.LEFT_UP,
-  CLICK: Cesium.ScreenSpaceEventType.LEFT_CLICK,
-  RIGHT_DOWN: Cesium.ScreenSpaceEventType.RIGHT_DOWN,
-  RIGHT_UP: Cesium.ScreenSpaceEventType.RIGHT_UP,
-  RIGHT_CLICK: Cesium.ScreenSpaceEventType.RIGHT_CLICK,
-  DB_CLICK: Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK,
-  MOUSE_MOVE: Cesium.ScreenSpaceEventType.MOUSE_MOVE,
+  ...BaseMouseEventType,
   MOUSE_OVER: 'mouseover',
   MOUSE_OUT: 'mouseout',
   POSITION_UPDATE: 'positionUpdate',
@@ -85,13 +76,7 @@ const LayerGroupEventType = BaseEventType
 
 const LayerEventType = {
   ...BaseEventType,
-  LEFT_DOWN: Cesium.ScreenSpaceEventType.LEFT_DOWN,
-  LEFT_UP: Cesium.ScreenSpaceEventType.LEFT_UP,
-  CLICK: Cesium.ScreenSpaceEventType.LEFT_CLICK,
-  RIGHT_DOWN: Cesium.ScreenSpaceEventType.RIGHT_DOWN,
-  RIGHT_UP: Cesium.ScreenSpaceEventType.RIGHT_UP,
-  RIGHT_CLICK: Cesium.ScreenSpaceEventType.RIGHT_CLICK,
-  DB_CLICK: Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK,
+  ...BaseMouseEventType,
 }
 
 const TrackEventType = {

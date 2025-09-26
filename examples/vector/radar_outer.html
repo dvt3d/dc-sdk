@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>dc-example</title>
+  <script src="/libs/dc-sdk/dc.min.js"></script>
+  <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+  <link href="../index.css" type="text/css" rel="stylesheet" />
+</head>
+
+<body>
+<div id="viewer-container" class="viewer-container"></div>
+<script>
+
+  DC.config.baseUrl = '../libs/dc-sdk/resources/'
+  let viewer = new DC.Viewer('viewer-container')
+  let baseLayer = DC.ImageryLayerFactory.createAMapImageryLayer({
+    style: 'img',
+    crs: 'WGS84'
+  })
+  viewer.addBaseLayer(baseLayer)
+  let layer = new DC.VectorLayer('layer')
+  viewer.addLayer(layer)
+  let redCylinder = new DC.Cylinder('120.1,32,10000', 20000, 5000, 0)
+  redCylinder.setStyle({
+    material: new DC.RadarOuterMaterialProperty({
+      color: DC.Color.RED
+    })
+  })
+  let greenCylinder = new DC.Cylinder('120.3, 32.0,10000', 20000, 0, 5000)
+  greenCylinder.setStyle({
+    material: new DC.RadarOuterMaterialProperty({
+      color: DC.Color.GREEN
+    })
+  })
+  let blueCylinder = new DC.Cylinder('120.5, 32.0,10000', 20000, 5000, 0)
+  blueCylinder.setStyle({
+    material: new DC.RadarOuterMaterialProperty(
+      {
+        color: DC.Color.BLUE
+      }
+    )
+  })
+  layer
+    .addOverlay(redCylinder)
+    .addOverlay(greenCylinder)
+    .addOverlay(blueCylinder)
+  viewer.flyTo(layer)
+</script>
+</body>
+</html>

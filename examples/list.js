@@ -392,6 +392,10 @@ const EXAMPLE_LIST = [
         page: 'radar_wave.html',
       },
       {
+        name: '雷达脉冲',
+        page: 'radar_outer.html',
+      },
+      {
         name: '墙',
         page: 'wall.html',
       },
@@ -522,6 +526,10 @@ const EXAMPLE_LIST = [
       {
         name: '3dtiles-osgb',
         page: '3dtiles_osgb.html',
+      },
+      {
+        name: '3dtiles-3dgs',
+        page: '3dtiles_3dgs.html',
       },
       {
         name: '3dtiles-shp',

@@ -14,7 +14,13 @@ class Polyline extends Overlay {
   constructor(positions) {
     super()
     this._positions = Parse.parsePositions(positions)
-    this._delegate = new Cesium.Entity({ polyline: {} })
+    this._delegate = new Cesium.Entity({
+      polyline: {
+        positions: new Cesium.CallbackProperty(() => {
+          return Transform.transformWGS84ArrayToCartesianArray(this._positions)
+        }, false),
+      },
+    })
     this._state = State.INITIALIZED
   }
 
@@ -24,8 +30,6 @@ class Polyline extends Overlay {
 
   set positions(positions) {
     this._positions = Parse.parsePositions(positions)
-    this._delegate.polyline.positions =
-      Transform.transformWGS84ArrayToCartesianArray(this._positions)
   }
 
   get positions() {

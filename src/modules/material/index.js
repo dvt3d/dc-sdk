@@ -46,6 +46,7 @@ export { default as PolylineTrailMaterialProperty } from './property/polyline/Po
  * radar material property
  */
 export { default as RadarLineMaterialProperty } from './property/radar/RadarLineMaterialProperty'
+export { default as RadarOuterMaterialProperty } from './property/radar/RadarOuterMaterialProperty'
 export { default as RadarSweepMaterialProperty } from './property/radar/RadarSweepMaterialProperty'
 export { default as RadarWaveMaterialProperty } from './property/radar/RadarWaveMaterialProperty'
 

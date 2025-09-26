@@ -52,19 +52,21 @@ class Viewer {
             ...DEF_OPTS,
             ...options,
           }) // Initialize the viewer
-
-    this._delegate.canvas.parentNode.className = 'viewer-canvas'
+    this._delegate.canvas.parentNode.className = 'viewer-canvas' //re-name the default class
 
     /**
      *  Registers events
      */
-    new MouseEvent(this, options) // Register global mouse events
+    this._mouseEvent = new MouseEvent(this, options) // Register global mouse events
     this._viewerEvent = new ViewerEvent() // Register viewer events
     this._sceneEvent = new SceneEvent(this) // Register scene events
-
     this._viewerOption = new ViewerOption(this) // Initialize the viewer option
     this._cameraOption = new CameraOption(this) // Initialize the camera option
 
+    /**
+     * Registers Container
+     *
+     */
     this._widgetContainer = DomUtil.create(
       'div',
       'viewer-widgets',
@@ -214,6 +216,30 @@ class Viewer {
     let C = 91610.74
     let D = -40467.74
     return Math.round(D + (A - D) / (1 + Math.pow(height / C, B)))
+  }
+
+  set enableEventPropagation(enableEventPropagation) {
+    this._mouseEvent.enableEventPropagation = enableEventPropagation
+  }
+
+  get enableEventPropagation() {
+    return this._mouseEvent.enableEventPropagation
+  }
+
+  set enableMouseOver(enableMouseOver) {
+    this._mouseEvent.enableMouseOver = enableMouseOver
+  }
+
+  get enableMouseOver() {
+    return this._mouseEvent.enableMouseOver
+  }
+
+  set enableMouseMovePick(enableMouseMovePick) {
+    this._mouseEvent.enableMouseMovePick = enableMouseMovePick
+  }
+
+  get enableMouseMovePick() {
+    return this._mouseEvent.enableMouseMovePick
   }
 
   /**

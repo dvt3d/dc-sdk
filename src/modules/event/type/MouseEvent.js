@@ -21,6 +21,30 @@ class MouseEvent extends Event {
     this._addDefaultEvent()
   }
 
+  set enableEventPropagation(enableEventPropagation) {
+    this._enableEventPropagation = enableEventPropagation
+  }
+
+  get enableEventPropagation() {
+    return this._enableEventPropagation
+  }
+
+  set enableMouseOver(enableMouseOver) {
+    this._enableMouseOver = enableMouseOver
+  }
+
+  get enableMouseOver() {
+    return this._enableMouseOver
+  }
+
+  set enableMouseMovePick(enableMouseMovePick) {
+    this._enableMouseMovePick = enableMouseMovePick
+  }
+
+  get enableMouseMovePick() {
+    return this._enableMouseMovePick
+  }
+
   /**
    *
    * @private
@@ -68,56 +92,55 @@ class MouseEvent extends Event {
 
   /**
    *
-   * @param {*} position
+   * @param {*} windowPosition
    * @returns
    */
-  _getMousePosition(position) {
+  _getMousePosition(windowPosition) {
     let scene = this._viewer.scene
-    let cartesian = undefined
-    let surfaceCartesian = undefined
+    let position = undefined
     let wgs84Position = undefined
+    let surfacePosition = undefined
     let wgs84SurfacePosition = undefined
-    if (scene.pickPositionSupported) {
-      cartesian = scene.pickPosition(position)
-    }
-    if (cartesian) {
+
+    const cartesianToWGS84 = (cartesian) => {
+      if (!cartesian) {
+        return undefined
+      }
       let c = Cesium.Ellipsoid.WGS84.cartesianToCartographic(cartesian)
-      if (c) {
-        wgs84Position = {
-          lng: Cesium.Math.toDegrees(c.longitude),
-          lat: Cesium.Math.toDegrees(c.latitude),
-          alt: c.height,
-        }
+      if (!c) {
+        return undefined
+      }
+      return {
+        lng: Cesium.Math.toDegrees(c.longitude),
+        lat: Cesium.Math.toDegrees(c.latitude),
+        alt: c.height,
       }
     }
+
+    if (scene.pickPositionSupported) {
+      position = scene.pickPosition(windowPosition)
+      wgs84Position = cartesianToWGS84(position)
+    }
+
     if (
       scene.mode === Cesium.SceneMode.SCENE3D &&
       !(this._viewer.terrainProvider instanceof Cesium.EllipsoidTerrainProvider)
     ) {
-      let ray = scene.camera.getPickRay(position)
-      surfaceCartesian = scene.globe.pick(ray, scene)
+      let ray = scene.camera.getPickRay(windowPosition)
+      surfacePosition = scene.globe.pick(ray, scene)
     } else {
-      surfaceCartesian = scene.camera.pickEllipsoid(
-        position,
+      surfacePosition = scene.camera.pickEllipsoid(
+        windowPosition,
         Cesium.Ellipsoid.WGS84
       )
     }
-    if (surfaceCartesian) {
-      let c = Cesium.Ellipsoid.WGS84.cartesianToCartographic(surfaceCartesian)
-      if (c) {
-        wgs84SurfacePosition = {
-          lng: Cesium.Math.toDegrees(c.longitude),
-          lat: Cesium.Math.toDegrees(c.latitude),
-          alt: c.height,
-        }
-      }
-    }
+    wgs84SurfacePosition = cartesianToWGS84(surfacePosition)
     return {
-      windowPosition: position,
-      position: cartesian,
-      wgs84Position: wgs84Position,
-      surfacePosition: surfaceCartesian,
-      wgs84SurfacePosition: wgs84SurfacePosition,
+      windowPosition,
+      position,
+      wgs84Position,
+      surfacePosition,
+      wgs84SurfacePosition,
     }
   }
 
@@ -137,52 +160,49 @@ class MouseEvent extends Event {
 
   /**
    * Gets the drill pick overlays for the mouse event
-   * @param position
-   * @returns {[]}
+   * @param windowPosition
+   * @param exclude
+   * @returns {*[]}
    * @private
    */
-  _getDrillInfos(position) {
+  _getDrillInfos(windowPosition, exclude) {
     let drillInfos = []
-    let scene = this._viewer.scene
-    let targets = scene.drillPick(position)
-    if (targets && targets.length) {
-      targets.forEach((target) => {
-        drillInfos.push(this._getTargetInfo(target))
-      })
+    const scene = this._viewer.scene
+    const targets = scene.drillPick(windowPosition) || []
+    for (const target of targets) {
+      const targetInfo = this._getTargetInfo(target)
+      if (targetInfo?.overlay?.overlayId !== exclude.overlayId) {
+        drillInfos.push(targetInfo)
+      }
     }
     return drillInfos
   }
 
   /**
-   * Return the Overlay id
+   *
    * @param target
-   * @returns {any}
+   * @returns {{overlayId: (function(): Overlay._id)|*, layerId: (function(): Layer._id)|string|*, object: undefined, feature: undefined}}
    * @private
    */
-  _getOverlayId(target) {
-    let overlayId = undefined
-
-    // for Entity
+  _getTargetObject(target) {
+    let feature = null
+    let object = null
     if (target?.id instanceof Cesium.Entity) {
-      overlayId = target.id.overlayId
+      object = target.id
+    } else if (target instanceof Cesium.Cesium3DTileFeature) {
+      object = target.tileset
+      feature = target
+    } else if (target?.primitive instanceof Cesium.Cesium3DTileset) {
+      object = target.primitive
+    } else if (target?.primitive) {
+      object = target.primitive
     }
-
-    // for Cesium3DTileFeature
-    else if (target instanceof Cesium.Cesium3DTileFeature) {
-      overlayId = target.tileset.overlayId
+    return {
+      overlayId: object?.overlayId,
+      layerId: object?.layerId,
+      object,
+      feature,
     }
-
-    // for Cesium3DTileset
-    else if (target?.primitive instanceof Cesium.Cesium3DTileset) {
-      overlayId = target.primitive.overlayId
-    }
-
-    // for Primitive
-    else if (target?.primitive) {
-      overlayId = target.primitive.overlayId
-    }
-
-    return overlayId
   }
 
   /**
@@ -192,57 +212,19 @@ class MouseEvent extends Event {
    * @private
    */
   _getTargetInfo(target) {
-    let overlay = undefined
-    let layer = undefined
-    let feature = undefined
-
-    // for Entity
-    if (target?.id instanceof Cesium.Entity) {
-      layer = this._viewer
-        .getLayers()
-        .filter((item) => item.layerId === target.id.layerId)[0]
-      if (layer?.getOverlay) {
-        overlay = layer.getOverlay(target.id.overlayId)
+    const { overlayId, layerId, feature } = this._getTargetObject(target)
+    const layers = this._viewer.getLayers()
+    const layer = layerId
+      ? layers.find((item) => item.layerId === layerId)
+      : null
+    const overlay =
+      overlayId && layer?.getOverlay ? layer.getOverlay(overlayId) : null
+    if (overlay && feature?.getPropertyNames) {
+      let propertyNames = feature.getPropertyNames() || []
+      for (const propertyName of propertyNames) {
+        overlay.attr[propertyName] = feature.getProperty(propertyName)
       }
     }
-
-    // for Cesium3DTileFeature
-    else if (target instanceof Cesium.Cesium3DTileFeature) {
-      layer = this._viewer
-        .getLayers()
-        .filter((item) => item.layerId === target.tileset.layerId)[0]
-      feature = target
-      if (layer?.getOverlay) {
-        overlay = layer.getOverlay(target.tileset.overlayId)
-        if (feature && feature.getPropertyNames) {
-          let propertyNames = feature.getPropertyNames()
-          propertyNames.forEach((item) => {
-            overlay.attr[item] = feature.getProperty(item)
-          })
-        }
-      }
-    }
-
-    // for Cesium3DTileset
-    else if (target?.primitive instanceof Cesium.Cesium3DTileset) {
-      layer = this._viewer
-        .getLayers()
-        .filter((item) => item.layerId === target.primitive.layerId)[0]
-      if (layer?.getOverlay) {
-        overlay = layer.getOverlay(target.primitive.overlayId)
-      }
-    }
-
-    // for Primitive
-    else if (target?.primitive) {
-      layer = this._viewer
-        .getLayers()
-        .filter((item) => item.layerId === target.primitive.layerId)[0]
-      if (layer?.getOverlay) {
-        overlay = layer.getOverlay(target.primitive.overlayId)
-      }
-    }
-
     return {
       layer: layer,
       overlay: overlay,
@@ -258,79 +240,42 @@ class MouseEvent extends Event {
    * @private
    */
   _raiseEvent(type, mouseInfo = {}) {
-    let event = undefined
-    let targetInfo = this._getTargetInfo(mouseInfo.target)
-    let overlay = targetInfo?.overlay
-    let layer = targetInfo?.layer
+    const targetInfo = this._getTargetInfo(mouseInfo.target) || {}
+    const { overlay, layer } = targetInfo
 
-    // get Overlay Event
-    if (overlay?.overlayEvent) {
-      event = overlay.overlayEvent.getEvent(type)
-      event &&
-        event.numberOfListeners > 0 &&
-        event.raiseEvent({
-          ...targetInfo,
-          ...mouseInfo,
-        })
+    const doRaise = (eventHost, payload) => {
+      if (!eventHost || typeof eventHost.getEvent !== 'function') return false
+      const event = eventHost.getEvent(type)
+      if (!event || event.numberOfListeners <= 0) return false
+      event.raiseEvent(payload)
+      return true
     }
 
-    // get Layer Event
-    if (
-      (!event || event.numberOfListeners === 0 || this._eventPropagation) &&
-      layer?.layerEvent
-    ) {
-      event = layer.layerEvent.getEvent(type)
-      event &&
-        event.numberOfListeners > 0 &&
-        event.raiseEvent({
-          ...targetInfo,
-          ...mouseInfo,
-        })
-    }
-
-    // get Viewer Event
-    if (
-      (!event ||
-        event.numberOfListeners === 0 ||
-        this._enableEventPropagation) &&
-      this._viewer?.viewerEvent
-    ) {
-      event = this._viewer.viewerEvent.getEvent(type)
-      event &&
-        event.numberOfListeners > 0 &&
-        event.raiseEvent({
-          ...targetInfo,
-          ...mouseInfo,
-        })
-    }
-
-    // get Drill Pick Event
+    // raise event for overlay
+    const eventParams = { ...targetInfo, ...mouseInfo }
+    let handled = doRaise(overlay?.overlayEvent, eventParams)
     if (overlay?.allowDrillPicking) {
-      let drillInfos = this._getDrillInfos(mouseInfo.windowPosition)
-      drillInfos.forEach((drillInfo) => {
-        let dillOverlay = drillInfo?.overlay
-        let dillLayer = drillInfo?.layer
-        if (
-          dillOverlay?.overlayId !== overlay.overlayId &&
-          dillOverlay?.overlayEvent
-        ) {
-          // get Overlay Event
-          event = dillOverlay.overlayEvent.getEvent(type)
-          // get Layer Event
-          if (
-            (!event || event.numberOfListeners === 0) &&
-            dillLayer?.layerEvent
-          ) {
-            event = dillLayer.layerEvent.getEvent(type)
-          }
-          event &&
-            event.numberOfListeners > 0 &&
-            event.raiseEvent({
-              ...drillInfo,
-              ...mouseInfo,
-            })
+      const drillInfos =
+        this._getDrillInfos(mouseInfo.windowPosition, overlay) || []
+      for (const drillInfo of drillInfos) {
+        const dOverlay = drillInfo?.overlay
+        const dLayer = drillInfo?.layer
+        const drillEventParams = { ...drillInfo, ...mouseInfo }
+        let dHandled = doRaise(dOverlay.overlayEvent, drillEventParams)
+        if (!dHandled) {
+          doRaise(dLayer?.layerEvent, drillEventParams)
         }
-      })
+      }
+    }
+
+    // raise event for layer
+    if (!handled || this._enableEventPropagation) {
+      handled = doRaise(layer?.layerEvent, eventParams)
+    }
+
+    // raise event for viewer
+    if (!handled || this._enableEventPropagation) {
+      doRaise(this._viewer?.viewerEvent, eventParams)
     }
   }
 
@@ -398,13 +343,13 @@ class MouseEvent extends Event {
         ? 'pointer'
         : 'default'
       this._raiseEvent(MouseEventType.MOUSE_MOVE, mouseInfo)
-      // add event for overlay
       if (this._enableMouseOver) {
         if (
           !this._selected ||
-          this._getOverlayId(this._selected.target) !==
-            this._getOverlayId(mouseInfo.target)
+          this._getTargetObject(this._selected.target).overlayId !==
+            this._getTargetObject(mouseInfo.target).overlayId
         ) {
+          // add event for overlay
           this._raiseEvent(MouseEventType.MOUSE_OUT, this._selected)
           this._raiseEvent(MouseEventType.MOUSE_OVER, mouseInfo)
           this._selected = mouseInfo
@@ -439,6 +384,9 @@ class MouseEvent extends Event {
    * @private
    */
   _leftUpHandler(movement) {
+    if (!movement?.position) {
+      return false
+    }
     this._raiseEvent(
       MouseEventType.LEFT_UP,
       this._getMouseInfo(movement.position)
@@ -466,6 +414,9 @@ class MouseEvent extends Event {
    * @private
    */
   _rightUpHandler(movement) {
+    if (!movement?.position) {
+      return false
+    }
     this._raiseEvent(
       MouseEventType.RIGHT_UP,
       this._getMouseInfo(movement.position)

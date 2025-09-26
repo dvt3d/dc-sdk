@@ -6,6 +6,7 @@ import { Cesium } from '../../../libs'
 import RadarLineMaterial from '../shader/radar/RadarLineMaterial.glsl'
 import RadarSweepMaterial from '../shader/radar/RadarSweepMaterial.glsl'
 import RadarWaveMaterial from '../shader/radar/RadarWaveMaterial.glsl'
+import RadarOuterMaterial from '../shader/radar/RadarOuterMaterial.glsl'
 
 /**
  * RadarLine
@@ -58,6 +59,27 @@ Cesium.Material._materialCache.addMaterial(Cesium.Material.RadarWaveType, {
       speed: 3.0,
     },
     source: RadarWaveMaterial,
+  },
+  translucent: function (material) {
+    return true
+  },
+})
+
+/**
+ * RadarOuter
+ * @type {string}
+ */
+Cesium.Material.RadarOuterType = 'RadarOuter'
+Cesium.Material._materialCache.addMaterial(Cesium.Material.RadarOuterType, {
+  fabric: {
+    type: Cesium.Material.RadarOuterType,
+    uniforms: {
+      color: new Cesium.Color(1.0, 0.0, 0.0, 0.7),
+      speed: 3.0,
+      repeat: 30.0,
+      thickness: 0.3,
+    },
+    source: RadarOuterMaterial,
   },
   translucent: function (material) {
     return true
