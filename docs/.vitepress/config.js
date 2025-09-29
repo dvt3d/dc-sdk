@@ -16,7 +16,7 @@ export default defineConfig({
     },
     socialLinks: [{ icon: 'github', link: 'https://github.com/dvgis/dc-sdk' }],
     footer: {
-      copyright: '版权所有 © 2019 - 2023 数字视界科技(Digital Visual)',
+      copyright: '版权所有 © 2019 - 2025 数字视界科技(Digital Visual)',
     },
   },
 })
