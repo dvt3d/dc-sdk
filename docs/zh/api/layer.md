@@ -373,7 +373,8 @@ layer.eachOverlay((item) => {
   - 参数
     - `{String} id`：图层唯一标识
     - `{String} url`：数据地址
-    - `{Object} options`：属性配置，详情参考：[GeoJsonDataSource](http://resource.dvgis.cn/cesium-docs/GeoJsonDataSource.html)
+    - `{Object} options`
+      ：属性配置，详情参考：[GeoJsonDataSource](http://resource.dvgis.cn/cesium-docs/GeoJsonDataSource.html)
   - 返回值 `geoJsonLayer`
 
 ### methods
@@ -428,7 +429,8 @@ layer.eachOverlay((item) => {
   - 参数
     - `{String} id`：图层唯一标识
     - `{String} url`：数据地址
-    - `{Object} options`：属性配置，详情参考：[GeoJsonDataSource](http://resource.dvgis.cn/cesium-docs/GeoJsonDataSource.html)
+    - `{Object} options`
+      ：属性配置，详情参考：[GeoJsonDataSource](http://resource.dvgis.cn/cesium-docs/GeoJsonDataSource.html)
   - 返回值 `topoJsonLayer`
 
 ### methods
@@ -579,8 +581,8 @@ viewer.addLayer(layer)
   - 返回值 `clusterLayer`
 
 ```js
-// 属性参数(可选)
-{
+// options(属性可选)
+const options = {
   "radius": 40,//像素范围
   "maxZoom": 25,
   "image": "<单个点图片地址>",
@@ -592,11 +594,12 @@ viewer.addLayer(layer)
     "0.1": DC.Color.RED
   },//幅度颜色设置
   "gradientImages": {},//幅度图片设置，仅当style为custom有效
-  "clusterSize":16//集合图标尺寸
-  "fontSize": 12,
-  // 字体大小
-  "fontColor": DC.Color.BLACK //字体颜色
-  "getCountOffset": (count)=>{return {x:0,y:0}} //字体偏移函数
+  "clusterSize": 16, //集合图标尺寸
+  "fontSize": 12,// 字体大小
+  "fontColor": DC.Color.BLACK, //字体颜色
+  "getCountOffset": (count) => {
+    return { x: 0, y: 0 }
+  } //字体偏移函数
 }
 ```
 
@@ -632,18 +635,18 @@ viewer.addLayer(layer)
     - `{Object} options`：属性配置
   - 返回值 `heatMapLayer`
 
-```json
-//属性参数(可选)
-{
+```js
+// options(属性可选)
+const options = {
   "gradient": {
     "0.5": "green",
     "0.6": "orange",
     "0.95": "red"
-  }, //颜色设置
-  "height": 0, // 高度
+  },//颜色设置
+  "height": 0,// 高度
   "radius": 30, // 半径
-  "useGround": false, //是否使用贴地模式
-  "classificationType": 2 //分类 是否影响地形，3D切片或同时影响这两者。0:地形、1:3D切片、2：两者。贴地模式下生效
+  "useGround": false,//是否使用贴地模式
+  "classificationType": 2//分类 是否影响地形，3D切片或同时影响这两者。0:地形、1:3D切片、2：两者。贴地模式下生效
 }
 ```
 
@@ -657,12 +660,12 @@ viewer.addLayer(layer)
     - `{Array<Object>} points`：点位信息
   - 返回值 `heatMapLayer`
 
-```json
-//点位信息参数
-{
-  "lng": "", //经度
+```js
+// 点位信息参数
+const point = {
+  "lng": "",//经度
   "lat": "", //纬度
-  "value": 10 //强度
+  "value": 10//强度
 }
 ```
 
@@ -688,15 +691,15 @@ viewer.addLayer(layer)
     - `{Object} options`：属性配置
   - 返回值 `windLayer`
 
-```json
-//属性参数(可选)
-{
-  "globalAlpha": 0.9, //透明度
-  "lineWidth": 1, // 线宽
-  "colorScale": "#fff", //颜色
+```js
+//options(属性可选)
+const options = {
+  "globalAlpha": 0.9,//透明度
+  "lineWidth": 1,// 线宽
+  "colorScale": "#fff",//颜色
   "velocityScale": 1 / 25,
   "maxAge": 90,
-  "paths": 800, // 路径数
+  "paths": 800,// 路径数
   "frameRate": 20,
   "useCoordsDraw": true,
   "gpet": true
@@ -748,11 +751,11 @@ viewer.addLayer(chartLayer)
     - `{Object} option`：echarts 配置，详情参考：[echarts](https://www.echartsjs.com/zh/option.html#title)
   - 返回值 `chartLayer`
 
-```json
+```js
 // options，其他的参数参考 echarts
-{
-  "animation": false, // 必须要加
-  "GLMap": {}, //地图
+const options = {
+  "animation": false,  // 必须要加
+  "GLMap": {},  //地图
   "series": [
     {
       "coordinateSystem": "GLMap" // 坐标系统

@@ -132,9 +132,9 @@ point.setStyle({
     - `{Object} style`：样式，详情参考：[PointGraphics](http://resource.dvgis.cn/cesium-docs/PointGraphics.html)
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "pixelSize": 1, //像素大小
   "heightReference": 0, //高度参照，0：位置无参照，位置是绝对的，1：位置固定在地形上 2：位置高度是指地形上方的高度。
   "color": DC.Color.WHITE, //颜色
@@ -207,9 +207,9 @@ polyline.setStyle({
     - `{Object} style`：样式，详情参考：[PolylineGraphics](http://resource.dvgis.cn/cesium-docs/PolylineGraphics.html)
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "width": 1, //线宽
   "material": DC.Color.WHITE, //材质
   "clampToGround": false, //是否贴地
@@ -271,9 +271,9 @@ polygon.setStyle({
     - `{Object} style`：样式，详情参考：[PolygonGraphics](http://resource.dvgis.cn/cesium-docs/PolygonGraphics.html)
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "height": 1, //高度
   "heightReference": 0, //高度参照，0：位置无参照，位置是绝对的，1：位置固定在地形上 2：位置高度是指地形上方的高度。
   "extrudedHeight": 0, //拉升高度
@@ -342,9 +342,9 @@ billboard.size = [20, 20]
     - `{Object} style`：样式，详情参考：[BillboardGraphics](http://resource.dvgis.cn/cesium-docs/BillboardGraphics.html)
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "heightReference": 0, //高度参照，0：位置无参照，位置是绝对的，1：位置固定在地形上 2：位置高度是指地形上方的高度。
   "scale": 1, //比例
   "pixelOffset": { "x": 0, "y": 0 }, //偏移像素
@@ -414,9 +414,9 @@ let Label = new DC.Label(position, 'test')
     - `{Object} style`：样式，详情参考：[LabelGraphics](http://resource.dvgis.cn/cesium-docs/LabelGraphics.html)
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "font": "30px sans-serif", // CSS 字体设置
   "scale": 1, //比例
   "pixelOffset": { "x": 0, "y": 0 }, //偏移像素
@@ -493,9 +493,9 @@ let circle = new DC.Circle(position, 200)
     - `{Object} style`：样式，详情参考：[EllipseGraphics](http://resource.dvgis.cn/cesium-docs/EllipseGraphics.html)
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "height": 1, //高度
   "heightReference": 0, //高度参照，0：位置无参照，位置是绝对的，1：位置固定在地形上 2：位置高度是指地形上方的高度。
   "extrudedHeight": 0, //拉升高度
@@ -550,9 +550,9 @@ let rectangle = new DC.Rect('-90.0,32.0;-94.0,36.0;')
     - `{Object} style`：样式，详情参考：[RectangleGraphics](http://resource.dvgis.cn/cesium-docs/RectangleGraphics.html)
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "height": 1, //高度
   "heightReference": 0, //高度参照，0：位置无参照，位置是绝对的，1：位置固定在地形上 2：位置高度是指地形上方的高度。
   "extrudedHeight": 0, //拉升高度
@@ -607,9 +607,9 @@ let wall = new DC.Wall('-90.0,32.0,1000;-94.0,36.0,1000;')
     - `{Object} style`：样式，详情参考：[WallGraphics](http://resource.dvgis.cn/cesium-docs/WallGraphics.html)
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "fill": true, //是否用提供的材料填充多边形。
   "material": DC.Color.WHITE, //材质
   "outline": false, //是否显示边框
@@ -669,9 +669,9 @@ let model = new DC.Model(position, '**/**.glb')
     - `{Object} style`：样式，详情参考：[ModelGraphics](http://resource.dvgis.cn/cesium-docs/ModelGraphics.html)
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "scale": 1, //比例
   "minimumPixelSize": 0, //指定模型的最小像素大小，而不考虑缩放
   "maximumScale": 0, //指定模型的最大比例
@@ -797,13 +797,17 @@ tileset.setPosition(position)
     - `{Array<Object>} properties`: 属性
   - 返回值 `this`
 
-```json
-//属性参数
-{
-  "key": "name", //已有属性名称
-  "keyValue": "1", //已有属性值
-  "propertyName": "highlight", //新增属性名称
-  "propertyValue": true //新增属性值
+```js
+// style（属性可选）
+const style = {
+  "key": "name",
+  //已有属性名称
+  "keyValue": "1",
+  //已有属性值
+  "propertyName": "highlight",
+  //新增属性名称
+  "propertyValue": true
+  //新增属性值
 }
 ```
 
@@ -844,19 +848,20 @@ let divIcon = new DC.DivIcon(position, '<div></div>')
     - `{Object} style`：样式，
   - 返回值 `this`
 
-```json
-{
-  "className": "test", //样式名
+```js
+// style（属性可选）
+const style = {
+  "className": "test",//样式名
   "scaleByDistance": {
-    "near": 0, //最近距离
+    "near": 0,//最近距离
     "nearValue": 0, //最近距离值
     "far": 1, //最远距离值
-    "farValue": 0 //最远距离值
+    "farValue": 0//最远距离值
   }, //根据距离设置比例
   "distanceDisplayCondition": {
     "near": 0, //最近距离
-    "far": Number.MAX_VALUE //最远距离
-  } //根据距离设置可见
+    "far": Number.MAX_VALUE//最远距离
+  }//根据距离设置可见
 }
 ```
 
@@ -910,8 +915,9 @@ let box = new DC.Box(position, 20, 30, 40)
     - `{Object} style`：样式，详情参考：[BoxGraphics](http://resource.dvgis.cn/cesium-docs/BoxGraphics.html)
   - 返回值 `this`
 
-```json
-{
+```js
+// style（属性可选）
+const style = {
   "heightReference": 0, //高度参照，0：位置无参照，位置是绝对的，1：位置固定在地形上 2：位置高度是指地形上方的高度。
   "fill": true, //是否用提供的材料填充多边形。
   "material": DC.Color.WHITE, //材质
@@ -921,8 +927,8 @@ let box = new DC.Box(position, 20, 30, 40)
   "shadows": 0, //阴影类型，0：禁用、1：启用 、2：投射、3：接受
   "distanceDisplayCondition": {
     "near": 0, //最近距离
-    "far": Number.MAX_VALUE //最远距离
-  } //根据距离设置可见
+    "far": Number.MAX_VALUE//最远距离
+  }//根据距离设置可见
 }
 ```
 
@@ -963,9 +969,9 @@ corridor.setStyle({
     - `{Object} style`：样式，详情参考：[CorridorGraphics](http://resource.dvgis.cn/cesium-docs/CorridorGraphics.html)
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "width": 1, //线宽
   "height": 0, //高度
   "heightReference": 0, //高度参照，0：位置无参照，位置是绝对的，1：位置固定在地形上 2：位置高度是指地形上方的高度。
@@ -1034,9 +1040,9 @@ let cylinder = new DC.Cylinder(position, 20, 30, 40)
     - `{Object} style`：样式，详情参考：[CylinderGraphics](http://resource.dvgis.cn/cesium-docs/CylinderGraphics.html)
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "heightReference": 0, //高度参照，0：位置无参照，位置是绝对的，1：位置固定在地形上 2：位置高度是指地形上方的高度。
   "fill": true, //是否用提供的材料填充多边形。
   "material": DC.Color.WHITE, //材质
@@ -1090,9 +1096,9 @@ let ellipse = new DC.Ellipse(position, 20, 30)
     - `{Object} style`：样式，详情参考：[EllipseGraphics](http://resource.dvgis.cn/cesium-docs/EllipseGraphics.html)
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "height": 1, //高度
   "heightReference": 0, //高度参照，0：位置无参照，位置是绝对的，1：位置固定在地形上 2：位置高度是指地形上方的高度。
   "extrudedHeight": 0, //拉升高度
@@ -1150,21 +1156,21 @@ let ellipsoid = new DC.Sphere(position, { x: 30, y: 30, z: 30 })
     - `{Object} style`：样式，详情参考：[EllipsoidGraphics](http://resource.dvgis.cn/cesium-docs/EllipsoidGraphics.html)
   - 返回值 `this`
 
-  ```json
-  // 样式参数(可选)
-  {
-    "heightReference": 0, //高度参照，0：位置无参照，位置是绝对的，1：位置固定在地形上 2：位置高度是指地形上方的高度。
-    "fill": true, //是否用提供的材料填充多边形。
-    "material": DC.Color.WHITE, //材质
-    "outline": false, //是否显示边框
-    "outlineColor": DC.Color.BLACK, //边框颜色
-    "outlineWidth": 0, //边框宽度
-    "shadows": 0, //阴影类型，0：禁用、1：启用 、2：投射、3：接受
-    "distanceDisplayCondition": {
-      "near": 0, //最近距离
-      "far": Number.MAX_VALUE //最远距离
-    } //根据距离设置可见
-  }
+```js
+// style（属性可选）
+const style = {
+  "heightReference": 0, //高度参照，0：位置无参照，位置是绝对的，1：位置固定在地形上 2：位置高度是指地形上方的高度。
+  "fill": true, //是否用提供的材料填充多边形。
+  "material": DC.Color.WHITE, //材质
+  "outline": false, //是否显示边框
+  "outlineColor": DC.Color.BLACK, //边框颜色
+  "outlineWidth": 0, //边框宽度
+  "shadows": 0, //阴影类型，0：禁用、1：启用 、2：投射、3：接受
+  "distanceDisplayCondition": {
+    "near": 0, //最近距离
+    "far": Number.MAX_VALUE //最远距离
+  } //根据距离设置可见
+}
   ```
 
 ## DC.Plane
@@ -1191,11 +1197,11 @@ let plane = new DC.Plane(position, 20, 30, { normal: 'x' })
     - `{Object} plane`：面板格式
   - 返回值 `plane`
 
-```json
-// 面板参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "normal": "x", // 法线,x,y,z其中一个
-  "distance": 0 // 距离
+  "distance": 0// 距离
 }
 ```
 
@@ -1216,9 +1222,9 @@ let plane = new DC.Plane(position, 20, 30, { normal: 'x' })
     - `{Object} style`：样式，详情参考：[PlaneGraphics](http://resource.dvgis.cn/cesium-docs/PlaneGraphics.html)
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "fill": true, //是否用提供的材料填充多边形。
   "material": DC.Color.WHITE, //材质
   "outline": false, //是否显示边框
@@ -1280,12 +1286,13 @@ let polylineVolume = new DC.PolylineVolume(
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[PolylineVolumeGraphics](http://resource.dvgis.cn/cesium-docs/PolylineVolumeGraphics.html)
+    - `{Object} style`
+      ：样式，详情参考：[PolylineVolumeGraphics](http://resource.dvgis.cn/cesium-docs/PolylineVolumeGraphics.html)
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "cornerType": 0, //转角类别，0：圆角、1：直角、2：斜角
   "fill": true, //是否用提供的材料填充多边形。
   "material": DC.Color.WHITE, //材质
@@ -1356,9 +1363,9 @@ billboard.size = [20, 20]
     - `{Object} style`：样式，详情参考：[BillboardGraphics](http://resource.dvgis.cn/cesium-docs/BillboardGraphics.html)
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "heightReference": 0, //高度参照，0：位置无参照，位置是绝对的，1：位置固定在地形上 2：位置高度是指地形上方的高度。
   "scale": 1, //比例
   "pixelOffset": { "x": 0, "y": 0 }, //偏移像素
@@ -1429,9 +1436,9 @@ let model = new DC.DynamicModel(position, '**/**.glb')
     - `{Object} style`：样式，详情参考：[ModelGraphics](http://resource.dvgis.cn/cesium-docs/ModelGraphics.html)
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "scale": 1, //比例
   "minimumPixelSize": 0, //指定模型的最小像素大小，而不考虑缩放
   "maximumScale": 0, //指定模型的最大比例
@@ -1504,9 +1511,9 @@ billboard.size = [20, 20]
     - `{Object} style`：样式，详情参考：[BillboardGraphics](http://resource.dvgis.cn/cesium-docs/BillboardGraphics.html)
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "heightReference": 0, //高度参照，0：位置无参照，位置是绝对的，1：位置固定在地形上 2：位置高度是指地形上方的高度。
   "scale": 1, //比例
   "pixelOffset": { "x": 0, "y": 0 }, //偏移像素
@@ -1586,9 +1593,9 @@ let label = new DC.CustomLabel(position, 'test')
     - `{Object} style`：样式，详情参考：[LabelGraphics](http://resource.dvgis.cn/cesium-docs/LabelGraphics.html)
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "heightReference": 0, //高度参照，0：位置无参照，位置是绝对的，1：位置固定在地形上 2：位置高度是指地形上方的高度。
   "scale": 1, //比例
   "pixelOffset": { "x": 0, "y": 0 }, //偏移像素

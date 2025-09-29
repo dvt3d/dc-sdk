@@ -269,11 +269,11 @@ circleScan.start()
     - `{Object} options`：属性
   - 返回值 `circleScan`
 
-```json
-// 属性参数（optional）
-{
-  "color": DC.Color.BLUE, // 颜色
-  "speed": 5 // 速度
+```js
+// options（属性可选）
+const options = {
+  "color": DC.Color.BLUE,// 颜色
+  "speed": 5// 速度
 }
 ```
 
@@ -301,10 +301,10 @@ radarScan.start()
     - `{Object} options`：属性
   - 返回值 `radarScan`
 
-```json
-// 属性参数（optional）
-{
-  "color": DC.Color.BLUE, // 颜色
-  "speed": 5 // 速度
+```js
+// options（属性可选）
+const options = {
+  "color": DC.Color.BLUE,// 颜色
+  "speed": 5// 速度
 }
 ```

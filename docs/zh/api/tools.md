@@ -1,4 +1,3 @@
-
 # 工具 API 🌎
 
 三维场景中的辅助工具，方便在场景中进行各种标绘、测量、位置编辑
@@ -11,7 +10,8 @@
 
 ```js
 let plot = new DC.Plot(viewer, {})
-plot.draw(DC.OverlayType.POINT, (overlay) => {}, {})
+plot.draw(DC.OverlayType.POINT, (overlay) => {
+}, {})
 ```
 
 ### creation
@@ -25,14 +25,14 @@ plot.draw(DC.OverlayType.POINT, (overlay) => {}, {})
     - `{Object} options`：属性
   - 返回值 `plot`
 
-```json
-//属性参数(可选)
-{
+```js
+// options（属性可选）
+const options = {
   "icon_center": "**.png", // 自定义的中心点图标
   "icon_anchor": "**.png", //自定义的锚点图标
   "icon_midAnchor": "**.png", //自定义的中心锚点图标
   "icon_size": [12, 12],//自定义的中心锚点大小
-  "clampToModel":false // 点位是否获取模型表面坐标
+  "clampToModel": false // 点位是否获取模型表面坐标
 }
 ```
 
@@ -160,9 +160,9 @@ let measure = new DC.Measure(viewer)
     - `{Object} options`：配置
   - 返回值 `this`
 
-```json
-//属性参数(可选)
-{
+```js
+// options（属性可选）
+const options = {
   "icon_center": "**.png", // 自定义的中心点图标
   "icon_anchor": "**.png", //自定义的锚点图标
   "icon_midAnchor": "**.png", //自定义的中心锚点图标

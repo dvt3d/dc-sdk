@@ -38,9 +38,9 @@ point.setStyle({
     - `{Object} style`：样式，详情参考：[PointGraphics](http://resource.dvgis.cn/cesium-docs/PointGraphics.html)
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "pixelSize": 1, //像素大小
   "heightReference": 0, //高度参照，0：位置无参照，位置是绝对的，1：位置固定在地形上 2：位置高度是指地形上方的高度。
   "color": DC.Color.WHITE, //颜色
@@ -105,9 +105,9 @@ billboard.size = [20, 20]
     - `{Object} style`：样式，详情参考：[Billboard](http://resource.dvgis.cn/cesium-docs/Billboard.html)
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "heightReference": 0, //高度参照，0：位置无参照，位置是绝对的，1：位置固定在地形上 2：位置高度是指地形上方的高度。
   "scale": 1, //比例
   "pixelOffset": { "x": 0, "y": 0 }, //偏移像素
@@ -165,9 +165,9 @@ billboard.size = [20, 20]
     - `{Object} style`：样式，详情参考：[Billboard](http://resource.dvgis.cn/cesium-docs/Billboard.html)
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "maxOffsetY": 10, //垂直方向最大平移量
   "offsetAmount": 0.1 //垂直方向每帧平移量
   // 其他样式参考 BillboardPrimitive 样式
@@ -211,9 +211,9 @@ let Label = new DC.LabelPrimitive(position, 'test')
     - `{Object} style`：样式，详情参考：[Label](http://resource.dvgis.cn/cesium-docs/Label.html)
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "font": "30px sans-serif", // CSS 字体设置
   "scale": 1, //比例
   "pixelOffset": { "x": 0, "y": 0 }, //偏移像素
@@ -276,9 +276,9 @@ let label = new DC.BounceLabelPrimitive(position, 'test')
     - `{Object} style`：样式，详情参考：[Label](http://resource.dvgis.cn/cesium-docs/Label.html)
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "maxOffsetY": 10, //垂直方向最大平移量
   "offsetAmount": 0.1 //垂直方向每帧平移量
   // 其他样式参考 LabelPrimitive 样式
@@ -324,9 +324,9 @@ polyline.setStyle({
     - `{Object} style`：样式，详情参考：[Polyline](http://resource.dvgis.cn/cesium-docs/Polyline.html)
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "width": 1, //线宽
   "material": DC.Color.WHITE, //材质
   "clampToGround": false, //是否贴地
@@ -374,9 +374,9 @@ let trailLinePrimitive = new DC.TrailLinePrimitive('120,20;120,30;122,30')
     - `{Object} style`：样式
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "speed": 5, //速度
   "color": DC.Color.WHITE //颜色
 }
@@ -416,9 +416,9 @@ let flowLinePrimitive = new DC.FlowLinePrimitive('120,20;120,30;122,30')
     - `{Object} style`：样式
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "speed": 5, //速度
   "color": DC.Color.WHITE, //颜色
   "percent": 0.3, // 比例
@@ -494,9 +494,9 @@ let model = new DC.ModelPrimitive(position, '**/**.glb')
     - `{Object} style`：样式，详情参考：[Model](http://resource.dvgis.cn/cesium-docs/Model.html)
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "scale": 1, //比例
   "minimumPixelSize": 0, //指定模型的最小像素大小，而不考虑缩放
   "maximumScale": 0, //指定模型的最大比例
@@ -551,9 +551,9 @@ let wall = new DC.DiffuseWallPrimitive(position, 2000, 1000)
     - `{Object} style`：样式
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "minRadius": 10, // 动画最小半径
   "minHeight": 30, // 动画最小高度
   "color": DC.Color.RED, // 墙体颜色
@@ -569,7 +569,11 @@ let wall = new DC.DiffuseWallPrimitive(position, 2000, 1000)
 ### example
 
 ```js
-let elecEllipsoid = new DC.ElecEllipsoidPrimitive('120,20',{x:2000,y:2000:z:2000})
+let elecEllipsoid = new DC.ElecEllipsoidPrimitive('120,20', {
+  x: 2000,
+  y: 2000,
+  z: 2000
+})
 ```
 
 ### creation
@@ -598,9 +602,9 @@ let elecEllipsoid = new DC.ElecEllipsoidPrimitive('120,20',{x:2000,y:2000:z:2000
     - `{Object} style`：样式
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "speed": 5, //速度
   "color": DC.Color.WHITE //颜色
 }
@@ -647,9 +651,9 @@ let cylinder = new DC.LightCylinderPrimitive(position, 1000, 1, 100)
     - `{Object} style`：样式
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "color": DC.Color.BLACK //颜色
 }
 ```
@@ -690,9 +694,9 @@ let scanCirclePrimitive = new DC.ScanCirclePrimitive('120,20', 1000)
     - `{Object} style`：样式
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "speed": 5, //速度
   "color": DC.Color.WHITE //颜色
 }
@@ -741,9 +745,9 @@ water.setStyle({
     - `{Object} style`：样式，详情参考：[PolygonGraphics](http://resource.dvgis.cn/cesium-docs/PolygonGraphics.html)
   - 返回值 `this`
 
-```json
-// 样式参数(可选)
-{
+```js
+// style（属性可选）
+const style = {
   "height": 1, //高度
   "extrudedHeight": 0, //拉升高度
   "stRotation": 0, //旋转角度

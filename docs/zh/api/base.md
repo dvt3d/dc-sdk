@@ -103,7 +103,7 @@ const config = {
       - 返回值 `this`
 
 ```js
-// 属性参数(可选)
+// 属性参数(属性可选)
 const config = {
   "shadows": false,// 是否开启阴影
   "resolutionScale": 1,// 设置渲染分辨率的缩放比例
@@ -184,7 +184,7 @@ const config = {
   - 返回值 `this`
 
 ```js
-//属性参数 (可选)
+//属性参数 (属性可选)
 const options = {
   "name": "电子地图",//名称
   "iconUrl": "../preview.png",//缩略图
@@ -408,7 +408,7 @@ popup.setContent('<div></div>')
 - `{Object} config`：配置 **_`writeOnly`_**
 
 ```js
-// 配置（可选),配置后会影响全局的popup的显示样式，请慎重。
+// 配置（属性可选),配置后会影响全局的popup的显示样式，请慎重。
 const config = {
   "position": "center",// popup的位于鼠标的点击位置的方向,有：center，left ，right
   "customClass": "custom"// 添加自定义的Css 类名到popup中，多个用空格隔开
@@ -706,7 +706,7 @@ scene.skyBox = new DC.SkyBox({
   - 返回值 `skyBox`
 
 ```js
-//options(可选)
+//options(属性可选)
 const options = {
   "sources": {},// 六个面的贴图
   "show": true//显示
@@ -748,7 +748,7 @@ scene.skyBox = new DC.GroundSkyBox({
   - 返回值 `skyBox`
 
 ```js
-//options(可选)
+//options(属性可选)
 const options = {
   "sources": {},// 六个面的贴图
   "show": true,//显示
