@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>dc-example</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+    <link href="../index.css" type="text/css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <script>
+      DC.config.baseUrl = '../libs/dc-sdk/resources/'
+      let viewer = new DC.Viewer('viewer-container')
+      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        {
+          style: 'img',
+          crs: 'WGS84',
+        }
+      )
+      viewer.addBaseLayer(baseLayer, {
+        brightness: 0.1,
+      })
+
+      let layer = new DC.VectorLayer('layer')
+      viewer.addLayer(layer)
+
+      let polyline = new DC.Polyline('-75, 35; -125, 35; -125, 10')
+      polyline.setStyle({
+        width: 20,
+        material: new DC.PolylineMultiArrowMaterialProperty({
+          color: DC.Color.WHITE,
+          repeatFactor: 100.0,
+          antiClockWise: true,
+        }),
+        clampToGround: true,
+      })
+      layer.addOverlay(polyline)
+      viewer.flyTo(layer)
+    </script>
+  </body>
+</html>

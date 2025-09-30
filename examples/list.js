@@ -328,6 +328,26 @@ const EXAMPLE_LIST = [
         page: 'polyline_lighting_trail.html',
       },
       {
+        name: '围栏线',
+        page: 'polyline_fence.html',
+      },
+      {
+        name: '多箭头线',
+        page: 'polyline_multi_arrow.html',
+      },
+      {
+        name: '虚线箭头线',
+        page: 'polyline_dash_arrow.html',
+      },
+      {
+        name: '方向线',
+        page: 'polyline_direction.html',
+      },
+      {
+        name: '自定义端点线',
+        page: 'polyline_custom_endpoint.html',
+      },
+      {
         name: '面',
         page: 'polygon_base.html',
       },
