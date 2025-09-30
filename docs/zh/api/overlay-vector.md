@@ -5,7 +5,7 @@
 > 覆盖物基类
 
 :::warning
-该类无需实例化，既视实例化后也无法使用
+该类作为一个基类，不建议实例化使用
 :::
 
 ### properties
@@ -41,7 +41,7 @@
 
   - 参数
     - `{String} text`：文本
-    - `{String} textStyle`：文本样式，详情参考：[DC.Label](#dc-label)
+    - `{String} textStyle`：文本样式，[详细使用说明](#dc-label)
   - 返回值 `this`
 
 :::warning
@@ -129,7 +129,7 @@ point.setStyle({
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[PointGraphics](http://resource.dvgis.cn/cesium-docs/PointGraphics.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/PointGraphics.html)
   - 返回值 `this`
 
 ```js
@@ -204,7 +204,7 @@ polyline.setStyle({
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[PolylineGraphics](http://resource.dvgis.cn/cesium-docs/PolylineGraphics.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/PolylineGraphics.html)
   - 返回值 `this`
 
 ```js
@@ -268,7 +268,7 @@ polygon.setStyle({
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[PolygonGraphics](http://resource.dvgis.cn/cesium-docs/PolygonGraphics.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/PolygonGraphics.html)
   - 返回值 `this`
 
 ```js
@@ -339,7 +339,7 @@ billboard.size = [20, 20]
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[BillboardGraphics](http://resource.dvgis.cn/cesium-docs/BillboardGraphics.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/BillboardGraphics.html)
   - 返回值 `this`
 
 ```js
@@ -411,7 +411,7 @@ let Label = new DC.Label(position, 'test')
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[LabelGraphics](http://resource.dvgis.cn/cesium-docs/LabelGraphics.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/LabelGraphics.html)
   - 返回值 `this`
 
 ```js
@@ -490,7 +490,7 @@ let circle = new DC.Circle(position, 200)
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[EllipseGraphics](http://resource.dvgis.cn/cesium-docs/EllipseGraphics.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/EllipseGraphics.html)
   - 返回值 `this`
 
 ```js
@@ -547,7 +547,7 @@ let rectangle = new DC.Rect('-90.0,32.0;-94.0,36.0;')
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[RectangleGraphics](http://resource.dvgis.cn/cesium-docs/RectangleGraphics.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/RectangleGraphics.html)
   - 返回值 `this`
 
 ```js
@@ -604,7 +604,7 @@ let wall = new DC.Wall('-90.0,32.0,1000;-94.0,36.0,1000;')
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[WallGraphics](http://resource.dvgis.cn/cesium-docs/WallGraphics.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/WallGraphics.html)
   - 返回值 `this`
 
 ```js
@@ -666,7 +666,7 @@ let model = new DC.Model(position, '**/**.glb')
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[ModelGraphics](http://resource.dvgis.cn/cesium-docs/ModelGraphics.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/ModelGraphics.html)
   - 返回值 `this`
 
 ```js
@@ -716,7 +716,7 @@ tileset.setPosition(position)
 
   - 参数
     - `{String} url`：模型地址
-    - `{Object} options`：参数设置，详情参考：[Tileset](http://resource.dvgis.cn/cesium-docs/Cesium3DTileset.html)
+    - `{Object} options`：参数设置，[详细使用说明](http://resource.dvgis.cn/cesium-docs/Cesium3DTileset.html)
   - 返回值 `tileset`
 
 ### properties
@@ -730,7 +730,7 @@ tileset.setPosition(position)
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[TileStyle](https://github.com/CesiumGS/3d-tiles/tree/master/specification/Styling)
+    - `{Object} style` ：样式，[详细使用说明](https://github.com/CesiumGS/3d-tiles/tree/master/specification/Styling)
   - 返回值 `this`
 
   ```js
@@ -912,7 +912,7 @@ let box = new DC.Box(position, 20, 30, 40)
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[BoxGraphics](http://resource.dvgis.cn/cesium-docs/BoxGraphics.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/BoxGraphics.html)
   - 返回值 `this`
 
 ```js
@@ -966,7 +966,7 @@ corridor.setStyle({
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[CorridorGraphics](http://resource.dvgis.cn/cesium-docs/CorridorGraphics.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/CorridorGraphics.html)
   - 返回值 `this`
 
 ```js
@@ -1037,7 +1037,7 @@ let cylinder = new DC.Cylinder(position, 20, 30, 40)
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[CylinderGraphics](http://resource.dvgis.cn/cesium-docs/CylinderGraphics.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/CylinderGraphics.html)
   - 返回值 `this`
 
 ```js
@@ -1093,7 +1093,7 @@ let ellipse = new DC.Ellipse(position, 20, 30)
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[EllipseGraphics](http://resource.dvgis.cn/cesium-docs/EllipseGraphics.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/EllipseGraphics.html)
   - 返回值 `this`
 
 ```js
@@ -1153,7 +1153,7 @@ let ellipsoid = new DC.Sphere(position, { x: 30, y: 30, z: 30 })
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[EllipsoidGraphics](http://resource.dvgis.cn/cesium-docs/EllipsoidGraphics.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/EllipsoidGraphics.html)
   - 返回值 `this`
 
 ```js
@@ -1219,7 +1219,7 @@ const style = {
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[PlaneGraphics](http://resource.dvgis.cn/cesium-docs/PlaneGraphics.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/PlaneGraphics.html)
   - 返回值 `this`
 
 ```js
@@ -1286,8 +1286,7 @@ let polylineVolume = new DC.PolylineVolume(
   设置样式
 
   - 参数
-    - `{Object} style`
-      ：样式，详情参考：[PolylineVolumeGraphics](http://resource.dvgis.cn/cesium-docs/PolylineVolumeGraphics.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/PolylineVolumeGraphics.html)
   - 返回值 `this`
 
 ```js
@@ -1360,7 +1359,7 @@ billboard.size = [20, 20]
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[BillboardGraphics](http://resource.dvgis.cn/cesium-docs/BillboardGraphics.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/BillboardGraphics.html)
   - 返回值 `this`
 
 ```js
@@ -1433,7 +1432,7 @@ let model = new DC.DynamicModel(position, '**/**.glb')
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[ModelGraphics](http://resource.dvgis.cn/cesium-docs/ModelGraphics.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/ModelGraphics.html)
   - 返回值 `this`
 
 ```js
@@ -1490,7 +1489,7 @@ billboard.size = [20, 20]
   设置垂直线
 
   - 参数
-    - `{Object} style`：样式，详情参考：[PolylineGraphics](http://resource.dvgis.cn/cesium-docs/PolylineGraphics.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/PolylineGraphics.html)
   - 返回值 `this`
 
 - **_setBottomCircle(radius,style,rotateAmount)_**
@@ -1499,7 +1498,7 @@ billboard.size = [20, 20]
 
   - 参数
     - `{Number} radius`：半径
-    - `{Object} style`：样式，详情参考：[EllipseGraphics](http://resource.dvgis.cn/cesium-docs/EllipseGraphics.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/EllipseGraphics.html)
     - `{Number} rotateAmount`：旋转量
   - 返回值 `this`
 
@@ -1508,7 +1507,7 @@ billboard.size = [20, 20]
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[BillboardGraphics](http://resource.dvgis.cn/cesium-docs/BillboardGraphics.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/BillboardGraphics.html)
   - 返回值 `this`
 
 ```js
@@ -1572,7 +1571,7 @@ let label = new DC.CustomLabel(position, 'test')
   设置垂直线
 
   - 参数
-    - `{Object} style`：样式，详情参考：[PolylineGraphics](http://resource.dvgis.cn/cesium-docs/PolylineGraphics.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/PolylineGraphics.html)
   - 返回值 `this`
 
 - **_setBottomCircle(radius,style,rotateAmount)_**
@@ -1581,7 +1580,7 @@ let label = new DC.CustomLabel(position, 'test')
 
   - 参数
     - `{Number} radius`：半径
-    - `{Object} style`：样式，详情参考：[EllipseGraphics](http://resource.dvgis.cn/cesium-docs/EllipseGraphics.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/EllipseGraphics.html)
     - `{Number} rotateAmount`：旋转量
   - 返回值 `this`
 
@@ -1590,7 +1589,7 @@ let label = new DC.CustomLabel(position, 'test')
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[LabelGraphics](http://resource.dvgis.cn/cesium-docs/LabelGraphics.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/LabelGraphics.html)
   - 返回值 `this`
 
 ```js

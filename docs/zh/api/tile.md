@@ -49,7 +49,7 @@ const options = {
 }
 ```
 
-## CustomMercatorTilingScheme
+## DC.CustomMercatorTilingScheme
 
 > 自定义墨卡托平铺方案
 

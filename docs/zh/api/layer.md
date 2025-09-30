@@ -374,7 +374,7 @@ layer.eachOverlay((item) => {
     - `{String} id`：图层唯一标识
     - `{String} url`：数据地址
     - `{Object} options`
-      ：属性配置，详情参考：[GeoJsonDataSource](http://resource.dvgis.cn/cesium-docs/GeoJsonDataSource.html)
+      ：属性配置，[详细使用说明](http://resource.dvgis.cn/cesium-docs/GeoJsonDataSource.html)
   - 返回值 `geoJsonLayer`
 
 ### methods
@@ -430,7 +430,7 @@ layer.eachOverlay((item) => {
     - `{String} id`：图层唯一标识
     - `{String} url`：数据地址
     - `{Object} options`
-      ：属性配置，详情参考：[GeoJsonDataSource](http://resource.dvgis.cn/cesium-docs/GeoJsonDataSource.html)
+      ：属性配置，[详细使用说明](http://resource.dvgis.cn/cesium-docs/GeoJsonDataSource.html)
   - 返回值 `topoJsonLayer`
 
 ### methods
@@ -500,7 +500,7 @@ layer.eachOverlay((item) => {
   - 参数
     - `{String} id`：图层唯一标识
     - `{String} url`：数据地址
-    - `{Object} options`：属性配置，详情参考：[CzmlDataSource](http://resource.dvgis.cn/cesium-docs/CzmlDataSource.html)
+    - `{Object} options`：属性配置 [详细使用说明](http://resource.dvgis.cn/cesium-docs/CzmlDataSource.html)
   - 返回值 `czmlLayer`
 
 ## DC.KmlLayer
@@ -533,7 +533,7 @@ layer.eachOverlay((item) => {
   - 参数
     - `{String} id`：图层唯一标识
     - `{String} url`：数据地址
-    - `{Object} options`：属性配置，详情参考：[KmlDataSource](http://resource.dvgis.cn/cesium-docs/KmlDataSource.html)
+    - `{Object} options`：属性配置，[详细使用说明](http://resource.dvgis.cn/cesium-docs/KmlDataSource.html)
   - 返回值 `kmlLayer`
 
 ## DC.GpxLayer
@@ -555,7 +555,7 @@ let layer = new DC.GpxLayer('id', '**/**.gpx')
   - 参数
     - `{String} id`：图层唯一标识
     - `{String} url`：数据地址
-    - `{Object} options`：属性配置，详情参考：[GpxDataSource](http://resource.dvgis.cn/cesium-docs/GpxDataSource.html)
+    - `{Object} options`：属性配置，[详细使用说明](http://resource.dvgis.cn/cesium-docs/GpxDataSource.html)
   - 返回值 `gpxLayer`
 
 ## DC.ClusterLayer
@@ -748,7 +748,7 @@ viewer.addLayer(chartLayer)
 
   - 参数
     - `{String} id`：唯一标识
-    - `{Object} option`：echarts 配置，详情参考：[echarts](https://www.echartsjs.com/zh/option.html#title)
+    - `{Object} option`：echarts 配置，[详细使用说明](https://www.echartsjs.com/zh/option.html#title)
   - 返回值 `chartLayer`
 
 ```js
@@ -771,5 +771,5 @@ const options = {
   设置点位
 
   - 参数
-    - `{Object} option`：echarts 配置，详情参考：[echarts](https://www.echartsjs.com/zh/option.html#title)
+    - `{Object} option`：echarts 配置，[详细使用说明](https://www.echartsjs.com/zh/option.html#title)
   - 返回值 `this`

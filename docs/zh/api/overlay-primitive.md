@@ -35,7 +35,7 @@ point.setStyle({
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[PointGraphics](http://resource.dvgis.cn/cesium-docs/PointGraphics.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/PointGraphics.html)
   - 返回值 `this`
 
 ```js
@@ -102,7 +102,7 @@ billboard.size = [20, 20]
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[Billboard](http://resource.dvgis.cn/cesium-docs/Billboard.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/Billboard.html)
   - 返回值 `this`
 
 ```js
@@ -162,7 +162,7 @@ billboard.size = [20, 20]
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[Billboard](http://resource.dvgis.cn/cesium-docs/Billboard.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/Billboard.html)
   - 返回值 `this`
 
 ```js
@@ -208,7 +208,7 @@ let Label = new DC.LabelPrimitive(position, 'test')
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[Label](http://resource.dvgis.cn/cesium-docs/Label.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/Label.html)
   - 返回值 `this`
 
 ```js
@@ -273,7 +273,7 @@ let label = new DC.BounceLabelPrimitive(position, 'test')
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[Label](http://resource.dvgis.cn/cesium-docs/Label.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/Label.html)
   - 返回值 `this`
 
 ```js
@@ -321,7 +321,7 @@ polyline.setStyle({
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[Polyline](http://resource.dvgis.cn/cesium-docs/Polyline.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/Polyline.html)
   - 返回值 `this`
 
 ```js
@@ -491,7 +491,7 @@ let model = new DC.ModelPrimitive(position, '**/**.glb')
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[Model](http://resource.dvgis.cn/cesium-docs/Model.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/Model.html)
   - 返回值 `this`
 
 ```js
@@ -742,7 +742,7 @@ water.setStyle({
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[PolygonGraphics](http://resource.dvgis.cn/cesium-docs/PolygonGraphics.html)
+    - `{Object} style`：样式，[详细使用说明](http://resource.dvgis.cn/cesium-docs/PolygonGraphics.html)
   - 返回值 `this`
 
 ```js

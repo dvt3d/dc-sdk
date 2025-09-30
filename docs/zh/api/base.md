@@ -35,27 +35,23 @@ global.viewer = viewer // 添加到全局变量
 ```js
 //属性参数（可选）
 const config = {
-  "contextOptions": {
-    "webgl": {
-      "alpha": false, //背景
-      "depth": true,
-      "stencil": false,
-      "antialias": true,
-      "powerPreference": "high-performance",
-      "premultipliedAlpha": true,
-      "preserveDrawingBuffer": false,
-      "failIfMajorPerformanceCaveat": false
+  contextOptions: {
+    webgl: {
+      alpha: false, // 背景缓冲区是否包含 alpha 通道
+      depth: true,  // 开启深度缓冲区（通常必须开启，否则无法正确遮挡）
+      stencil: true, // 是否启用模板缓冲。false 可以节省显存和性能
+      antialias: true, // 是否启用抗锯齿
+      powerPreference: 'high-performance', // 提示浏览器优先用独显或性能更高的 GPU
+      premultipliedAlpha: true, // 颜色预乘 alpha，
+      preserveDrawingBuffer: false, // 渲染后是否保留缓冲内容。false 性能更好，但不能直接保存截图
+      failIfMajorPerformanceCaveat: false, // 避免低性能环境直接报错
     },
-    "allowTextureFilterAnisotropic": true
+    allowTextureFilterAnisotropic: true, // 启用各向异性纹理过滤，提高贴图锐度
   },
-  "sceneMode": 3,
-  //1: 2.5D，2: 2D，3: 3D
-  "enableEventPropagation": false,
-  //是否开启鼠标事件冒泡
-  "enableMouseMovePick": false,
-  // 是否开启鼠标移动拾取功能，开启后当覆盖物较多的情况下，帧率会下降
-  "enableMouseOver": false
-  //是否开启鼠标移入事件，需要开启鼠标移动拾取功能
+  sceneMode: 3, //1: 2.5D，2: 2D，3: 3D
+  enableEventPropagation: false, //是否开启鼠标事件冒泡
+  enableMouseMovePick: false, // 是否开启鼠标移动拾取功能，开启后当覆盖物较多的情况下，帧率会下降
+  enableMouseOver: false, //是否开启鼠标移入事件，需要开启鼠标移动拾取功能
 }
 ```
 
@@ -64,15 +60,13 @@ const config = {
 - `{Element} container`：场景容器 **_`readonly`_**
 - `{Element} widgetContainer`：场景组件容器 **_`readonly`_**
 - `{Element} layerContainer`：场景图层容器 **_`readonly`_**
-- `{Object} scene`：场景 **_`readonly`_**，详情参考：[Scene](http://resource.dvgis.cn/cesium-docs/Scene.html)
-- `{Object} camera`：相机 **_`readonly`_**，详情参考：[Camera](http://resource.dvgis.cn/cesium-docs/Scene.html)
+- `{Object} scene`：场景 **_`readonly`_**，[详细使用说明](http://resource.dvgis.cn/cesium-docs/Scene.html)
+- `{Object} camera`：相机 **_`readonly`_**，[详细使用说明](http://resource.dvgis.cn/cesium-docs/Scene.html)
 - `{Element} canvas`：canvas 节点 **_`readonly`_**
-- `{Object} clock`：时钟，详情参考：[Clock](http://resource.dvgis.cn/cesium-docs/Clock.html)
-- `{Object} dataSources`
-  ：数据资源集合，详情参考：[DataSourceCollection](http://resource.dvgis.cn/cesium-docs/DataSourceCollection.html)
-- `{Object} imageryLayers`
-  ：瓦片集合，详情参考：[ImageryLayerCollection](http://resource.dvgis.cn/cesium-docs/ImageryLayerCollection.html)
-- `{Object} entities`：实体集合，详情参考：[EntityCollection](http://resource.dvgis.cn/cesium-docs/EntityCollection.html)
+- `{Object} clock`：时钟，[详细使用说明](http://resource.dvgis.cn/cesium-docs/Clock.html)
+- `{Object} dataSources` ：数据资源集合，[详细使用说明](http://resource.dvgis.cn/cesium-docs/DataSourceCollection.html)
+- `{Object} imageryLayers`：瓦片集合，[详细使用说明](http://resource.dvgis.cn/cesium-docs/ImageryLayerCollection.html)
+- `{Object} entities`：实体集合，[详细使用说明](http://resource.dvgis.cn/cesium-docs/EntityCollection.html)
 - [`{Popup} popup`](#popup)：气泡窗口 **_`readonly`_**
 - [`{ContextMenu} contextMenu`](#contextmenu)：右击弹框 **_`readonly`_**
 - [`{Tooltip} tooltip`](#tooltip)：提示框 **_`readonly`_**
@@ -105,46 +99,48 @@ const config = {
 ```js
 // 属性参数(属性可选)
 const config = {
-  "shadows": false,// 是否开启阴影
-  "resolutionScale": 1,// 设置渲染分辨率的缩放比例
-  "showAtmosphere": true,//是否显示大气层
-  "showSun": true,//是否显示太阳
-  "showMoon": true, //是否显示月亮
-  "enableFxaa": true,//是否开启抗锯齿
-  "msaaSamples": 1,//msaa抗拒出取样度
-  "cameraController": { // 相机控制
-    "enableRotate": true,// 是否可以旋转
-    "enableTilt": true,// 是否可以翻转
-    "enableTranslate": true,// 是否可以平移
-    "enableZoom": true,// 是否可以缩放
-    "enableCollisionDetection": true,// 是否支持碰撞检测
-    "minimumZoomDistance": 1.0,// 最小缩放距离
-    "maximumZoomDistance": 40489014.0// 最大缩放距离
+  shadows: false, // 是否开启阴影
+  resolutionScale: 1, // 设置渲染分辨率的缩放比例
+  showAtmosphere: true, //是否显示大气层
+  showSun: true, //是否显示太阳
+  showMoon: true, //是否显示月亮
+  enableFxaa: true, //是否开启抗锯齿
+  msaaSamples: 1, //msaa抗拒出取样度
+  cameraController: {
+    // 相机控制
+    enableRotate: true, // 是否可以旋转
+    enableTilt: true, // 是否可以翻转
+    enableTranslate: true, // 是否可以平移
+    enableZoom: true, // 是否可以缩放
+    enableCollisionDetection: true, // 是否支持碰撞检测
+    minimumZoomDistance: 1.0, // 最小缩放距离
+    maximumZoomDistance: 40489014.0, // 最大缩放距离
   },
-  "globe": {
-    "show": true,// 是否显示地球
-    "showGroundAtmosphere": true,// 显示地面大气
-    "enableLighting": false,//是否开启灯光，开启后地球会根据当前时间启用灯光
-    "depthTestAgainstTerrain": false, //是否开启深度测试
-    "tileCacheSize": 100, // 默认瓦片缓存大小
-    "preloadSiblings": false,//是否应预加载渲染同级图块
-    "terrainExaggeration": 1,//地形夸张系数
-    "terrainExaggerationRelativeHeight": 1,//地形相对高度夸张系数
-    "baseColor": new DC.Color(0, 0, 0.5, 1), //地球默认底色
-    "filterColor": newDC.Color(0, 0, 0, 0),//瓦片过滤色,设置后不可逆
-    "translucency": { //地表透明
-      "enabled": false, // 是否开启地表透明
-      "backFaceAlpha": 1,  // 地球背面透明度
-      "backFaceAlphaByDistance": null, //根据距离设置地球背面透明度: {near:400,nearValue:0.2,far:800,farValue:1}
-      "frontFaceAlpha": 1,  // 地球正面透明度
-      "frontFaceAlphaByDistance": null //根据距离设置地球正面透明度: {near:400,nearValue:0.2,far:800,farValue:1}
-    }
+  globe: {
+    show: true, // 是否显示地球
+    showGroundAtmosphere: true, // 显示地面大气
+    enableLighting: false, //是否开启灯光，开启后地球会根据当前时间启用灯光
+    depthTestAgainstTerrain: false, //是否开启深度测试
+    tileCacheSize: 100, // 默认瓦片缓存大小
+    preloadSiblings: false, //是否应预加载渲染同级图块
+    terrainExaggeration: 1, //地形夸张系数
+    terrainExaggerationRelativeHeight: 1, //地形相对高度夸张系数
+    baseColor: new DC.Color(0, 0, 0.5, 1), //地球默认底色
+    filterColor: newDC.Color(0, 0, 0, 0), //瓦片过滤色,设置后不可逆
+    translucency: {
+      //地表透明
+      enabled: false, // 是否开启地表透明
+      backFaceAlpha: 1, // 地球背面透明度
+      backFaceAlphaByDistance: null, //根据距离设置地球背面透明度: {near:400,nearValue:0.2,far:800,farValue:1}
+      frontFaceAlpha: 1, // 地球正面透明度
+      frontFaceAlphaByDistance: null, //根据距离设置地球正面透明度: {near:400,nearValue:0.2,far:800,farValue:1}
+    },
   },
-  "skyBox": {
-    "sources": {}, // 六个面的贴图
-    "show": true, //是否显示
-    "offsetAngle": 0 //旋转角度
-  }
+  skyBox: {
+    sources: {}, // 六个面的贴图
+    show: true, //是否显示
+    offsetAngle: 0, //旋转角度
+  },
 }
 ```
 
@@ -186,16 +182,16 @@ const config = {
 ```js
 //属性参数 (属性可选)
 const options = {
-  "name": "电子地图",//名称
-  "iconUrl": "../preview.png",//缩略图
-  "alpha": 1.0,
-  "nightAlpha": 1.0,
-  "dayAlpha": 1.0,
-  "brightness": 1.0,
-  "contrast": 1.0,
-  "hue": 1.0,
-  "saturation": 1.0,
-  "gamma": 1.0
+  name: '电子地图', //名称
+  iconUrl: '../preview.png', //缩略图
+  alpha: 1.0,
+  nightAlpha: 1.0,
+  dayAlpha: 1.0,
+  brightness: 1.0,
+  contrast: 1.0,
+  hue: 1.0,
+  saturation: 1.0,
+  gamma: 1.0,
 }
 ```
 
@@ -410,8 +406,8 @@ popup.setContent('<div></div>')
 ```js
 // 配置（属性可选),配置后会影响全局的popup的显示样式，请慎重。
 const config = {
-  "position": "center",// popup的位于鼠标的点击位置的方向,有：center，left ，right
-  "customClass": "custom"// 添加自定义的Css 类名到popup中，多个用空格隔开
+  position: 'center', // popup的位于鼠标的点击位置的方向,有：center，left ，right
+  customClass: 'custom', // 添加自定义的Css 类名到popup中，多个用空格隔开
 }
 ```
 
@@ -676,48 +672,6 @@ viewer.loadingMask.enable = true
 - `{Boolean} enable`：是否启用
 - `{String} state`：状态 **_`readonly`_**
 
-## DC.SkyBox
-
-> 天空盒，[详情参考](http://resource.dvgis.cn/cesium-docs/SkyBox.html)
-
-### example
-
-```js
-scene.skyBox = new DC.SkyBox({
-  sources: {
-    positiveX: 'skybox_px.png',
-    negativeX: 'skybox_nx.png',
-    positiveY: 'skybox_py.png',
-    negativeY: 'skybox_ny.png',
-    positiveZ: 'skybox_pz.png',
-    negativeZ: 'skybox_nz.png',
-  },
-})
-```
-
-### creation
-
-- **_constructor(id)_**
-
-  构造函数
-
-  - 参数
-    - `{Object} options`：配置
-  - 返回值 `skyBox`
-
-```js
-//options(属性可选)
-const options = {
-  "sources": {},// 六个面的贴图
-  "show": true//显示
-}
-```
-
-### properties
-
-- `{Object} sources`：六个面的贴图
-- `{Boolean} show`：显示
-
 ## DC.GroundSkyBox
 
 > 近地天空盒，[详情参考](http://resource.dvgis.cn/cesium-docs/SkyBox.html)
@@ -750,9 +704,9 @@ scene.skyBox = new DC.GroundSkyBox({
 ```js
 //options(属性可选)
 const options = {
-  "sources": {},// 六个面的贴图
-  "show": true,//显示
-  "offsetAngle": 0//旋转角度
+  sources: {}, // 六个面的贴图
+  show: true, //显示
+  offsetAngle: 0, //旋转角度
 }
 ```
 
@@ -883,100 +837,6 @@ let position3 = DC.Position.fromObject({ lng: 120, lat: 22, height: 102 })
   - 参数
     - `{String} valStr`：序列化的对象
   - 返回值 `position`
-
-## DC.Color
-
-> 颜色类
-
-### example
-
-```js
-let red = DC.Color.RED
-```
-
-### properties
-
-- `{Color} RED`：红色
-- `{Color} YELLOW`：黄色
-- `{Color} WHITE`：白色
-- `{Color} GREEN`：绿色
-
-[其他颜色](http://resource.dvgis.cn/cesium-docs/Color.html)
-
-## DC.TilesetStyle
-
-> tileset 样式，用于设置 3dtiles 的颜色设置
-
-### example
-
-```js
-let style = new DC.TilesetStyle()
-style.color = {
-  conditions: [
-    ['${floor} >= 5', 'rgb(198, 106, 11)'],
-    ['true', 'rgb(127, 59, 8)'],
-  ],
-}
-```
-
-[详情参考](http://resource.dvgis.cn/cesium-docs/Cesium3DTileStyle.html)
-
-## DC.JulianDate
-
-> 朱莉安日历
-
-```js
-let date = DC.JulianDate.now()
-```
-
-### static methods
-
-- **_now()_**
-
-  当前朱莉安时间
-
-  - 返回值 `date`
-
-- **_fromDate(date)_**
-
-  通过 Js 时间创建朱莉安时间
-
-  - 参数
-    - `{Date} date`：Js 时间
-  - 返回值 `date`
-
-[JulianDate](http://resource.dvgis.cn/cesium-docs/JulianDate.html)
-
-## DC.Rectangle
-
-> 矩形相关函数
-
-### example
-
-```js
-let r = DC.Rectangle.fromDegrees(10, 20, 12, 31)
-```
-
-[详情参考](http://resource.dvgis.cn/cesium-docs/Rectangle.html)
-
-## DC.CallbackProperty
-
-> 回调属性，用户通过自定义回调函数来返回需要的值。回调函数中，用户可以使用 time 给定 value，也可以自定设置。
-
-```js
-let position = new DC.Position(120, 20)
-let point = new DC.Point(position)
-let size = 0
-point.setStyle({
-  pixelSize: new DC.CallbackProperty((time) => {
-    size += 1
-    if (size == 10) {
-      size = 0
-    }
-    return size
-  }),
-})
-```
 
 ## DC.Parse
 

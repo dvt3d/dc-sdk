@@ -31,7 +31,7 @@ let attackArrow = new DC.AttackArrow('-90.0,32.0;-94.0,36.0;-94.0,38.0')
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[Polygon](#dc-polygon)
+    - `{Object} style`：样式，[详细使用说明](#dc-polygon)
   - 返回值 `this`
 
 ## DC.DoubleArrow
@@ -65,7 +65,7 @@ let doubleArrow = new DC.DoubleArrow('-90.0,32.0;-94.0,36.0;-94.0,38.0')
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[Polygon](#dc-polygon)
+    - `{Object} style`：样式，[详细使用说明](#dc-polygon)
   - 返回值 `this`
 
 ## DC.FineArrow
@@ -99,7 +99,7 @@ let fineArrow = new DC.FineArrow('-90.0,32.0;-94.0,36.0')
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[Polygon](#dc-polygon)
+    - `{Object} style`：样式，[详细使用说明](#dc-polygon)
   - 返回值 `this`
 
 ## DC.GatheringPlace
@@ -133,7 +133,7 @@ let gatheringPlace = new DC.GatheringPlace('-90.0,32.0;-94.0,36.0')
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[Polygon](#dc-polygon)
+    - `{Object} style`：样式，[详细使用说明](#dc-polygon)
   - 返回值 `this`
 
 ## DC.TailedAttackArrow
@@ -167,5 +167,5 @@ let tailedAttackArrow = new DC.TailedAttackArrow('-90.0,32.0;-94.0,36.0')
   设置样式
 
   - 参数
-    - `{Object} style`：样式，详情参考：[Polygon](#dc-polygon)
+    - `{Object} style`：样式，[详细使用说明](#dc-polygon)
   - 返回值 `this`

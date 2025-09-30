@@ -506,7 +506,7 @@ const options = {
 
   - 参数
     - `{String} modelPath`：模型路径
-    - `{Object} style`：样式，详情参考：[DC.Model](./overlay-vector#dc-model)
+    - `{Object} style`：样式，[详细使用说明](./overlay-vector#dc-model)
   - 返回值 `this`
 
 - **_setBillboard(icon,style)_**
@@ -515,7 +515,7 @@ const options = {
 
   - 参数
     - `{String} icon`：图标路径
-    - `{Object} style`：样式，参考：[DC.Billboard](./overlay-vector#dc-billboard)
+    - `{Object} style`：样式，[详细使用说明](./overlay-vector#dc-billboard)
   - 返回值 `this`
 
 - **_setLabel(text,style)_**
@@ -524,7 +524,7 @@ const options = {
 
   - 参数
     - `{String} text`：文本
-    - `{Object} style`：样式，参考：[DC.Label](./overlay-vector#dc-label)
+    - `{Object} style`：样式，[详细使用说明](./overlay-vector#dc-label)
   - 返回值 `this`
 
 - **_setPath(visible,style)_**

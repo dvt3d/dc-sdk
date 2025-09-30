@@ -61,6 +61,7 @@ export default {
           items: [
             { text: '全局 API', link: '/zh/api/global' },
             { text: '基础 API', link: '/zh/api/base' },
+            { text: '原生 API', link: '/zh/api/origin' },
             { text: '地图 API', link: '/zh/api/tile' },
             { text: '图层 API', link: '/zh/api/layer' },
             {
