@@ -16,6 +16,7 @@ import DrawDoubleArrow from './draw/DrawDoubleArrow'
 import DrawFineArrow from './draw/DrawFineArrow'
 import DrawGatheringPlace from './draw/DrawGatheringPlace'
 import DrawTailedAttackArrow from './draw/DrawTailedAttackArrow'
+import DrawBezierCurve from './draw/DrawBezierCurve'
 
 import EditPoint from './edit/EditPoint'
 import EditPolyline from './edit/EditPolyline'
@@ -28,6 +29,7 @@ import EditDoubleArrow from './edit/EditDoubleArrow'
 import EditFineArrow from './edit/EditFineArrow'
 import EditGatheringPlace from './edit/EditGatheringPlace'
 import EditTailedAttackArrow from './edit/EditTailedAttackArrow'
+import EditBezierCurve from './edit/EditBezierCurve'
 
 class Plot {
   constructor(viewer, options = {}) {
@@ -93,6 +95,9 @@ class Plot {
       case OverlayType.GATHERING_PLACE:
         drawWorker = new DrawGatheringPlace(style)
         break
+      case OverlayType.BEZIER_CURVE:
+        drawWorker = new DrawBezierCurve(style)
+        break
       default:
         break
     }
@@ -139,6 +144,9 @@ class Plot {
         break
       case OverlayType.GATHERING_PLACE:
         editWorker = new EditGatheringPlace(overlay)
+        break
+      case OverlayType.BEZIER_CURVE:
+        editWorker = new EditBezierCurve(overlay)
         break
       default:
         break

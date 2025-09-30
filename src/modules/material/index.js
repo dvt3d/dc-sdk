@@ -34,12 +34,17 @@ export { default as EllipsoidTrailMaterialProperty } from './property/ellipsoid/
 /**
  * polyline material property
  */
-
+export { default as PolylineCustomEndpointMaterialProperty } from './property/polyline/PolylineCustomEndpointMaterialProperty'
+export { default as PolylineDirectionMaterialProperty } from './property/polyline/PolylineDirectionMaterialProperty'
+export { default as PolylineDashArrowMaterialProperty } from './property/polyline/PolylineDashArrowMaterialProperty'
+export { default as PolylineEmissionMaterialProperty } from './property/polyline/PolylineEmissionMaterialProperty'
+export { default as PolylineFenceMaterialProperty } from './property/polyline/PolylineFenceMaterialProperty'
 export { default as PolylineFlickerMaterialProperty } from './property/polyline/PolylineFlickerMaterialProperty'
 export { default as PolylineFlowMaterialProperty } from './property/polyline/PolylineFlowMaterialProperty'
 export { default as PolylineImageTrailMaterialProperty } from './property/polyline/PolylineImageTrailMaterialProperty'
 export { default as PolylineLightingMaterialProperty } from './property/polyline/PolylineLightingMaterialProperty'
 export { default as PolylineLightingTrailMaterialProperty } from './property/polyline/PolylineLightingTrailMaterialProperty'
+export { default as PolylineMultiArrowMaterialProperty } from './property/polyline/PolylineMultiArrowMaterialProperty'
 export { default as PolylineTrailMaterialProperty } from './property/polyline/PolylineTrailMaterialProperty'
 
 /**
