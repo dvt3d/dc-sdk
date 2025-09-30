@@ -4,7 +4,7 @@
 
 import { Cesium } from '../../../libs'
 import State from '../../state/State'
-import { DomUtil } from '../../utils'
+import { Util, DomUtil } from '../../utils'
 import { Transform } from '../../transform'
 import Layer from '../Layer'
 
@@ -13,6 +13,15 @@ class HtmlLayer extends Layer {
     super(id)
     this._delegate = DomUtil.create('div', 'html-layer', undefined)
     this._delegate.setAttribute('id', this._id)
+    Util.merge(this._delegate.style, {
+      position: 'absolute',
+      left: '0',
+      top: '0',
+      width: '100%',
+      height: '100%',
+      pointerEvents: 'none',
+    })
+
     this._renderRemoveCallback = undefined
     this._state = State.INITIALIZED
   }
@@ -45,7 +54,7 @@ class HtmlLayer extends Layer {
     this._renderRemoveCallback = scene.postRender.addEventListener(() => {
       let cp = this._viewer.camera.positionWC
       let cd = this._viewer.camera.direction
-      const offset = this._viewer.getOffset()
+
       this.eachOverlay((item) => {
         if (item && item.position) {
           let position = Transform.transformWGS84ToCartesian(item.position)
@@ -57,11 +66,6 @@ class HtmlLayer extends Layer {
             scene,
             position
           )
-
-          if (windowCoord) {
-            windowCoord.x += offset.x
-            windowCoord.y += offset.y
-          }
           item._updateStyle(
             windowCoord,
             Cesium.Cartesian3.distance(position, cp),
