@@ -1,59 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title>dc-example</title>
-    <script src="/libs/dc-sdk/dc.min.js"></script>
-    <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
-    <link href="../index.css" type="text/css" rel="stylesheet" />
-  </head>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>dc-example</title>
+  <script src="/libs/dc-sdk/dc.min.js"></script>
+  <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
+  <link href="../index.css" type="text/css" rel="stylesheet" />
+</head>
 
-  <body>
-    <div id="viewer-container" class="viewer-container"></div>
-    <script>
-      DC.config.baseUrl = '../libs/dc-sdk/resources/'
-      let viewer = new DC.Viewer('viewer-container')
-      let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
-        DC.ImageryType.AMAP,
-        {
-          style: 'img',
-          crs: 'WGS84',
-        }
-      )
-      viewer.addBaseLayer(baseLayer, {
-        brightness: 0.1,
-      })
-      let layer = new DC.VectorLayer('layer')
-      viewer.addLayer(layer)
+<body>
+<div id="viewer-container" class="viewer-container"></div>
+<script>
+  DC.config.baseUrl = '../libs/dc-sdk/resources/'
+  let viewer = new DC.Viewer('viewer-container')
+  let baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+    DC.ImageryType.AMAP,
+    {
+      style: 'img',
+      crs: 'WGS84'
+    }
+  )
+  viewer.addBaseLayer(baseLayer, {
+    brightness: 0.1
+  })
+  let layer = new DC.VectorLayer('layer')
+  viewer.addLayer(layer)
 
-      let polyline = new DC.Polyline('-75, 35; -100, 35;-100, 30;-75, 30')
-      polyline.setStyle({
-        width: 10,
-        material: new DC.PolylineImageTrailMaterialProperty({
-          color: new DC.Color(0, 1, 1),
-          speed: 20,
-          image: '../assets/icon/arrow.png',
-          repeat: { x: 40, y: 1 },
-        }),
-        clampToGround: true,
-      })
+  let polyline = new DC.Polyline('-75, 35; -100, 35;-100, 30;-75, 30')
+  polyline.setStyle({
+    width: 10,
+    material: new DC.PolylineImageTrailMaterialProperty({
+      color: new DC.Color(0, 1, 1),
+      speed: 20,
+      image: '../assets/icon/arrow.png',
+      repeat: { x: 40, y: 1 }
+    }),
+    clampToGround: true
+  })
 
-      let polyline1 = new DC.Polyline('-75, 25; -100, 25')
-      polyline1.setStyle({
-        width: 10,
-        arcType: 1,
-        material: new DC.PolylineImageTrailMaterialProperty({
-          color: DC.Color.GREEN,
-          speed: 20,
-          image: '../assets/icon/arrow_1.png',
-          repeat: { x: 40, y: 1 },
-        }),
-        clampToGround: true,
-      })
+  let polyline1 = new DC.Polyline('-75, 25; -100, 25')
+  polyline1.setStyle({
+    width: 10,
+    arcType: 1,
+    material: new DC.PolylineImageTrailMaterialProperty({
+      color: DC.Color.GREEN,
+      speed: 20,
+      image: '../assets/icon/arrow_1.png',
+      repeat: { x: 40, y: 1 }
+    }),
+    clampToGround: true
+  })
 
-      layer.addOverlay(polyline).addOverlay(polyline1)
-      viewer.flyTo(layer)
-    </script>
-  </body>
+  layer.addOverlay(polyline).addOverlay(polyline1)
+  viewer.flyTo(layer)
+</script>
+</body>
 </html>

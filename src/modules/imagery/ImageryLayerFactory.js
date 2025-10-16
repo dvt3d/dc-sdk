@@ -67,6 +67,7 @@ class ImageryLayerFactory {
   }
 
   /**
+   *
    * Create arcgis imagery layer
    * @param options
    * @returns {Promise<ArcGisMapServerImageryProvider>}
@@ -94,48 +95,12 @@ class ImageryLayerFactory {
   }
 
   /**
-   * Create single tile imagery layer
+   * Create TMS imagery layer
    * @param options
-   * @returns {<SingleTileImageryProvider>}
+   * @returns {Promise<TileMapServiceImageryProvider>}
    */
-  static createSingleTileImageryLayer(options) {
-    return Cesium.SingleTileImageryProvider.fromUrl(options.url, options)
-  }
-
-  /**
-   * Create WMS imagery layer
-   * @param options
-   * @returns {Promise<WebMapServiceImageryProvider>}
-   */
-  static createWMSImageryLayer(options) {
-    return Promise.resolve(new Cesium.WebMapServiceImageryProvider(options))
-  }
-
-  /**
-   * Create WMTS imagery layer
-   * @param options
-   * @returns {Promise<WebMapTileServiceImageryProvider>}
-   */
-  static createWMTSImageryLayer(options) {
-    return Promise.resolve(new Cesium.WebMapTileServiceImageryProvider(options))
-  }
-
-  /**
-   * Create xyz imagery layer
-   * @param options
-   * @returns {Promise<UrlTemplateImageryProvider>}
-   */
-  static createXYZImageryLayer(options) {
-    return Promise.resolve(new Cesium.UrlTemplateImageryProvider(options))
-  }
-
-  /**
-   * Create coord imagery layer
-   * @param options
-   * @returns {Promise<TileCoordinatesImageryProvider>}
-   */
-  static createCoordImageryLayer(options) {
-    return Promise.resolve(new Cesium.TileCoordinatesImageryProvider(options))
+  static createTMSImageryLayer(options) {
+    return Cesium.TileMapServiceImageryProvider.fromUrl(options.url, options)
   }
 
   /**
@@ -145,6 +110,18 @@ class ImageryLayerFactory {
    */
   static createGridImageryLayer(options) {
     return Promise.resolve(new Cesium.GridImageryProvider(options))
+  }
+
+  /**
+   * Create google 2d imagery layer
+   * @param options
+   * @returns {Promise<Google2DImageryProvider>}
+   */
+  static createGoogle2DImageryLayer(options) {
+    let provider = Cesium.Google2DImageryProvider
+    return options.assetId
+      ? provider.fromIonAssetId(options)
+      : provider.fromUrl(options)
   }
 
   /**
@@ -166,12 +143,48 @@ class ImageryLayerFactory {
   }
 
   /**
-   * Create TMS imagery layer
+   * Create single tile imagery layer
    * @param options
-   * @returns {Promise<TileMapServiceImageryProvider>}
+   * @returns {<SingleTileImageryProvider>}
    */
-  static createTMSImageryLayer(options) {
-    return Cesium.TileMapServiceImageryProvider.fromUrl(options.url, options)
+  static createSingleTileImageryLayer(options) {
+    return Cesium.SingleTileImageryProvider.fromUrl(options.url, options)
+  }
+
+  /**
+   * Create coord imagery layer
+   * @param options
+   * @returns {Promise<TileCoordinatesImageryProvider>}
+   */
+  static createCoordImageryLayer(options) {
+    return Promise.resolve(new Cesium.TileCoordinatesImageryProvider(options))
+  }
+
+  /**
+   * Create xyz imagery layer
+   * @param options
+   * @returns {Promise<UrlTemplateImageryProvider>}
+   */
+  static createXYZImageryLayer(options) {
+    return Promise.resolve(new Cesium.UrlTemplateImageryProvider(options))
+  }
+
+  /**
+   * Create WMS imagery layer
+   * @param options
+   * @returns {Promise<WebMapServiceImageryProvider>}
+   */
+  static createWMSImageryLayer(options) {
+    return Promise.resolve(new Cesium.WebMapServiceImageryProvider(options))
+  }
+
+  /**
+   * Create WMTS imagery layer
+   * @param options
+   * @returns {Promise<WebMapTileServiceImageryProvider>}
+   */
+  static createWMTSImageryLayer(options) {
+    return Promise.resolve(new Cesium.WebMapTileServiceImageryProvider(options))
   }
 
   /**
@@ -227,6 +240,9 @@ class ImageryLayerFactory {
         break
       case ImageryType.GRID:
         promise = this.createGridImageryLayer(options)
+        break
+      case ImageryType.GOOGLE_2D:
+        promise = this.createGoogle2DImageryLayer(options)
         break
       case ImageryType.MAPBOX:
         promise = this.createMapboxImageryLayer(options)

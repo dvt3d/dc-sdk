@@ -729,7 +729,7 @@ let position1 = DC.Position.fromString('120,22,102')
 
 let position2 = DC.Position.fromArray([120, 22, 102])
 
-let position3 = DC.Position.fromObject({ lng: 120, lat: 22, height: 102 })
+let position3 = DC.Position.fromObject({ lng: 120, lat: 22, alt: 102 })
 ```
 
 ### creation

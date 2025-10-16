@@ -5,16 +5,17 @@
 let ImageryType = {
   ARCGIS: 'arcgis',
   BING: 'bing',
+  COORD: 'coord',
+  GRID: 'grid',
+  GOOGLE_2D: 'google_2d',
   OSM: 'osm',
+  MAPBOX: 'mapbox',
+  MAPBOX_STYLE: 'mapbox_style',
   SINGLE_TILE: 'single_tile',
+  TMS: 'tms',
   WMS: 'wms',
   WMTS: 'wmts',
   XYZ: 'xyz',
-  COORD: 'coord',
-  GRID: 'grid',
-  MAPBOX: 'mapbox',
-  MAPBOX_STYLE: 'mapbox_style',
-  TMS: 'tms',
 }
 
 export default ImageryType
