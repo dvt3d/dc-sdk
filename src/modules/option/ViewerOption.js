@@ -9,6 +9,7 @@ import { Util } from '../utils'
 class ViewerOption {
   constructor(viewer) {
     this._viewer = viewer
+    this._viewer.scene.screenSpaceCameraController.maximumZoomDistance = 40489014.0
     this._options = {}
   }
 
@@ -54,6 +55,7 @@ class ViewerOption {
     if (scene.msaaSupported) {
       scene.msaaSamples = +this._options.msaaSamples || 1
     }
+
     scene.verticalExaggeration = this._options.verticalExaggeration || 1
 
     scene.verticalExaggerationRelativeHeight =

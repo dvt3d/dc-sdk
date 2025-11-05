@@ -60,6 +60,7 @@ class Viewer {
     this._mouseEvent = new MouseEvent(this, options) // Register global mouse events
     this._viewerEvent = new ViewerEvent() // Register viewer events
     this._sceneEvent = new SceneEvent(this) // Register scene events
+
     this._viewerOption = new ViewerOption(this) // Initialize the viewer option
     this._cameraOption = new CameraOption(this) // Initialize the camera option
 
