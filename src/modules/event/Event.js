@@ -36,7 +36,7 @@ class Event {
   _off(type, callback, context) {
     let event = this.getEvent(type)
     let removed = false
-    if (event && callback) {
+    if (event && event.numberOfListeners && callback) {
       removed = event.removeEventListener(callback, context || this)
     }
     return removed
@@ -49,7 +49,7 @@ class Event {
    */
   _fire(type, params) {
     let event = this.getEvent(type)
-    if (event) {
+    if (event && event.numberOfListeners) {
       event.raiseEvent(params)
     }
   }
