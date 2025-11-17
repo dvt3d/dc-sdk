@@ -21,6 +21,7 @@ class DivIcon extends Overlay {
       position: 'absolute',
       top: '0',
       left: '0',
+      pointerEvents: 'auto',
     })
     this.content = content
     this._state = State.INITIALIZED
