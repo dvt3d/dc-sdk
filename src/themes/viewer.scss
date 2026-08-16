@@ -9,6 +9,24 @@
   height: 100%;
 }
 
+// The layer container overlaps the canvas so that DOM overlays (HtmlLayer /
+// div-icons) can be positioned with canvas-relative coordinates, independent
+// of where the viewer container sits in the page. Without an explicit
+// positioned box here, absolutely positioned overlays resolve against an outer
+// ancestor and drift when the container has its own offset. See issue #212.
+.viewer-layers {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.viewer-layers > * {
+  pointer-events: auto;
+}
+
 .viewer-canvas canvas {
   width: 100%;
   height: 100%;

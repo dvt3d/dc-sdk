@@ -45,7 +45,6 @@ class HtmlLayer extends Layer {
     this._renderRemoveCallback = scene.postRender.addEventListener(() => {
       let cp = this._viewer.camera.positionWC
       let cd = this._viewer.camera.direction
-      const offset = this._viewer.getOffset()
       this.eachOverlay((item) => {
         if (item && item.position) {
           let position = Transform.transformWGS84ToCartesian(item.position)
@@ -53,15 +52,17 @@ class HtmlLayer extends Layer {
             position,
             new Cesium.Cartesian3()
           )
+          // worldToWindowCoordinates already returns canvas-relative pixels.
+          // The overlay lives in the layer container, which is positioned to
+          // overlap the canvas, so these coordinates are used as-is. Adding the
+          // container's viewport offset here shifted every overlay whenever the
+          // container was not at the top-left of the page (e.g. a container with
+          // a fixed height or nested in an iframe). See issue #212.
           let windowCoord = Cesium.SceneTransforms.worldToWindowCoordinates(
             scene,
             position
           )
 
-          if (windowCoord) {
-            windowCoord.x += offset.x
-            windowCoord.y += offset.y
-          }
           item._updateStyle(
             windowCoord,
             Cesium.Cartesian3.distance(position, cp),
