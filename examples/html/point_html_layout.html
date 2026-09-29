@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>HtmlLayer 容器定位回归</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" rel="stylesheet" />
+    <style>
+      body {
+        margin: 0;
+        background: #101820;
+        color: #e6edf3;
+        font-family: system-ui, sans-serif;
+      }
+      header {
+        box-sizing: border-box;
+        height: 95px;
+        padding: 16px 24px;
+        background: #17232f;
+        border-bottom: 1px solid #334353;
+      }
+      h1,
+      h2,
+      p {
+        margin: 0;
+      }
+      h1 {
+        font-size: 20px;
+        line-height: 28px;
+      }
+      header p {
+        margin-top: 6px;
+        color: #aab9c8;
+        font-size: 13px;
+      }
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        padding: 16px 24px 0;
+      }
+      button {
+        padding: 8px 12px;
+        border: 1px solid #49647b;
+        border-radius: 6px;
+        background: rgba(32, 160, 255, 0.15);
+        color: #e6edf3;
+        font: inherit;
+        font-size: 13px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: rgba(32, 160, 255, 0.3);
+      }
+      button:focus-visible {
+        outline: 2px solid #66c2ff;
+        outline-offset: 2px;
+      }
+      button[aria-pressed='true'] {
+        border-color: #66c2ff;
+        background: #245378;
+      }
+      #clicks {
+        color: #aab9c8;
+        font-size: 13px;
+      }
+      .nested {
+        margin: 16px 24px;
+        padding: 12px;
+        border: 1px solid #334353;
+      }
+      .nested .nested {
+        margin: 0;
+        padding: 8px;
+        border-style: dashed;
+      }
+      /* Deliberately static: the SDK must establish its own positioning context. */
+      #viewer-container {
+        height: 460px;
+        background: #182e40;
+      }
+      .layout-icon {
+        padding: 10px 14px;
+        border: 1px solid #f4d35e;
+        border-radius: 8px;
+        background: rgba(30, 38, 46, 0.92);
+        color: #fff3b0;
+        text-align: center;
+        font-size: 14px;
+        box-shadow: 0 4px 16px #0005;
+      }
+      .layout-icon small {
+        display: block;
+        margin: 4px 0 8px;
+        color: #bdcad6;
+      }
+      .layout-icon canvas {
+        display: block;
+        margin: 0 auto;
+      }
+      .pass-through {
+        pointer-events: none;
+      }
+      .iframe-section {
+        margin: 24px;
+      }
+      h2 {
+        font-size: 16px;
+        margin-bottom: 12px;
+      }
+      iframe {
+        display: block;
+        width: 100%;
+        height: 760px;
+        border: 1px solid #334353;
+        box-sizing: border-box;
+      }
+      @media (max-width: 600px) {
+        header {
+          height: auto;
+          min-height: 95px;
+          padding: 16px;
+        }
+        .toolbar {
+          padding: 12px 16px 0;
+        }
+        .nested {
+          margin: 12px 16px;
+          padding: 6px;
+        }
+        .nested .nested {
+          padding: 4px;
+        }
+        #viewer-container {
+          height: 380px;
+        }
+        .iframe-section {
+          margin: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>HTML 标注 · 容器定位</h1>
+      <p>滚轮缩放、拖动地图，或切换容器高度，观察标注是否跟随地理位置。</p>
+    </header>
+    <div class="toolbar" aria-label="地图与图层操作">
+      <button id="zoom-in">＋ 放大</button>
+      <button id="zoom-out">－ 缩小</button>
+      <button id="reset">复位视角</button>
+      <button id="resize" aria-pressed="false">缩小地图高度</button>
+      <button id="toggle" aria-pressed="true">隐藏图层</button>
+      <button id="pointer" aria-pressed="false">开启鼠标穿透</button>
+      <span id="clicks" aria-live="polite">点击次数：0</span>
+    </div>
+    <div class="nested">
+      <div class="nested">
+        <div id="viewer-container"></div>
+      </div>
+    </div>
+    <script>
+      DC.config.baseUrl = '/libs/dc-sdk/resources/'
+      const viewer = new DC.Viewer('viewer-container')
+      const baseLayer = DC.ImageryLayerFactory.createImageryLayer(
+        DC.ImageryType.AMAP,
+        { style: 'img', crs: 'WGS84', protocol: 'https:' }
+      )
+      viewer.addBaseLayer(baseLayer)
+      const homePosition = '120.472147621,31.10115627,65380.21,0,-90'
+      const layer = new DC.HtmlLayer('layout').addTo(viewer)
+      const icon = new DC.DivIcon(
+        '120.472147621,31.10115627',
+        '<div>中心标注 · 点击测试</div><small>画布尺寸 80 × 24 px</small><canvas width="80" height="24" aria-label="固定尺寸小画布"></canvas>'
+      )
+        .setStyle({ className: 'layout-icon' })
+        .addTo(layer)
+      const context = icon.delegate.querySelector('canvas').getContext('2d')
+      context.fillStyle = '#1677ff'
+      context.fillRect(0, 0, 80, 24)
+      viewer.zoomToPosition(homePosition)
+      document.getElementById('zoom-in').onclick = () => {
+        viewer.camera.zoomIn(
+          Math.max(0, viewer.camera.positionCartographic.height - 100) * 0.5
+        )
+      }
+      document.getElementById('zoom-out').onclick = () => {
+        viewer.camera.zoomOut(viewer.camera.positionCartographic.height * 0.5)
+      }
+      document.getElementById('reset').onclick = () => {
+        viewer.zoomToPosition(homePosition)
+      }
+      let clicks = 0
+      icon.on(DC.MouseEventType.CLICK, () => {
+        document.getElementById('clicks').textContent = `点击次数：${++clicks}`
+      })
+      let compact = false
+      document.getElementById('resize').onclick = (event) => {
+        compact = !compact
+        document.getElementById('viewer-container').style.height = compact
+          ? '280px'
+          : ''
+        event.currentTarget.textContent = compact
+          ? '恢复地图高度'
+          : '缩小地图高度'
+        event.currentTarget.setAttribute('aria-pressed', String(compact))
+        viewer.resize()
+      }
+      let added = true
+      document.getElementById('toggle').onclick = (event) => {
+        if (added) {
+          viewer.removeLayer(layer)
+        } else {
+          viewer.addLayer(layer)
+        }
+        added = !added
+        event.currentTarget.textContent = added ? '隐藏图层' : '显示图层'
+        event.currentTarget.setAttribute('aria-pressed', String(added))
+      }
+      document.getElementById('pointer').onclick = (event) => {
+        const passThrough = icon.delegate.classList.toggle('pass-through')
+        event.currentTarget.textContent = passThrough
+          ? '关闭鼠标穿透'
+          : '开启鼠标穿透'
+        event.currentTarget.setAttribute('aria-pressed', String(passThrough))
+      }
+      if (!new URLSearchParams(location.search).has('embedded')) {
+        const section = document.createElement('section')
+        section.className = 'iframe-section'
+        const title = document.createElement('h2')
+        title.textContent = 'iframe 中的同一场景'
+        section.appendChild(title)
+        const frame = document.createElement('iframe')
+        frame.title = 'iframe 内的同一定位用例'
+        frame.src = 'point_html_layout.html?embedded'
+        section.appendChild(frame)
+        document.body.appendChild(section)
+      }
+    </script>
+  </body>
+</html>

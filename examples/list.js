@@ -575,6 +575,10 @@ const EXAMPLE_LIST = [
         name: 'html点',
         page: 'point_html.html',
       },
+      {
+        name: 'html点容器定位',
+        page: 'point_html_layout.html',
+      },
     ],
   },
   {

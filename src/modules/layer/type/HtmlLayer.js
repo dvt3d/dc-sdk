@@ -40,12 +40,12 @@ class HtmlLayer extends Layer {
    */
   _onAdd(viewer) {
     this._viewer = viewer
-    this._viewer.layerContainer.appendChild(this._delegate)
+    // Window coordinates are relative to the canvas, so share its positioned parent.
+    this._viewer.canvas.parentNode.appendChild(this._delegate)
     let scene = this._viewer.scene
     this._renderRemoveCallback = scene.postRender.addEventListener(() => {
       let cp = this._viewer.camera.positionWC
       let cd = this._viewer.camera.direction
-      const offset = this._viewer.getOffset()
       this.eachOverlay((item) => {
         if (item && item.position) {
           let position = Transform.transformWGS84ToCartesian(item.position)
@@ -57,11 +57,6 @@ class HtmlLayer extends Layer {
             scene,
             position
           )
-
-          if (windowCoord) {
-            windowCoord.x += offset.x
-            windowCoord.y += offset.y
-          }
           item._updateStyle(
             windowCoord,
             Cesium.Cartesian3.distance(position, cp),
@@ -80,7 +75,7 @@ class HtmlLayer extends Layer {
    */
   _onRemove() {
     this._renderRemoveCallback && this._renderRemoveCallback()
-    this._viewer.layerContainer.removeChild(this._delegate)
+    DomUtil.remove(this._delegate)
     this._state = State.REMOVED
   }
 
