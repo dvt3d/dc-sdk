@@ -51,7 +51,6 @@
     "fs-extra": "^11.1.1",
     "gulp": "^4.0.2",
     "gulp-clean": "^0.4.0",
-    "gulp-concat": "^2.6.1",
     "portfinder": "^1.0.32",
     "prettier": "^2.8.8",
     "rimraf": "^5.0.0",

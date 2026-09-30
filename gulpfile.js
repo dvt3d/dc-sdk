@@ -8,7 +8,6 @@ import fse from 'fs-extra'
 import path from 'path'
 import gulp from 'gulp'
 import esbuild from 'esbuild'
-import concat from 'gulp-concat'
 import clean from 'gulp-clean'
 import startServer from './server.js'
 import inlineImage from 'esbuild-plugin-inline-image'
@@ -188,17 +187,17 @@ async function combineJs(options) {
   // combine for iife
   if (options.iife) {
     await fse.ensureFile(path.join(cesium_path, 'Cesium.js'))
-    await gulp
-      .src([
-        path.join(cesium_path, 'Cesium.js'),
-        path.join('dist', 'modules-iife.js'),
-      ])
-      .pipe(concat('dc.min.js'))
-      .pipe(gulp.dest('dist'))
-      .on('end', () => {
-        addCopyright(options)
-        deleteTempFile()
-      })
+    const [cesium, modules] = await Promise.all([
+      fse.readFile(path.join(cesium_path, 'Cesium.js'), 'utf8'),
+      fse.readFile(path.join('dist', 'modules-iife.js'), 'utf8'),
+    ])
+    await fse.outputFile(
+      path.join('dist', 'dc.min.js'),
+      `${cesium}\n${modules}`,
+      { encoding: 'utf8' }
+    )
+    await addCopyright(options)
+    await deleteTempFile()
   }
 
   // combine for node
