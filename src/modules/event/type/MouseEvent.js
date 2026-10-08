@@ -152,9 +152,10 @@ class MouseEvent extends Event {
    *
    */
   _getMouseInfo(position) {
+    const windowPosition = this._adjustPosition(position)
     return {
-      ...this._getMousePosition(this._adjustPosition(position)),
-      target: this._viewer.scene.pick(this._adjustPosition(position)),
+      ...this._getMousePosition(windowPosition),
+      target: this._viewer.scene.pick(windowPosition),
     }
   }
 
@@ -336,6 +337,14 @@ class MouseEvent extends Event {
   _mouseMoveHandler(movement) {
     if (!movement?.endPosition) {
       return false
+    }
+    // Without target picking, only viewer listeners consume mouse coordinates.
+    if (
+      !this._enableMouseMovePick &&
+      !this._viewer.viewerEvent.getEvent(MouseEventType.MOUSE_MOVE)
+        ?.numberOfListeners
+    ) {
+      return
     }
     if (this._enableMouseMovePick) {
       let mouseInfo = this._getMouseInfo(movement.endPosition)

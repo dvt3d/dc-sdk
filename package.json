@@ -65,6 +65,8 @@
   ],
   "dependencies": {
     "cesium": "^1.142.0",
+    "pako": "^3.0.2",
+    "protobufjs": "^8.8.0",
     "supercluster": "^8.0.1"
   }
 }

@@ -1,71 +1,154 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title>dc-example</title>
+    <title>天地图底图</title>
     <script src="/libs/dc-sdk/dc.min.js"></script>
-    <script src="../dat.gui.min.js"></script>
     <link href="/libs/dc-sdk/dc.min.css" type="text/css" rel="stylesheet" />
     <link href="../index.css" type="text/css" rel="stylesheet" />
+    <style>
+      .tdt-toolbar {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        z-index: 10;
+        max-width: 520px;
+        padding: 12px;
+        color: #fff;
+        background: rgba(25, 30, 40, 0.9);
+      }
+      .tdt-toolbar input {
+        width: 230px;
+      }
+      .tdt-toolbar p {
+        margin: 8px 0 0;
+      }
+    </style>
   </head>
 
   <body>
     <div id="viewer-container" class="viewer-container"></div>
+    <form class="tdt-toolbar" id="controls">
+      <label
+        >天地图 Key
+        <input
+          id="key"
+          type="password"
+          autocomplete="off"
+          placeholder="天地图开发者平台申请的 Key"
+          required
+        />
+      </label>
+      <button id="load" type="submit">加载</button>
+      <p id="status">
+        填写天地图开发者平台申请且具备服务权限的 Key，请勿填写页面或服务地址。
+      </p>
+    </form>
     <script>
-      DC.config.baseUrl = '../libs/dc-sdk/resources/'
-      let viewer = new DC.Viewer('viewer-container')
+      DC.config.baseUrl = '/libs/dc-sdk/resources/'
+      const viewer = new DC.Viewer('viewer-container', { baseLayer: false })
+      const status = document.getElementById('status')
+      const keyInput = document.getElementById('key')
+      const loadButton = document.getElementById('load')
+      document.getElementById('controls').onsubmit = async (event) => {
+        event.preventDefault()
+        const key = keyInput.value.trim()
+        if (!key || loadButton.disabled) return
+        if (/^(?:[a-z][a-z\d+.-]*:)?\/\//i.test(key)) {
+          status.textContent =
+            'Key 应填写天地图开发者平台申请的密钥，不能填写页面或服务地址。'
+          keyInput.focus()
+          return
+        }
+        loadButton.disabled = true
+        try {
+          const options = {
+            key,
+            tileMatrixSetID: 'w', // w: 球面墨卡托；c: 经纬度
+          }
+          const cva = DC.ImageryLayerFactory.createTdtImageryLayer({
+            ...options,
+            style: 'cva',
+          })
+          const cia = DC.ImageryLayerFactory.createTdtImageryLayer({
+            ...options,
+            style: 'cia',
+          })
+          const cta = DC.ImageryLayerFactory.createTdtImageryLayer({
+            ...options,
+            style: 'cta',
+          })
+          const ibo = DC.ImageryLayerFactory.createTdtImageryLayer({
+            ...options,
+            style: 'ibo',
+          })
+          const vec = DC.ImageryLayerFactory.createTdtImageryLayer(options)
+          const img = DC.ImageryLayerFactory.createTdtImageryLayer({
+            ...options,
+            style: 'img',
+          })
+          const ter = DC.ImageryLayerFactory.createTdtImageryLayer({
+            ...options,
+            style: 'ter',
+          })
+          const providers = await Promise.all([
+            vec,
+            cva,
+            img,
+            cia,
+            ter,
+            cta,
+            ibo,
+          ])
+          for (const provider of providers) {
+            provider.errorEvent.addEventListener(() => {
+              status.textContent = '底图请求失败，请检查 Key 权限与网络。'
+            })
+          }
 
-      let key = '0f7c1d161d7352116a21aacf0e9f44c1'
-      let cva = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.TDT, {
-        key,
-        style: 'cva',
-      })
+          viewer.addBaseLayer(img, {
+            name: '影像',
+            iconUrl: '../assets/icon/img.png',
+          })
 
-      let vec = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.TDT, {
-        key,
-      })
+          viewer.addBaseLayer([img, cia], {
+            name: '影像+注记',
+            iconUrl: '../assets/icon/img.png',
+          })
 
-      let img = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.TDT, {
-        key,
-        style: 'img',
-      })
+          viewer.addBaseLayer(vec, {
+            name: '电子',
+            iconUrl: '../assets/icon/elec.png',
+          })
 
-      let ter = DC.ImageryLayerFactory.createImageryLayer(DC.ImageryType.TDT, {
-        key,
-        style: 'ter',
-      })
+          viewer.addBaseLayer([vec, cva], {
+            name: '电子+注记',
+            iconUrl: '../assets/icon/elec.png',
+          })
 
-      viewer.addBaseLayer(img, {
-        name: '影像',
-        iconUrl: '../assets/icon/img.png',
-      })
+          viewer.addBaseLayer(ter, {
+            name: '地形',
+            iconUrl: '../assets/icon/ter.png',
+          })
 
-      viewer.addBaseLayer([img, cva], {
-        name: '影像+注记',
-        iconUrl: '../assets/icon/img.png',
-      })
-
-      viewer.addBaseLayer(vec, {
-        name: '电子',
-        iconUrl: '../assets/icon/elec.png',
-      })
-
-      viewer.addBaseLayer([vec, cva], {
-        name: '电子+注记',
-        iconUrl: '../assets/icon/elec.png',
-      })
-
-      viewer.addBaseLayer(ter, {
-        name: '地形',
-        iconUrl: '../assets/icon/ter.png',
-      })
-
-      viewer.addBaseLayer([ter, cva], {
-        name: '地形+注记',
-        iconUrl: '../assets/icon/ter.png',
-      })
-      viewer.zoomToPosition('105.565571, 31.984708, 15362816, 0, -90')
+          viewer.addBaseLayer([ter, cta], {
+            name: '地形+注记',
+            iconUrl: '../assets/icon/ter.png',
+          })
+          viewer.addBaseLayer([img, ibo], {
+            name: '影像+全球境界',
+            iconUrl: '../assets/icon/img.png',
+          })
+          viewer.zoomToPosition('105.565571, 31.984708, 15362816, 0, -90')
+          keyInput.disabled = true
+          status.textContent =
+            '底图已启用，可通过底图控件切换影像、矢量、地形及注记。'
+        } catch (error) {
+          loadButton.disabled = false
+          status.textContent = '加载失败，请检查配置后重试。'
+        }
+      }
     </script>
   </body>
 </html>

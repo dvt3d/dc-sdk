@@ -132,6 +132,8 @@ let turf = DC.getLib('turf')
 
 **_`DC.TerrainType.NONE`_**: 无地形
 
+**_`DC.TerrainType.TDT`_**: 天地图 DEM 地形
+
 **_`DC.TerrainType.XYZ`_**: xyz 格式地形
 
 **_`DC.TerrainType.GOOGLE`_**: 谷歌地形
@@ -153,6 +155,8 @@ let turf = DC.getLib('turf')
 **_`DC.LayerType.HTML`_**: html 图层
 
 **_`DC.LayerType.GEOJSON`_**: geoJson 图层
+
+**_`DC.LayerType.TDT_LABEL`_**: 天地图三维地名图层
 
 **_`DC.LayerType.CLUSTER`_**: 聚合图层
 

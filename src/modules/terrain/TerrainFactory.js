@@ -4,8 +4,18 @@
 
 import { Cesium } from '../../libs'
 import TerrainType from './TerrainType'
+import TdtTerrainProvider from './provider/TdtTerrainProvider'
 
 class TerrainFactory {
+  /**
+   * Create Tianditu terrain
+   * @param options
+   * @returns {Promise<TdtTerrainProvider>}
+   */
+  static createTdtTerrain(options) {
+    return Promise.resolve(new TdtTerrainProvider(options))
+  }
+
   /**
    *
    * @param options
@@ -66,6 +76,9 @@ class TerrainFactory {
   static createTerrain(type, options) {
     let promise = undefined
     switch (type) {
+      case TerrainType.TDT:
+        promise = this.createTdtTerrain(options)
+        break
       case TerrainType.NONE:
         promise = this.createEllipsoidTerrain(options)
         break

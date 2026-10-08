@@ -6,10 +6,10 @@
 
 import fse from 'fs-extra'
 import path from 'path'
+import { pipeline } from 'node:stream/promises'
 import gulp from 'gulp'
 import esbuild from 'esbuild'
 import concat from 'gulp-concat'
-import clean from 'gulp-clean'
 import startServer from './server.js'
 import inlineImage from 'esbuild-plugin-inline-image'
 import { sassPlugin } from 'esbuild-sass-plugin'
@@ -67,6 +67,44 @@ async function buildCSS(options) {
 }
 
 /**
+ * Build SDK Worker entries and copy their companion resources.
+ * @param options
+ * @returns {Promise<void>}
+ */
+async function buildWorkers(options) {
+  const source = path.join('src', 'workers')
+  const destination = path.join('dist', 'resources', 'Workers', 'DC')
+  if (!(await fse.pathExists(source))) {
+    await fse.emptyDir(destination)
+    return
+  }
+  // Compile before replacing the last usable output, especially during watch.
+  const result = await esbuild.build({
+    ...buildConfig,
+    entryPoints: ['src/workers/**/*.js'],
+    outbase: source,
+    outdir: destination,
+    format: 'esm',
+    external: [],
+    minify: options.minify,
+    write: false,
+  })
+  // Only clear SDK-owned output; Cesium's Workers remain in the parent directory.
+  await fse.emptyDir(destination)
+  for (const file of result.outputFiles) {
+    await fse.outputFile(file.path, file.contents)
+  }
+  await pipeline(
+    gulp.src(['src/workers/**/*', '!src/workers/**/*.js'], {
+      base: source,
+      nodir: true,
+      allowEmpty: true,
+    }),
+    gulp.dest(destination)
+  )
+}
+
+/**
  *
  * @param options
  * @returns {Promise<void>}
@@ -75,8 +113,6 @@ async function buildModules(options) {
   const dcPath = path.join('src', 'DC.js')
 
   const content = await fse.readFile(path.join('src', 'index.js'), 'utf8')
-
-  await fse.ensureFile(dcPath)
 
   const exportVersion = `export const VERSION = '${packageJson.version}'`
 
@@ -99,51 +135,52 @@ async function buildModules(options) {
             .replace('{{__REPOSITORY__}}', packageJson.repository)}
     }`
 
-  await fse.outputFile(
-    dcPath,
-    `
+  try {
+    await fse.outputFile(
+      dcPath,
+      `
               ${cmdOutFunction}
               ${content}
               ${exportVersion}
 
             `,
-    {
-      encoding: 'utf8',
+      {
+        encoding: 'utf8',
+      }
+    )
+    // Build IIFE
+    if (options.iife) {
+      await esbuild.build({
+        ...buildConfig,
+        format: 'iife',
+        globalName: 'DC',
+        plugins: [
+          ...buildConfig.plugins,
+          GlobalsPlugin({
+            cesium: 'globalThis.Cesium || Cesium',
+          }),
+        ],
+        minify: options.minify,
+        outfile: path.join('dist', 'modules-iife.js'),
+      })
     }
-  )
-  // Build IIFE
-  if (options.iife) {
-    await esbuild.build({
-      ...buildConfig,
-      format: 'iife',
-      globalName: 'DC',
-      plugins: [
-        ...buildConfig.plugins,
-        GlobalsPlugin({
-          cesium: 'globalThis.Cesium || Cesium',
-        }),
-      ],
-      minify: options.minify,
-      outfile: path.join('dist', 'modules-iife.js'),
-    })
-  }
 
-  // Build Node、
-  if (options.node) {
-    await esbuild.build({
-      ...buildConfig,
-      format: 'esm',
-      platform: 'node',
-      define: {
-        TransformStream: 'null',
-      },
-      minify: options.minify,
-      outfile: path.join('dist', 'index.js'),
-    })
+    // Build Node、
+    if (options.node) {
+      await esbuild.build({
+        ...buildConfig,
+        format: 'esm',
+        platform: 'node',
+        define: {
+          TransformStream: 'null',
+        },
+        minify: options.minify,
+        outfile: path.join('dist', 'index.js'),
+      })
+    }
+  } finally {
+    await fse.remove(dcPath)
   }
-
-  // remove DC.js
-  await fse.remove(dcPath)
 }
 
 /**
@@ -174,80 +211,62 @@ async function addCopyright(options) {
   }
 }
 
-/**
- *
- * @returns {Promise<void>}
- */
-async function deleteTempFile() {
-  await gulp
-    .src([path.join('dist', 'modules-iife.js')], { read: false })
-    .pipe(clean())
-}
-
 async function combineJs(options) {
   // combine for iife
   if (options.iife) {
     await fse.ensureFile(path.join(cesium_path, 'Cesium.js'))
-    await gulp
-      .src([
+    await pipeline(
+      gulp.src([
         path.join(cesium_path, 'Cesium.js'),
         path.join('dist', 'modules-iife.js'),
-      ])
-      .pipe(concat('dc.min.js'))
-      .pipe(gulp.dest('dist'))
-      .on('end', () => {
-        addCopyright(options)
-        deleteTempFile()
-      })
+      ]),
+      concat('dc.min.js'),
+      gulp.dest('dist')
+    )
   }
 
-  // combine for node
-  if (options.node) {
-    await gulp
-      .src(path.join('dist', 'index.js'))
-      .pipe(gulp.dest('dist'))
-      .on('end', () => {
-        addCopyright(options)
-      })
+  // The ESM output is already in place; only its copyright remains to be added.
+  await addCopyright(options)
+  if (options.iife) {
+    await fse.remove(path.join('dist', 'modules-iife.js'))
   }
 }
 
 async function copyAssets() {
   await fse.emptyDir(path.join('dist', 'resources'))
   for (const dir of ['Assets', 'ThirdParty', 'Workers']) {
-    await gulp
-      .src(path.join(cesium_path, dir, '**'), { nodir: true })
-      .pipe(gulp.dest(path.join('dist', 'resources', dir)))
+    await pipeline(
+      gulp.src(path.join(cesium_path, dir, '**'), { nodir: true }),
+      gulp.dest(path.join('dist', 'resources', dir))
+    )
   }
 }
 
 async function regenerate(option) {
-  await fse.remove(path.join('dist', 'dc.min.js'))
-  await fse.remove(path.join('dist', 'dc.min.css'))
   await buildModules(option)
   await combineJs(option)
   await buildCSS(option)
+  await buildWorkers(option)
 }
 
 export const server = gulp.series(startServer)
+
+export const workers = gulp.series(() => buildWorkers({ minify: true }))
 
 export const dev = gulp.series(
   () => copyAssets(),
   () => {
     shell.echo(chalk.yellow('============= start dev =============='))
-    const watcher = gulp.watch('src', {
-      persistent: true,
-      awaitWriteFinish: {
-        stabilityThreshold: 1000,
-        pollInterval: 100,
+    const watcher = gulp.watch(
+      ['src/**/*', '!src/DC.js'],
+      {
+        persistent: true,
+        awaitWriteFinish: {
+          stabilityThreshold: 1000,
+          pollInterval: 100,
+        },
       },
-    })
-    watcher
-      .on('ready', async () => {
-        await regenerate({ iife: true, minify: false })
-        await startServer()
-      })
-      .on('change', async () => {
+      async () => {
         let now = new Date().getTime()
         try {
           await regenerate({ iife: true, minify: false })
@@ -257,7 +276,12 @@ export const dev = gulp.series(
         } catch (e) {
           shell.error(e)
         }
-      })
+      }
+    )
+    watcher.on('ready', async () => {
+      await regenerate({ iife: true, minify: false })
+      await startServer()
+    })
     return watcher
   }
 )
@@ -266,14 +290,16 @@ export const buildIIFE = gulp.series(
   () => buildModules({ iife: true, minify: true }),
   () => combineJs({ iife: true }),
   () => buildCSS({ minify: true }),
-  copyAssets
+  copyAssets,
+  workers
 )
 
 export const buildNode = gulp.series(
   () => buildModules({ node: true, minify: true }),
   () => combineJs({ node: true }),
   () => buildCSS({ minify: true }),
-  copyAssets
+  copyAssets,
+  workers
 )
 
 export const build = gulp.series(
@@ -282,7 +308,8 @@ export const build = gulp.series(
   () => buildModules({ node: true, minify: true }),
   () => combineJs({ node: true }),
   () => buildCSS({ minify: true }),
-  copyAssets
+  copyAssets,
+  workers
 )
 
 export const buildRelease = gulp.series(
@@ -291,5 +318,6 @@ export const buildRelease = gulp.series(
   () => buildModules({ node: true, minify: true }),
   () => combineJs({ node: true }),
   () => buildCSS({ minify: true }),
-  copyAssets
+  copyAssets,
+  workers
 )

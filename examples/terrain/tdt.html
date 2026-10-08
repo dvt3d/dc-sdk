@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>天地图地形与三维地名</title>
+    <script src="/libs/dc-sdk/dc.min.js"></script>
+    <link href="/libs/dc-sdk/dc.min.css" rel="stylesheet" />
+    <link href="../index.css" rel="stylesheet" />
+    <style>
+      .tdt-toolbar {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        z-index: 10;
+        max-width: 520px;
+        padding: 12px;
+        color: #fff;
+        background: rgba(25, 30, 40, 0.9);
+      }
+      .tdt-toolbar input {
+        width: 230px;
+      }
+      .tdt-toolbar p {
+        margin: 8px 0 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="viewer-container" class="viewer-container"></div>
+    <form class="tdt-toolbar" id="controls">
+      <label
+        >天地图 Key
+        <input
+          id="key"
+          type="password"
+          autocomplete="off"
+          placeholder="天地图开发者平台申请的 Key"
+          required
+        />
+      </label>
+      <button id="load" type="submit">加载</button>
+      <div>
+        <button id="toggle" type="button" disabled>隐藏地名</button>
+        <button id="clear" type="button" disabled>清空</button>
+        <button id="refresh" type="button" disabled>刷新</button>
+        <button id="remount" type="button" disabled>移除并重新添加</button>
+      </div>
+      <p id="status">
+        填写天地图开发者平台申请且具备服务权限的 Key，请勿填写页面或服务地址。
+      </p>
+    </form>
+    <script>
+      DC.config.baseUrl = '/libs/dc-sdk/resources/'
+      const viewer = new DC.Viewer('viewer-container', { baseLayer: false })
+      let labels
+      const status = document.getElementById('status')
+      const keyInput = document.getElementById('key')
+      const loadButton = document.getElementById('load')
+      document.getElementById('controls').onsubmit = async (event) => {
+        event.preventDefault()
+        const key = keyInput.value.trim()
+        if (!key || loadButton.disabled) return
+        if (/^(?:[a-z][a-z\d+.-]*:)?\/\//i.test(key)) {
+          status.textContent =
+            'Key 应填写天地图开发者平台申请的密钥，不能填写页面或服务地址。'
+          keyInput.focus()
+          return
+        }
+        loadButton.disabled = true
+        try {
+          const terrain = DC.TerrainFactory.createTdtTerrain({ key })
+          const provider = await terrain
+          provider.errorEvent.addEventListener(() => {
+            status.textContent = '地形请求失败，请检查 Key 权限与网络。'
+          })
+          viewer.setTerrain(terrain)
+          viewer.addBaseLayer(
+            DC.ImageryLayerFactory.createTdtImageryLayer({
+              key,
+              style: 'img',
+              tileMatrixSetID: 'w',
+            })
+          )
+          labels = new DC.TdtLabelLayer('tdt-labels', {
+            key,
+            autoCollide: true,
+            serverFirstStyle: true,
+          })
+          labels.errorEvent.addEventListener(() => {
+            status.textContent = '地名请求失败，请检查 Key 权限与网络。'
+          })
+          viewer.addLayer(labels)
+          viewer.flyToPosition(new DC.Position(116.39, 39.91, 100000, 0, -60))
+          keyInput.disabled = true
+          for (const id of ['toggle', 'clear', 'refresh', 'remount']) {
+            document.getElementById(id).disabled = false
+          }
+          status.textContent =
+            '地名随视野加载；重叠标签自动避让。清空后点击刷新恢复。'
+        } catch (error) {
+          loadButton.disabled = false
+          status.textContent = '加载失败，请检查配置后重试。'
+        }
+      }
+      document.getElementById('toggle').onclick = (event) => {
+        labels.show = !labels.show
+        event.target.textContent = labels.show ? '隐藏地名' : '显示地名'
+      }
+      document.getElementById('clear').onclick = () => labels.clear()
+      document.getElementById('refresh').onclick = () => labels.refresh()
+      document.getElementById('remount').onclick = () => {
+        viewer.removeLayer(labels)
+        viewer.addLayer(labels)
+      }
+    </script>
+  </body>
+</html>

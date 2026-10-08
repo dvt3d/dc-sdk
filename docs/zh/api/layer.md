@@ -2,6 +2,84 @@
 
 将具有相同业务逻辑或属性的覆盖元素进行分类，以便于同一管理
 
+## DC.TdtLabelLayer
+
+> 天地图三维地名图层，包含 POI 标签、图标及可选的道路标签，继承自 `DC.Layer`。
+
+```js
+const labels = new DC.TdtLabelLayer('tdt-labels', {
+  key: 'YOUR_TIANDITU_KEY',
+  autoCollide: true,
+  serverFirstStyle: true,
+}).addTo(viewer)
+
+labels.show = false
+labels.show = true
+labels.clear() // 清空并暂停加载
+labels.refresh() // 清空缓存并恢复加载当前视野
+viewer.removeLayer(labels)
+viewer.addLayer(labels) // 可重新添加
+```
+
+### creation
+
+- **_constructor(id, options)_**
+  - `{String} id`：业务标识。
+  - `{Object} options`：服务和显示配置，见下表。
+
+| 参数 | 类型 | 默认值 | 说明 |
+| --- | --- | --- | --- |
+| key / token | String | `''` | 天地图 Key；`key` 优先 |
+| url | String / Resource | 天地图 `GetTiles` | POI 瓦片模板，支持 `{s}`、`{x}`、`{y}`、`{z}`、`{key}`、`{token}` |
+| icoUrl | String / Resource | 天地图 `GetIcon` | 图标模板，额外支持 `{id}`；传入 `''` 禁用图标 |
+| subdomains | String / String[] | `'01234567'` | 使用实际的子域名值替换 `{s}` |
+| metadata | Object | 全球、L1～L20 | `{ boundBox: { minX, minY, maxX, maxY }, minLevel, maxLevel }`；范围为经纬度，层级为天地图服务层级 |
+| roadUrl | String / Resource | 无 | 可选道路 JSON 瓦片地址，支持与 `url` 相同的模板变量 |
+| roadMetadata | Object | 全球、L1～L20 | 道路服务的范围和层级，与 `metadata` 格式相同 |
+| labelGraphics | Object | 白字黑边 | Cesium LabelGraphics 样式 |
+| billboardGraphics | Object | 18×18 图标 | Cesium BillboardGraphics 样式 |
+| serverFirstStyle | Boolean | `false` | 优先使用 POI 服务返回的字体、颜色、描边和图标尺寸 |
+| autoCollide | Boolean | `false` | 按优先级避让标签和图标；也兼容来源参数 `aotuCollide`，新名称优先 |
+| collisionPadding | Number[] | `[0, 0, 0, 0]` | 避让额外边距 `[上, 右, 下, 左]`，单位为 CSS 像素 |
+| cacheSize | Number | `256` | 缓存瓦片目标上限，当前可见瓦片保留至离开视野 |
+| maximumRequests | Number | `8` | 同时进行的瓦片请求上限 |
+| maximumTiles | Number | `128` | 每个服务当前视野最多加载的瓦片数；优先细化屏内区域，预算不足时保留允许请求的粗层级覆盖 |
+| maximumLabels | Number | `1000` | 图层显示实体上限，优先保留较小 Priority 值；按场景需要调高 |
+| proxy | Proxy | 无 | Cesium 代理对象，需提供 `getURL(url)` |
+
+### properties
+
+继承 `id`、`type`、`show`、`state`、`attr` 和 `delegate`。`delegate` 为此图层独立拥有的 `CustomDataSource`。
+
+- `{Event} errorEvent`：服务请求或解析失败事件，可通过 `labels.errorEvent.addEventListener(({ layer, tile, error }) => {})` 监听；数据源挂载失败时 `tile` 可能为空。
+
+### methods
+
+- **_clear()_**：取消请求、清除缓存和实体，暂停自动加载，返回 `this`。
+- **_refresh()_**：清除缓存并恢复当前视野加载，返回 `this`。
+- **_addTo(viewer)_**、**_remove()_**：沿用 Layer 挂载与移除方式；移除后可重新添加，Viewer 销毁时自动清理。
+
+图层自行管理服务实体，不支持用 `addOverlay/removeOverlay` 管理业务覆盖物；业务覆盖物放入独立的 `VectorLayer`。
+隐藏、清空和移除会取消未完成请求，迟到的响应不会重新添加实体，也不会修改其他图层或相机的 `percentageChanged`。
+地名请求层级根据视锥和 CSS 视口尺寸估算。三维场景结合各瓦片的地形高度范围及其距相机的最近距离选择细节：透视近景使用细瓦片，远景使用粗瓦片，避免贴地斜视时仅加载相机脚下。已加载地表高度包含地形夸张效果；贴地时采用正的最小距离，避免浮点误差使层级突然回退。二维、哥伦布和正交场景沿用相应视锥比例尺，无法取得有效比例尺时沿用地形层级。
+优先细化视锥内的地表区域；子瓦片超出预算时保留其粗父瓦片覆盖，来源的最小和最大层级仍然生效。屏外区域仅在预算允许时作为后备，为屏内细节让出名额。同一覆盖范围、地形高度和视锥下的选择不受地形瓦片分块和遍历顺序影响。层级切换时，暂时保留重叠区域已加载的标签，新瓦片到齐后再替换，减少加载过程中的闪空。
+回退瓦片与新瓦片的总数也受 `maximumTiles × 服务数` 限制；标签数量超过 `maximumLabels` 时按优先级截取。
+同一场景更新周期内的瓦片回包合并处理。避让使用屏幕网格、有界文字测量缓存，以及按实体缓存的贴地位置和相对边界；相机移动时复用静态数据，地形加载、字体或实体变化时更新。动态属性和距离显示条件仍按当前帧计算；相机、视口及实体未改变时复用上次结果。支持 Cesium 的 `requestRenderMode`。
+加载进度通知会合并处理，加载期间静态贴地位置的刷新间隔为 250 毫秒；加载完成、地形切换或图层重新显示时，在下一次场景更新中立即刷新。不依赖地形的静态位置继续复用缓存，动态位置和动态高度模式仍逐帧计算。
+地名文字和图标默认设置 `disableDepthTestDistance: Number.POSITIVE_INFINITY`，避免低角度斜视时被地形裁剪；地球背面的地名仍会隐藏，且不依赖 `autoCollide`。如需让地形或模型遮挡地名，可分别在 `labelGraphics`、`billboardGraphics` 中将 `disableDepthTestDistance` 设为 `0`。
+负高程地名关闭深度检测时，仅使用椭球表面位置判断地平线，保留实际显示高度；高空地名仍按实际位置判断。文字和图标分别处理高度参考、深度距离和 `eyeOffset`，被地平线裁剪的部分不占用避让空间。动态深度参数、场景默认值或椭球变化在相机静止时也会更新判断，并复用静态位置和文字尺寸缓存。
+当前 Cesium 版本中，显式 `disableDepthTestDistance: 0` 使用场景的 `minimumDisableDepthTestDistance`，场景默认值为 `0` 时始终启用深度检测；`Infinity` 始终关闭深度检测。显式 `undefined` 保持原生默认行为，不强制继承场景值。
+开启 `autoCollide` 时，默认仅按文字和图标的估算边界避让，不额外扩大间距，避免“渤海”等按单字返回的地名在旋转后因空白边距重叠而缺字。需要更宽间距时可显式设置 `collisionPadding`；边界实际重叠时仍按优先级隐藏标签。
+
+### 服务格式与兼容范围
+
+- POI 使用来源插件的 19 字节头、9 字节尾及 proto2 瓦片格式，兼容 V1～V3 共有及可选字段；64 位 ID 保持字符串精度。道路格式为 `[{ LabelPoint: { X, Y, Z }, Feature: { properties: { Name } } }]`。
+- 渲染点型地名；线、面 POI 几何不作为业务线面绘制。高度类型支持贴地、海平面、相对地面和绝对高度。
+- 避让使用 CSS 像素估算字体与图标边界，优先保留较小的 Priority 值。自定义旋转图标、背景、特殊字体的估算范围可能与实际像素有差异。
+- 地名服务使用地理瓦片及从一开始的层级。为确定当前地表覆盖范围，仅在此图层内部读取 Cesium 的 `_surface._tilesToRender`；升级 Cesium 时需重跑对应浏览器回归。不修改 Cesium 全局对象，也不加载来源插件的引擎补丁。
+- 默认服务需要具有对应权限的天地图 Key。自定义 `url`、`icoUrl`、`roadUrl` 自行提供鉴权模板。已有的二维影像及注记继续使用 `ImageryLayerFactory.createTdtImageryLayer()`；叠加三维地名时可省略二维注记以避免重复。
+- 默认 POI 请求为 `GetTiles?lxys={z},{x},{y}&VERSION=1.0.0&tk={key}`，`lxys` 依次是服务层级、列号、行号，保留逗号分隔符。默认地址使用 `Resource({ url, parseUrl: false })` 保持该格式，Key 等模板值仍会转义。自定义服务地址需自行提供对应的版本等参数。
+
 ## DC.Layer
 
 > 图层的基类，其子类是实例化后需添加到三维场景中方可展示各类三维数据

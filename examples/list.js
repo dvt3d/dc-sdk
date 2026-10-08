@@ -212,6 +212,10 @@ const EXAMPLE_LIST = [
     folder: 'terrain',
     children: [
       {
+        name: '天地图地形与三维地名',
+        page: 'tdt.html',
+      },
+      {
         name: '地形（中国）',
         page: 'ter_ch.html',
       },
